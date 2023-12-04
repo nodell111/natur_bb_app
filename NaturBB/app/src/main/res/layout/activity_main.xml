@@ -1,18 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/light_green"
+    android:textAlignment="center">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/dark_green"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="232dp"
+        android:layout_height="43dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="false"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/logo"
+        app:srcCompat="@drawable/natur_brandenburg" />
+
+    <ImageButton
+        android:id="@+id/infoButton"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:drawable/ic_menu_info_details"
+        android:contentDescription="@string/info_button"
+        android:scaleType="center"
+        app:srcCompat="@drawable/information"
+        tools:srcCompat="@drawable/information" />
+
+    <SearchView
+        android:id="@+id/searchbar"
+        android:layout_width="374dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:Hint="Search for a park"
+        android:background="@drawable/border"
+        android:contextClickable="false"
+        android:iconifiedByDefault="false"
+        android:outlineProvider="none"
+        android:queryBackground="@null"
+        android:queryHint="Search for a park" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/sortBy"
+        android:layout_width="84dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/searchbar"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/noto_sans_bold"
+        android:gravity="center"
+        android:text="SORT BY"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorLink="#ffdc00"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Switch
+        android:id="@+id/sortDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@id/searchbar"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/sortName"
+        android:fontFamily="@font/noto_sans_bold"
+        android:text="Distance"
+        android:textColor="@color/white" />
+
+    <Switch
+        android:id="@+id/sortName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@id/searchbar"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@id/sortBy"
+        android:fontFamily="@font/noto_sans_bold"
+        android:text="Name"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabListMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sortBy"
+        android:layout_marginTop="10dp"
+        android:background="@color/mid_green"
+        app:tabBackground="@color/mid_green"
+        app:tabIndicatorColor="@color/dark_green"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="5dp"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:tabTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIST" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAP" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <ListView
+        android:id="@+id/parkList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabListMap"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" />
+
+
+</RelativeLayout>
