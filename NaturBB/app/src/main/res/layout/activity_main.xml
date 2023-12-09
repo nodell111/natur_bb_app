@@ -22,7 +22,6 @@
         android:layout_width="232dp"
         android:layout_height="43dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="false"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/logo"
         app:srcCompat="@drawable/natur_brandenburg" />
@@ -37,9 +36,7 @@
         android:layout_marginBottom="10dp"
         android:background="@android:drawable/ic_menu_info_details"
         android:contentDescription="@string/info_button"
-        android:scaleType="center"
-        app:srcCompat="@drawable/information"
-        tools:srcCompat="@drawable/information" />
+        android:scaleType="center" />
 
     <SearchView
         android:id="@+id/searchbar"
@@ -51,7 +48,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:Hint="Search for a park"
         android:background="@drawable/border"
         android:contextClickable="false"
         android:iconifiedByDefault="false"
@@ -64,11 +60,11 @@
         android:layout_width="84dp"
         android:layout_height="48dp"
         android:layout_below="@id/searchbar"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
         android:fontFamily="@font/noto_sans_bold"
         android:gravity="center"
-        android:text="SORT BY"
+        android:text="@string/sort_by"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textColorLink="#ffdc00"
@@ -81,12 +77,13 @@
         android:layout_height="48dp"
         android:layout_alignWithParentIfMissing="false"
         android:layout_below="@id/searchbar"
-        android:layout_marginLeft="31dp"
+        android:layout_marginStart="31dp"
         android:layout_marginTop="1dp"
-        android:layout_toRightOf="@id/sortName"
+        android:layout_toEndOf="@id/sortName"
         android:fontFamily="@font/noto_sans_bold"
-        android:text="Distance"
-        android:textColor="@color/white" />
+        android:text="@string/distance"
+        android:textColor="@color/white"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
         android:id="@+id/sortName"
@@ -94,12 +91,13 @@
         android:layout_height="48dp"
         android:layout_alignWithParentIfMissing="false"
         android:layout_below="@id/searchbar"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
-        android:layout_toRightOf="@id/sortBy"
+        android:layout_toEndOf="@id/sortBy"
         android:fontFamily="@font/noto_sans_bold"
-        android:text="Name"
-        android:textColor="@color/white" />
+        android:text="@string/name"
+        android:textColor="@color/white"
+        tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabListMap"
@@ -119,13 +117,13 @@
             android:id="@+id/tabList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LIST" />
+            android:text="@string/list" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MAP" />
+            android:text="@string/map" />
 
     </com.google.android.material.tabs.TabLayout>
 
