@@ -38,5 +38,47 @@
         android:contentDescription="@string/info_button"
         android:scaleType="center" />
 
+    <TextView
+        android:id="@+id/aboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoButton"
+        android:layout_marginTop="10dp"
+        android:text="@string/AboutTitle"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/aboutText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutTitle"
+        android:padding="2dp"
+        android:text="@string/About_text"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Title and Lorem for 'creditsText' -->
+    <TextView
+        android:id="@+id/creditsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutText"
+        android:padding="5dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/CreditsTitle"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/creditsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/creditsTitle"
+        android:padding="5dp"
+        android:text="@string/Credits_text"
+        android:layout_marginBottom="16dp"/>
+
 
 </RelativeLayout>

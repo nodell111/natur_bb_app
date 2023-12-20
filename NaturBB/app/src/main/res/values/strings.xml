@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">NaturBB</string>
+    <string name="list">LIST</string>
+    <string name="map">MAP</string>
+    <string name="info_button">Info Button</string>
+    <string name="logo">Logo</string>
+    <string name="sort_by">Sort By</string>
+    <string name="name">Name</string>
+    <string name="distance">Distance</string>
+
+    <string name="AboutTitle">About the App</string>
+
+    <string name="About_text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </string>
+
+    <string name="CreditsTitle">Credits</string>
+
+    <string name="Credits_text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </string>
+
 </resources>
