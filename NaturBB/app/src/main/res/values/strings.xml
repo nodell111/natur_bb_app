@@ -7,5 +7,7 @@
     <string name="sort_by">Sort By</string>
     <string name="name">Name</string>
     <string name="distance">Distance</string>
+    <string name="size">Size</string>
+
 
 </resources>

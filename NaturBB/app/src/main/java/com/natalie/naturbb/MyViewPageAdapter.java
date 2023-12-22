@@ -21,9 +21,9 @@ public class MyViewPageAdapter extends FragmentStateAdapter {
             case 0:
                 return new listfragment();
             case 1:
-                return new testFragment();
+                return new MapsFragment();
             default:
-                return new listfragment();
+                return new MapsFragment();
         }
     }
 

@@ -38,18 +38,18 @@
         android:contentDescription="@string/info_button"
         android:scaleType="center" />
 
-    <SearchView
+    <android.widget.SearchView
         android:id="@+id/searchbar"
-        android:layout_width="374dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:layout_centerInParent="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/border"
-        android:contextClickable="false"
+        android:contextClickable="true"
         android:iconifiedByDefault="false"
         android:outlineProvider="none"
         android:queryBackground="@null"
@@ -57,12 +57,12 @@
 
     <TextView
         android:id="@+id/sortBy"
-        android:layout_width="84dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_below="@id/searchbar"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
-        android:fontFamily="@font/noto_sans_bold"
+        android:fontFamily="@font/averiaseriflibre_bold"
         android:gravity="center"
         android:text="@string/sort_by"
         android:textAlignment="center"
@@ -80,8 +80,11 @@
         android:layout_marginStart="31dp"
         android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/sortName"
-        android:fontFamily="@font/noto_sans_bold"
-        android:text="@string/distance"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:textSize="16sp"
+        android:switchMinWidth="50dp"
+        android:switchPadding="5dp"
+        android:text="@string/size"
         android:textColor="@color/white"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -94,10 +97,14 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/sortBy"
-        android:fontFamily="@font/noto_sans_bold"
+        android:checked="true"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:textSize="16sp"
+        android:switchMinWidth="50dp"
+        android:switchPadding="5dp"
         android:text="@string/name"
         android:textColor="@color/white"
-        tools:ignore="UseSwitchCompatOrMaterialXml"/>
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabListMap"
@@ -107,11 +114,14 @@
         android:layout_marginTop="10dp"
         android:background="@color/mid_green"
         app:tabBackground="@color/mid_green"
-        app:tabIndicatorColor="@color/dark_green"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/light_green"
         app:tabIndicatorFullWidth="true"
-        app:tabIndicatorHeight="5dp"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:tabTextColor="@color/white">
+        app:tabIndicatorHeight="7dp"
+        app:tabMaxWidth="0dp"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="@color/gray">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabList"
@@ -127,13 +137,12 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <ListView
-        android:id="@+id/parkList"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabListMap"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabListMap"/>
+
 
 
 </RelativeLayout>
