@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment_BottomTab_fav">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!-- For example, a ScrollView containing your main content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomToolbar">
+
+        <!-- Your main content -->
+
+    </ScrollView>
+
+    <!-- Bottom Toolbar -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/bottomToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_green"
+        app:tabBackground="@color/dark_green"
+        app:tabIndicatorColor="@color/mid_green"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="5dp"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:tabTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parks" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorites" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+</RelativeLayout>
