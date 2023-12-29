@@ -71,40 +71,55 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <Switch
-        android:id="@+id/sortDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_below="@id/searchbar"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="1dp"
-        android:layout_toEndOf="@id/sortName"
-        android:fontFamily="@font/averiaseriflibre_regular"
-        android:textSize="16sp"
-        android:switchMinWidth="50dp"
-        android:switchPadding="5dp"
-        android:text="@string/size"
-        android:textColor="@color/white"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-    <Switch
-        android:id="@+id/sortName"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignWithParentIfMissing="false"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_below="@id/searchbar"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/sortBy"
-        android:checked="true"
-        android:fontFamily="@font/averiaseriflibre_regular"
-        android:textSize="16sp"
-        android:switchMinWidth="50dp"
-        android:switchPadding="5dp"
-        android:text="@string/name"
-        android:textColor="@color/white"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/sortName"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="1dp"
+            android:checked="true"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:showText="false"
+            android:splitTrack="false"
+            android:switchMinWidth="50dp"
+            android:switchPadding="5dp"
+            android:text="@string/name"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Switch
+            android:id="@+id/sortSize"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:switchMinWidth="50dp"
+            android:switchPadding="5dp"
+            android:text="@string/size"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </RadioGroup>
+
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabListMap"

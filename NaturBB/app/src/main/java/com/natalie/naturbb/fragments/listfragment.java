@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -14,6 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.CompoundButton;
+import android.widget.ArrayAdapter;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 
 import com.natalie.naturbb.DatabaseHelper;
 import com.natalie.naturbb.MainActivity;
@@ -30,6 +36,9 @@ public class listfragment extends Fragment {
     private Cursor dbCursor;
     private ListView list_view;
     private SearchView searchView;
+    private Switch switchSortSize;
+    private Switch switchSortName;
+
 
 
     @Override
@@ -58,11 +67,14 @@ public class listfragment extends Fragment {
         list_view.setAdapter(adapter);
         //adapter needs the layout view file and data (the dbCursor points to the data records)
 
-        // Obtain the SearchView from the main activity
+
+        // Use getActivity() to find views in the activity's layout
         searchView = getActivity().findViewById(R.id.searchbar);
+        switchSortSize = getActivity().findViewById(R.id.sortSize);
+        switchSortName = getActivity().findViewById(R.id.sortName);
 
         setupSearchView();
-
+        setupSwitchGroup();
         return view;
     }
 
@@ -70,7 +82,10 @@ public class listfragment extends Fragment {
         int length = cursor.getCount();
         cursor.moveToFirst();
         Spanned[] html_array = new Spanned[length];
+        String[] image_names = new String[length]; // New array for image names
         int index_name = cursor.getColumnIndex("region");
+        int image_name = cursor.getColumnIndex("image_name");
+
 //        int index_name_en = cursor.getColumnIndex("region_en");
 //        for (int i = 0; i < length; i++) {
 //            html_array[i] = Html.fromHtml(cursor.getString(index_name) + "<br><i>" + cursor.getString(index_name_en) + "</i>");
@@ -79,11 +94,31 @@ public class listfragment extends Fragment {
 
         for (int i = 0; i < length; i++) {
             html_array[i] = Html.fromHtml(cursor.getString(index_name));
+            image_names[i] = cursor.getString(image_name);
             cursor.moveToNext();
         }
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getActivity(), R.layout.list_item, html_array);
-        //list_item is layout for each park in db table
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                getActivity(),
+                R.layout.list_item,
+                //list_item is layout for each park in db table
+                R.id.textViewItem,
+                html_array
+        ){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                // Set background drawable dynamically based on image_name
+                String imageName = image_names[position];
+                int resId = getResources().getIdentifier(imageName, "drawable", getActivity().getPackageName());
+                view.setBackgroundResource(resId);
+
+                return view;
+            }
+        };
+
 
         return adapter;
     }
@@ -114,6 +149,60 @@ public class listfragment extends Fragment {
             }
         });
     }
+
+    //when switch for size is checked then sort list by size column
+    private void setupSwitchGroup() {
+        switchSortSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    switchSortName.setChecked(false);
+                    sortListBySize();
+                }
+            }
+        });
+
+        switchSortName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    switchSortSize.setChecked(false);
+                    sortListByName();
+                }
+            }
+        });
+    }
+
+    private void sortListBySize() {
+        if (dbCursor != null) {
+            dbCursor.close();
+        }
+        dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY area_km2 ASC;", null);
+        // Assuming your adapter is named 'adapter'
+//        adapter.clear();
+//        adapter.addAll(createAdapterHtml(dbCursor));
+//        adapter.notifyDataSetChanged();
+        ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+        if (list_view != null) {
+            list_view.setAdapter(adapter);
+        }
+    }
+
+    private void sortListByName() {
+        if (dbCursor != null) {
+            dbCursor.close();
+        }
+        dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region ASC;", null);
+        // Assuming your adapter is named 'adapter'
+//        adapter.clear();
+//        adapter.addAll(createAdapterHtml(dbCursor));
+//        adapter.notifyDataSetChanged();
+        ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+        if (list_view != null) {
+            list_view.setAdapter(adapter);
+        }
+    }
+
 
 
     @Override

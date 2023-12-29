@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     MyViewPageAdapter myViewPageAdapter;
-    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

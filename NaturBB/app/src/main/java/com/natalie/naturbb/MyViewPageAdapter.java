@@ -7,7 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.natalie.naturbb.fragments.MapsFragment;
 import com.natalie.naturbb.fragments.listfragment;
-import com.natalie.naturbb.fragments.testFragment;
 
 public class MyViewPageAdapter extends FragmentStateAdapter {
     public MyViewPageAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -23,7 +22,7 @@ public class MyViewPageAdapter extends FragmentStateAdapter {
             case 1:
                 return new MapsFragment();
             default:
-                return new MapsFragment();
+                return new listfragment();
         }
     }
 

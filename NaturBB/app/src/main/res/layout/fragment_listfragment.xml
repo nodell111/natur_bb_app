@@ -9,7 +9,6 @@
         android:id="@+id/parkList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="3dp"
         android:background="@color/white" />
 
 </RelativeLayout>
