@@ -60,15 +60,17 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_below="@id/searchbar"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginTop="1dp"
         android:fontFamily="@font/averiaseriflibre_bold"
         android:gravity="center"
         android:text="@string/sort_by"
+        android:textAllCaps="false"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textColorLink="#ffdc00"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
 
@@ -84,14 +86,14 @@
             android:id="@+id/sortName"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="1dp"
             android:checked="true"
             android:fontFamily="@font/averiaseriflibre_regular"
             android:showText="false"
             android:splitTrack="false"
-            android:switchMinWidth="50dp"
-            android:switchPadding="5dp"
+            android:switchMinWidth="30dp"
+            android:switchPadding="1dp"
             android:text="@string/name"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -104,11 +106,11 @@
             android:id="@+id/sortSize"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="31dp"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/averiaseriflibre_regular"
-            android:switchMinWidth="50dp"
-            android:switchPadding="5dp"
+            android:switchMinWidth="30dp"
+            android:switchPadding="3dp"
             android:text="@string/size"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -117,9 +119,24 @@
             android:trackTintMode="src_over"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+        <Switch
+            android:id="@+id/sortDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:switchMinWidth="30dp"
+            android:switchPadding="3dp"
+            android:text="@string/distance"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
     </RadioGroup>
-
-
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabListMap"

@@ -1,28 +1,26 @@
 package com.natalie.naturbb.fragments;
 
-import android.database.MatrixCursor;
-import android.location.Location;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
-import android.text.Spanned;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.natalie.naturbb.DatabaseHelper;
 import com.natalie.naturbb.MainActivity;
 import com.natalie.naturbb.R;
@@ -33,7 +31,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class listfragment extends Fragment {
+import android.os.AsyncTask;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class listfragment_dist extends Fragment {
 
     public static DatabaseHelper dbHelper;
     // Declare variables
@@ -43,7 +49,6 @@ public class listfragment extends Fragment {
     private SearchView searchView;
     private Switch switchSortSize;
     private Switch switchSortName;
-
     private Switch switchSortDistance;
 
 
@@ -84,7 +89,6 @@ public class listfragment extends Fragment {
 
         setupSearchView();
         setupSwitchGroup();
-//        setSwitchSortDistance();
         return view;
     }
 
@@ -190,7 +194,7 @@ public class listfragment extends Fragment {
                 if (isChecked) {
                     switchSortSize.setChecked(false);
                     switchSortName.setChecked(false);
-//                    sortListByDistance();
+                    sortListByDistance();
                 }
             }
         });
@@ -220,8 +224,133 @@ public class listfragment extends Fragment {
         }
     }
 
+
     //need to create another function that sorts the list by GPS distance
     //to distance to latlng in database col 4 and 5
+
+    private void sortListByDistance() {
+        if (dbCursor != null) {
+            dbCursor.close();
+        }
+        dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
+
+        // Retrieve user location from MainActivity
+        Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
+
+        // Check if userLocation is not null
+        if (userLocation != null) {
+
+            // List to store ParkDistance objects
+            List<ParkDistance> parkDistances = new ArrayList<>();
+
+            // AsyncTask to handle API request in the background
+            AsyncTask.execute(() -> {
+                try {
+                    while (dbCursor.moveToNext()) {
+                        double parkLat = dbCursor.getDouble(4);
+                        double parkLng = dbCursor.getDouble(5);
+
+                        Log.d("ParkCoordinates", "Park Lat: " + parkLat + ", Park Lng: " + parkLng);
+
+                        // Make API request to get distance matrix
+                        String apiKey = "AIzaSyCFbT2GLzWBitk4BRiIglO-2SHU93cziUw";
+                        String apiUrl = "https://maps.googleapis.com/maps/api/distancematrix/json" +
+                                "?origins=" + userLocation.getLatitude() + "," + userLocation.getLongitude() +
+                                "&destinations=" + parkLat + "," + parkLng +
+                                "&key=" + apiKey;
+
+                        OkHttpClient client = new OkHttpClient();
+                        Request request = new Request.Builder().url(apiUrl).build();
+                        Response response = client.newCall(request).execute();
+
+                        if (response.isSuccessful()) {
+                            String jsonResponse = response.body().string();
+                            JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+
+                            // Parse the distance from the API response
+                            JsonArray rows = jsonObject.getAsJsonArray("rows");
+
+                            if (rows.size() > 0) {
+                                JsonArray elements = rows.get(0).getAsJsonObject().getAsJsonArray("elements");
+                                if (elements.size() > 0) {
+                                    float apiDistance = elements.get(0).getAsJsonObject().getAsJsonObject("distance").get("value").getAsFloat();
+
+                                    // Create a ParkDistance object to store park information and distance
+                                    ParkDistance parkDistance = new ParkDistance(
+                                            dbCursor.getString(0),  // Park name or other identifier
+                                            apiDistance);
+
+                                    parkDistances.add(parkDistance);
+                                } else {
+                                    // Handle the case where elements array is empty
+                                    Log.e("sortListByDistance", "Elements array is empty");
+                                }
+                            } else {
+                                // Handle the case where rows array is empty
+                                Log.e("sortListByDistance", "Rows array is empty");
+                            }
+
+                        }
+                    }
+
+                    // Inside the AsyncTask, after the while loop
+                    Log.d("AsyncTask", "Number of parkDistances: " + parkDistances.size());
+
+                    // Before sorting the list
+                    Log.d("AsyncTask", "Before sorting: " + parkDistances);
+
+                    // Sort the list based on distance
+                    Collections.sort(parkDistances, Comparator.comparing(ParkDistance::getDistance));
+                    Log.d("AsyncTask", "After sorting: " + parkDistances);
+
+                    // Create a list of park names in the sorted order
+                    List<String> sortedParkNames = new ArrayList<>();
+                    for (ParkDistance parkDistance : parkDistances) {
+                        sortedParkNames.add(parkDistance.getParkName());
+                    }
+
+                    // Query the database with the sorted list of park names
+                    String whereClause = "region IN (" + TextUtils.join(",", Collections.nCopies(sortedParkNames.size(), "?")) + ")";
+                    String[] whereArgs = sortedParkNames.toArray(new String[0]);
+                    dbCursor = database.query("natur_table_park", null, whereClause, whereArgs, null, null, null);
+
+                    // Create an adapter with the new dbCursor
+                    ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+
+                    // Update UI on the main thread
+                    requireActivity().runOnUiThread(() -> {
+                        if (list_view != null) {
+                            list_view.setAdapter(adapter);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            Log.e("sortListByDistance", "User location is null.");
+        }
+    }
+
+    public class ParkDistance {
+        private final String parkName;
+        private final float distance;
+
+        public ParkDistance(String parkName, float distance) {
+            this.parkName = parkName;
+            this.distance = distance;
+        }
+
+        public String getParkName() {
+            return parkName;
+        }
+
+        public float getDistance() {
+            return distance;
+        }
+    }
+
 
 
     @Override
