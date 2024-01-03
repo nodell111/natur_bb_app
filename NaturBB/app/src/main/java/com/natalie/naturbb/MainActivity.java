@@ -8,7 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class MainActivity extends AppCompatActivity {
+import android.net.Uri;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+
+
+public class MainActivity extends AppCompatActivity
+{
 
     ImageButton info_Button;
 
