@@ -1,5 +1,6 @@
 package com.natalie.naturbb.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -32,9 +34,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.os.AsyncTask;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,7 +54,6 @@ public class listfragment_dist extends Fragment {
     private Switch switchSortSize;
     private Switch switchSortName;
     private Switch switchSortDistance;
-
 
 
     @Override
@@ -79,6 +82,16 @@ public class listfragment_dist extends Fragment {
         list_view.setAdapter(adapter);
         //adapter needs the layout view file and data (the dbCursor points to the data records)
 
+        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dbCursor.moveToPosition(position);
+                String park_name = dbCursor.getString(0);
+                String park_image = dbCursor.getString(3);
+                showListBottomSheetFragment(park_name, park_image);
+
+            }
+        });
 
         // Use getActivity() to find views in the activity's layout
         searchView = getActivity().findViewById(R.id.searchbar);
@@ -91,6 +104,7 @@ public class listfragment_dist extends Fragment {
         setupSwitchGroup();
         return view;
     }
+
 
     private ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         int length = cursor.getCount();
@@ -115,10 +129,9 @@ public class listfragment_dist extends Fragment {
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                 getActivity(),
                 R.layout.list_item,
-                //list_item is layout for each park in db table
                 R.id.textViewItem,
                 html_array
-        ){
+        ) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -136,6 +149,19 @@ public class listfragment_dist extends Fragment {
 
         return adapter;
     }
+
+    private void showListBottomSheetFragment(String parkName, String parkImage) {
+        ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
+
+        // Pass data to the fragment using a bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("park_name", parkName);
+        bundle.putString("park_image", parkImage);
+        bottomSheetFragment.setArguments(bundle);
+
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+    }
+
 
     private void setupSearchView() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -225,9 +251,6 @@ public class listfragment_dist extends Fragment {
     }
 
 
-    //need to create another function that sorts the list by GPS distance
-    //to distance to latlng in database col 4 and 5
-
     private void sortListByDistance() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -311,8 +334,21 @@ public class listfragment_dist extends Fragment {
 
                     // Query the database with the sorted list of park names
                     String whereClause = "region IN (" + TextUtils.join(",", Collections.nCopies(sortedParkNames.size(), "?")) + ")";
-                    String[] whereArgs = sortedParkNames.toArray(new String[0]);
-                    dbCursor = database.query("natur_table_park", null, whereClause, whereArgs, null, null, null);
+                    String[] whereArgs = sortedParkNames.toArray(new String[sortedParkNames.size()]);
+                    String orderByClause = "CASE region " + buildOrderByClause(sortedParkNames) + " END";
+
+
+                    // Query the database with the sorted list of park names and apply ordering
+                    dbCursor = database.query(
+                            "natur_table_park",
+                            null,
+                            whereClause,
+                            whereArgs,
+                            null,
+                            null,
+                            orderByClause
+                    );
+
 
                     // Create an adapter with the new dbCursor
                     ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
@@ -333,6 +369,15 @@ public class listfragment_dist extends Fragment {
         }
     }
 
+    // Helper method to build the CASE statement for ordering
+    private String buildOrderByClause(List<String> sortedParkNames) {
+        StringBuilder orderByClause = new StringBuilder();
+        for (int i = 0; i < sortedParkNames.size(); i++) {
+            orderByClause.append(" WHEN '").append(sortedParkNames.get(i)).append("' THEN ").append(i);
+        }
+        return orderByClause.toString();
+    }
+
     public class ParkDistance {
         private final String parkName;
         private final float distance;
@@ -351,6 +396,8 @@ public class listfragment_dist extends Fragment {
         }
     }
 
+    //create intent for list item onclick -> show bottom dialog fragment/popup
+    //button in dialog to show park on map -> zooms to park
 
 
     @Override

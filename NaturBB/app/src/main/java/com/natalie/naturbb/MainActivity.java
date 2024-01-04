@@ -2,6 +2,7 @@ package com.natalie.naturbb;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager2.widget.ViewPager2;
@@ -62,21 +63,19 @@ public class MainActivity extends AppCompatActivity {
         //listener will be informed by manager when each new position is located
         LocationListener locationListener = new LocationListener() {
 
-            public void onLocationChanged(Location location) {
-                if (location != null) {
-                    // Update userLocation when location changes and store as variable
-                    userLocation = location;
+            public void onLocationChanged(@NonNull Location location) {
+                // Update userLocation when location changes and store as variable
+                userLocation = location;
 
-                }
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
             }
 
-            public void onProviderEnabled(String provider) {
+            public void onProviderEnabled(@NonNull String provider) {
             }
 
-            public void onProviderDisabled(String provider) {
+            public void onProviderDisabled(@NonNull String provider) {
             }
 
 
@@ -124,4 +123,8 @@ public class MainActivity extends AppCompatActivity {
     public Location getUserLocation() {
         return userLocation;
     }
+
+
+
 }
+

@@ -176,5 +176,4 @@
         android:layout_below="@id/tabListMap"/>
 
 
-
 </RelativeLayout>
