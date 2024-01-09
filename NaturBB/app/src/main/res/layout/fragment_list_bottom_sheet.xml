@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginTop="100dp"
     tools:context=".fragments.ListBottomSheetFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -25,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/averiaseriflibre_regular"
+                android:freezesText="true"
                 android:padding="15dp"
                 android:textColor="@color/white"
                 android:textSize="24sp">
@@ -54,7 +57,8 @@
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button"
+                android:id="@+id/button_start_map"
+                android:onClick="onClickStartMap"
                 android:layout_width="249dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

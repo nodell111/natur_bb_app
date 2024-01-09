@@ -8,7 +8,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
             viewPager2 = findViewById(R.id.view_pager);
             myViewPageAdapter = new MyViewPageAdapter(this);
             viewPager2.setAdapter(myViewPageAdapter);
+
+            viewPager2.setUserInputEnabled(false);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -99,13 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (fineLocationGranted != null && fineLocationGranted) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+
                         return;
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
@@ -123,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             locationPermissionRequest.launch(PERMISSIONS);
         }
     }
+
 
     // Getter method to access userLocation from other components (like fragments)
     public Location getUserLocation() {

@@ -88,6 +88,9 @@ public class listfragment_dist extends Fragment {
                 dbCursor.moveToPosition(position);
                 String park_name = dbCursor.getString(0);
                 String park_image = dbCursor.getString(3);
+                //after getting park_name and park_image from db
+                //we can run this function to show bottom sheet dialog
+                //scroll down until you see this function to edit
                 showListBottomSheetFragment(park_name, park_image);
 
             }
@@ -402,12 +405,12 @@ public class listfragment_dist extends Fragment {
 
     @Override
     public void onDestroy() {
-        // Close database in onDestroy method
-        if (dbHelper != null) {
-            dbHelper.close();
+        if (dbCursor != null && !dbCursor.isClosed()) {
+            dbCursor.close();
         }
         super.onDestroy();
     }
+
 
 
 }

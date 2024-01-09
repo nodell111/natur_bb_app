@@ -32,13 +32,13 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="40dp"
         android:backgroundTint="@color/dark_green"
-        android:fontFamily="@font/averia_serif_libre_light"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:strokeColor="#FFFFFF"
         android:text="FIND A PARK"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="50sp"
         android:textStyle="bold"
-        android:typeface="serif"
-        android:strokeColor="#FFFFFF" />
+        android:typeface="serif" />
 
     <ImageButton
         android:id="@+id/infoButton"
