@@ -6,20 +6,22 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="5dp"
     android:layout_marginTop="100dp"
+    android:focusable="auto"
+    android:focusableInTouchMode="true"
     tools:context=".fragments.ListBottomSheetFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="true"
         android:background="@android:color/transparent"
+        android:clipToPadding="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/border_green"
+            android:orientation="vertical"
             android:paddingBottom="15dp">
 
             <TextView
@@ -30,8 +32,7 @@
                 android:freezesText="true"
                 android:padding="15dp"
                 android:textColor="@color/white"
-                android:textSize="24sp">
-            </TextView>
+                android:textSize="24sp"></TextView>
 
             <ImageView
                 android:id="@+id/listBottomSheet_image"
@@ -39,8 +40,7 @@
                 android:layout_height="135dp"
                 android:contentDescription="picture of naturpark barnim"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/natur_barnim">
-            </ImageView>
+                app:srcCompat="@drawable/natur_barnim"></ImageView>
 
             <TextView
                 android:id="@+id/listBottomSheet_description"
@@ -52,19 +52,18 @@
                 android:padding="15dp"
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
-                android:textSize="16sp">
-            </TextView>
+                android:textSize="16sp"></TextView>
 
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_start_map"
-                android:onClick="onClickStartMap"
                 android:layout_width="249dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/button_green"
                 android:backgroundTint="@color/dark_green"
                 android:fontFamily="@font/averiaseriflibre_bold"
+                android:onClick="onClickStartMap"
                 android:text="VIEW PARK MAP"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

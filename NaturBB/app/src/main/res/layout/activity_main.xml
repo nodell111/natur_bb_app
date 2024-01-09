@@ -173,12 +173,16 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabListMap"/>
+        android:layout_below="@id/tabListMap"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mapsdetail_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_below="@id/infoButton" />
 
 

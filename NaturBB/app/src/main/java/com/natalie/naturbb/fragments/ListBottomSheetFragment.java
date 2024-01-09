@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -24,6 +25,8 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
 
     private String parkName;
     private String parkImage;
+
+    private SearchView searchView;
 
     //add more variables as needed for additional arguments
 
@@ -48,6 +51,8 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_bottom_sheet, container, false);
+
+        searchView = getActivity().findViewById(R.id.searchbar);
 
         // Set the title and description based on parkName
         TextView titleTextView = view.findViewById(R.id.listBottomSheet_title);
@@ -75,6 +80,8 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+        searchView.clearFocus();
+
         return view;
     }
 
@@ -94,14 +101,6 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     public void onClickStartMap() {
-        // Create an instance of the fragment you want to show
-        MapsDetailFragment mapsDetailFragment = new MapsDetailFragment();
-
-        // Use a FragmentTransaction to replace the current fragment with the new one
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mapsdetail_view, mapsDetailFragment); // R.id.fragment_container is the ID of the container where you want to place the fragment
-        transaction.addToBackStack(null); // Optional: This allows users to navigate back to the previous fragment
-        transaction.commit();
 
         // Set the visibility of relevant views to GONE
         TextView titleTextView = requireView().findViewById(R.id.listBottomSheet_title);
@@ -112,6 +111,16 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         descriptionTextView.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE);
         startMapButton.setVisibility(View.GONE);
+
+        // Create an instance of the fragment you want to show
+        MapsDetailFragment mapsDetailFragment = new MapsDetailFragment();
+
+        // Use a FragmentTransaction to replace the current fragment with the new one
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.mapsdetail_view, mapsDetailFragment); // R.id.fragment_container is the ID of the container where you want to place the fragment
+        transaction.addToBackStack(null); // Optional: This allows users to navigate back to the previous fragment
+        transaction.commit();
+
     }
 
 }

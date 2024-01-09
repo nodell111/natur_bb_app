@@ -163,6 +163,9 @@ public class listfragment_dist extends Fragment {
         bottomSheetFragment.setArguments(bundle);
 
         bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+
+        searchView.clearFocus();
+
     }
 
 
@@ -170,7 +173,8 @@ public class listfragment_dist extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Handle the query submission if needed
+
+                searchView.clearFocus();
                 return false;
             }
 
@@ -191,6 +195,8 @@ public class listfragment_dist extends Fragment {
                 return true;
             }
         });
+
+
     }
 
     //when switch for size is checked then sort list by size column
