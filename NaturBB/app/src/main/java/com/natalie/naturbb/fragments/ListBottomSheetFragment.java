@@ -25,6 +25,8 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
 
     private String parkName;
     private String parkImage;
+    private String description;
+    private String info;
 
     private SearchView searchView;
 
@@ -43,7 +45,9 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         if (args != null) {
             parkName = args.getString("park_name", "");
             parkImage = args.getString("park_image", "");
-            //add more arguments here from listfragment_dist as needed
+            description = args.getString("description", "");
+            info = args.getString("info", "");
+
         }
     }
 
@@ -57,14 +61,11 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         // Set the title and description based on parkName
         TextView titleTextView = view.findViewById(R.id.listBottomSheet_title);
         TextView descriptionTextView = view.findViewById(R.id.listBottomSheet_description);
+        TextView infoTextView = view.findViewById(R.id.listBottomSheet_info);
 
         titleTextView.setText(parkName);
-        descriptionTextView.setText(Html.fromHtml(
-                "Description<br>"
-                + "Highlights: <br>" +
-                "Opening Hours: <br>" +
-                "Info:"
-                , Html.FROM_HTML_MODE_COMPACT));
+        descriptionTextView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+        infoTextView.setText(Html.fromHtml(info, Html.FROM_HTML_MODE_COMPACT));
 
 
         // Update the ImageView based on parkImage
