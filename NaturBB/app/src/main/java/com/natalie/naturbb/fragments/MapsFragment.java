@@ -249,7 +249,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 //            polyStyle.setFillColor(Color.GREEN);
 //            polyStyle.setStrokeColor(Color.RED);
 //            polyStyle.setStrokeWidth(4f);
-/
 //            layer.addLayerToMap();
 //            LatLngBounds.Builder builder = LatLngBounds.builder();
 
