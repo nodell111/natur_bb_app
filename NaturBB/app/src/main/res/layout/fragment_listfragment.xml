@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="auto"
+    android:focusableInTouchMode="true"
     tools:context=".fragments.listfragment">
 
     <ListView

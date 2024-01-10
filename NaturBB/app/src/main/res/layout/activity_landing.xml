@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:textAlignment="center">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/dark_green"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="232dp"
+        android:layout_height="43dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/natur_brandenburg" />
+
+    <Button
+        android:id="@+id/mapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/dark_green"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:strokeColor="#FFFFFF"
+        android:text="FIND A PARK"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <ImageButton
+        android:id="@+id/infoButton"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:drawable/ic_menu_info_details"
+        android:contentDescription="@string/info_button"
+        android:scaleType="center" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="440dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="205dp"
+        android:src="@drawable/mainbg" />
+
+
+
+</RelativeLayout>

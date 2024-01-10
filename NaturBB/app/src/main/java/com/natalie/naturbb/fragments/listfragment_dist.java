@@ -88,6 +88,9 @@ public class listfragment_dist extends Fragment {
                 dbCursor.moveToPosition(position);
                 String park_name = dbCursor.getString(0);
                 String park_image = dbCursor.getString(3);
+                //after getting park_name and park_image from db
+                //we can run this function to show bottom sheet dialog
+                //scroll down until you see this function to edit
                 showListBottomSheetFragment(park_name, park_image);
 
             }
@@ -153,21 +156,86 @@ public class listfragment_dist extends Fragment {
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
+        String description = getDescriptionFromDatabase(parkName);
+
+        String info = getInfoFromDatabase(parkName);
+
         // Pass data to the fragment using a bundle
         Bundle bundle = new Bundle();
         bundle.putString("park_name", parkName);
         bundle.putString("park_image", parkImage);
+        bundle.putString("description", description);
+        bundle.putString("info", info);
         bottomSheetFragment.setArguments(bundle);
 
         bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+
+        searchView.clearFocus();
+
     }
+
+    private String getInfoFromDatabase(String parkName) {
+        String info = "";
+        Cursor cursor = database.rawQuery(
+                "SELECT info FROM natur_table_park WHERE region = ?",
+                new String[]{parkName}
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("info");
+                if (columnIndex != -1) {
+                    info = cursor.getString(columnIndex);
+                } else {
+                    Log.e("getInfoFromDatabase", "Column 'info' not found in the cursor.");
+                }
+            } else {
+                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return info;
+    }
+
+
+    private String getDescriptionFromDatabase(String parkName) {
+        String description = "";
+        Cursor cursor = database.rawQuery(
+                "SELECT descrip FROM natur_table_park WHERE region = ?",
+                new String[]{parkName}
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("descrip");
+                if (columnIndex != -1) {
+                    description = cursor.getString(columnIndex);
+                } else {
+                    Log.e("getDescriptionFromDatabase", "Column 'descrip' not found in the cursor.");
+                }
+            } else {
+                Log.e("getDescriptionFromDatabase", "Cursor is null or empty.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            return description;
+        }
+        }
 
 
     private void setupSearchView() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Handle the query submission if needed
+
+                searchView.clearFocus();
                 return false;
             }
 
@@ -188,6 +256,8 @@ public class listfragment_dist extends Fragment {
                 return true;
             }
         });
+
+
     }
 
     //when switch for size is checked then sort list by size column
@@ -402,12 +472,12 @@ public class listfragment_dist extends Fragment {
 
     @Override
     public void onDestroy() {
-        // Close database in onDestroy method
-        if (dbHelper != null) {
-            dbHelper.close();
+        if (dbCursor != null && !dbCursor.isClosed()) {
+            dbCursor.close();
         }
         super.onDestroy();
     }
+
 
 
 }
