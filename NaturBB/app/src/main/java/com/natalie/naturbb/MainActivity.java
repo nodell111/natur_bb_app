@@ -36,21 +36,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check if the app is opened for the first time
+        // Check if the app is opened after quitting
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        boolean isFirstTime = settings.getBoolean(FIRST_TIME_KEY, true);
+        boolean isAfterQuit = settings.getBoolean(FIRST_TIME_KEY, true);
 
-        if (isFirstTime) {
-            // If it's the first time, open the LandingActivity
+        if (isAfterQuit) {
+            // If it's opened after quitting, open the LandingActivity
             Intent intent = new Intent(this, LandingActivity.class);
             startActivity(intent);
             finish();
 
-            // Update SharedPreferences to indicate that it's not the first time
+            // Update SharedPreferences to indicate that it's not the first time after quitting
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean(FIRST_TIME_KEY, false);
             editor.apply();
         } else {
+            // Continue with your regular flow
             setContentView(R.layout.activity_main);
 
             tabLayout = findViewById(R.id.tabListMap);
