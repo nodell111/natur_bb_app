@@ -1,6 +1,5 @@
 package com.natalie.naturbb.fragments;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -8,8 +7,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,23 +27,31 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.data.geojson.GeoJsonFeature;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.google.maps.android.data.geojson.GeoJsonMultiPolygon;
+import com.google.maps.android.data.geojson.GeoJsonPolygon;
+import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
 import com.natalie.naturbb.MainActivity;
+import com.natalie.naturbb.Park;
+import com.natalie.naturbb.MapMarkersRenderer;
 import com.natalie.naturbb.R;
 
+import org.json.JSONException;
+import java.io.IOException;
+import java.util.List;
 
-public class MapsFragment extends Fragment implements
-
-        OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
     //    private String intent_extra;
     private SearchView searchView;
-
     private boolean isMarkerAdded = false;
-
 
     public MapsFragment() {
         // Required empty public constructor
@@ -64,7 +74,6 @@ public class MapsFragment extends Fragment implements
         }
 
         mapFragment.getMapAsync(this);
-
 
 //        setupSearchViewMap();
 
@@ -139,8 +148,6 @@ public class MapsFragment extends Fragment implements
 //        }
 //
 //    }
-
-
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -150,13 +157,10 @@ public class MapsFragment extends Fragment implements
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-
         Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
-
 
         if (userLocation != null) {
             LatLng userLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
@@ -167,8 +171,8 @@ public class MapsFragment extends Fragment implements
 //                    .position(userLatLng)
 //                    .title("Your Location"));
 
-            LatLngBounds.Builder builder = LatLngBounds.builder();
-            builder.include(userLatLng);
+//            LatLngBounds.Builder builder = LatLngBounds.builder();
+//            builder.include(userLatLng);
 
             // Move the camera to the user's location
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
@@ -196,9 +200,7 @@ public class MapsFragment extends Fragment implements
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 10));
-
                     return true;
                 }
             });
@@ -243,17 +245,25 @@ public class MapsFragment extends Fragment implements
         LatLngBounds.Builder builder = LatLngBounds.builder();
         // so far empty but then can feed it in the for loop
 
+        ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
+        DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
+        clusterManager.setRenderer(mapRenderer);
+        googleMap.setOnCameraIdleListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+
         for (int i = 0; i < dbCursor.getCount(); i++) {
 
             LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-
-            mMap.addMarker(new MarkerOptions()
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-                                    .position(park_pos)
-                                    .title(dbCursor.getString(0))
-                            //set title at name that has been stored in intent_extra
-//                            .snippet(dbCursor.getString(1))
-                    );
+            Log.d("park pos", park_pos.toString());
+//            mMap.addMarker(new MarkerOptions()
+//                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
+//                                    .position(park_pos)
+//                                    .title(dbCursor.getString(0))
+//                            //set title at name that has been stored in intent_extra
+////                            .snippet(dbCursor.getString(1))
+//                    )
+//                    .setTag(0);
+            clusterManager.addItem(new Park(park_pos, dbCursor.getString(0), dbCursor.getString(1)));
 
             //include bounds of the data record
             builder.include(park_pos);
@@ -262,83 +272,70 @@ public class MapsFragment extends Fragment implements
             dbCursor.moveToNext();
 
         }
-
+        clusterManager.cluster();
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
         //zoom into bounds of all park_pos points
 //    }
-    }
+        GeoJsonLayer layer = null;
+        try {
+            layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
+//            GeoJsonPolygonStyle polyStyle = layer.getDefaultPolygonStyle();
+//            polyStyle.setFillColor(Color.GREEN);
+//            polyStyle.setStrokeColor(Color.RED);
+//            polyStyle.setStrokeWidth(4f);
+//            layer.addLayerToMap();
+//            LatLngBounds.Builder builder = LatLngBounds.builder();
 
 
-    //Filter map when user searches for a park - STILL BUGGY, stops working for list view after
-    //search happens in map view
-    private void setupSearchViewMap() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Handle the query submission if needed
-                return false;
+            for (GeoJsonFeature feature : layer.getFeatures()) {
+                if (feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
+                    Log.d("polygon here", "");
+                    Log.d("tag", feature.getProperty("name"));
+
+                    for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
+                        List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
+                        for (List<LatLng> list : polygonList) {
+                            for (LatLng latLng : list) {
+                                builder.include(latLng);
+                            }
+                        }
+                    }
+
+                    GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
+                    polygonStyle.setFillColor(Color.argb(100, 0, 255, 0));
+                    polygonStyle.setStrokeColor(Color.RED);
+                    feature.setPolygonStyle(polygonStyle);
+
+                }
             }
+            LatLngBounds bounds = builder.build();
+            /**create the camera with bounds and padding to set into map*/
+            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 10);
+            /**call the map call back to know map is loaded or not*/
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    /**set animated zoom camera into map*/
+                    googleMap.animateCamera(cu);
+                }
+            });
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
 
+        GeoJsonLayer finalLayer = layer;
+        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                String keyword = searchView.getQuery().toString();
+            public void onCameraIdle() {
+                clusterManager.onCameraIdle();
 
-                SQLiteDatabase database = listfragment_dist.dbHelper.getDataBase();
-
-                //query everything from table
-                Cursor dbCursor;
-
-                if (TextUtils.isEmpty(keyword)) {
-                    // If the keyword is empty, show all points
-                    dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
+                float zoomLevel = googleMap.getCameraPosition().zoom;
+                Log.d("zoom level", String.valueOf(zoomLevel));
+                if (zoomLevel > 8 && finalLayer != null) {
+                    finalLayer.addLayerToMap();
                 } else {
-                    // If there is a keyword, filter the results
-                    dbCursor = database.rawQuery(
-                            "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
-                            new String[]{"%" + keyword + "%"}
-                    );
+                    finalLayer.removeLayerFromMap();
                 }
-
-                dbCursor.moveToFirst();
-
-                LatLngBounds.Builder builder = LatLngBounds.builder();
-
-                for (int i = 0; i < dbCursor.getCount(); i++) {
-
-
-                    LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-                                            .position(park_pos)
-                                            //position marker at latlng of park_pos
-                                            .title(dbCursor.getString(0))
-                                    //set title at name that has been stored in intent_extra
-//                            .snippet(dbCursor.getString(1))
-                            );
-                            marker.setTag(0);
-
-
-
-                    //include bounds of the data record
-                    builder.include(park_pos);
-
-                    //need to move cursor to next line until the end
-                    dbCursor.moveToNext();
-
-
-                    //zoom into bounds of all park_pos points
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 12));
-
-
-                }
-
-                // Move the camera to show all points
-                if (TextUtils.isEmpty(keyword)) {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
-                }
-
-                return true;
             }
         });
     }
@@ -362,4 +359,65 @@ public class MapsFragment extends Fragment implements
 //
 //        }
 //    }
+
+
+//    //Filter map when user searches for a park - STILL BUGGY, stops working for list view after
+//    //search happens in map view
+//    private void setupSearchViewMap() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // Handle the query submission if needed
+//                return false;
+//                public boolean onQueryTextChange (String newText){
+//                    String keyword = searchView.getQuery().toString();
+//
+//                    SQLiteDatabase database = listfragment_dist.dbHelper.getDataBase();
+//
+//                    //query everything from table
+//                    Cursor dbCursor;
+//
+//                    if (TextUtils.isEmpty(keyword)) {
+//                        // If the keyword is empty, show all points
+//                        dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
+//                    } else {
+//                        // If there is a keyword, filter the results
+//                        dbCursor = database.rawQuery(
+//                                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
+//                                new String[]{"%" + keyword + "%"}
+//                        );
+//                    }
+//                    dbCursor.moveToFirst();
+//                    LatLngBounds.Builder builder = LatLngBounds.builder();
+//
+//                    for (int i = 0; i < dbCursor.getCount(); i++) {
+//                        LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
+//                        Marker marker = mMap.addMarker(new MarkerOptions()
+//                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
+//                                        .position(park_pos)
+//                                        //position marker at latlng of park_pos
+//                                        .title(dbCursor.getString(0))
+//                                //set title at name that has been stored in intent_extra
+////                            .snippet(dbCursor.getString(1))
+//                        );
+//                        marker.setTag(0);
+//                        //include bounds of the data record
+//                        builder.include(park_pos);
+//                        //need to move cursor to next line until the end
+//                        dbCursor.moveToNext();
+//                        //zoom into bounds of all park_pos points
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 12));
+//                    }
+//
+//                    // Move the camera to show all points
+//                    if (TextUtils.isEmpty(keyword)) {
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+//                    }
+//
+//                    return true;
+//                }
+//            }
+//        });
+//    }
+
 }
