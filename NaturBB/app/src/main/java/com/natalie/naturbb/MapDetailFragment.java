@@ -23,9 +23,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.natalie.naturbb.fragments.listfragment_dist;
 
-public class MapsDetailFragment extends Fragment implements OnMapReadyCallback {
+public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
@@ -33,12 +32,12 @@ public class MapsDetailFragment extends Fragment implements OnMapReadyCallback {
     private boolean isMarkerAdded = false;
 
 
-    public MapsDetailFragment() {}
+    public MapDetailFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mapsdetail, container, false);
+        View view = inflater.inflate(R.layout.fragment_mapdetail, container, false);
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -111,7 +110,7 @@ public class MapsDetailFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(requireContext(), "User location not available", Toast.LENGTH_SHORT).show();
         }
 
-        SQLiteDatabase database = listfragment_dist.dbHelper.getDataBase();
+        SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
 
         Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table", null);
 //

@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapsDetailFragment"
+            android:name=".MapDetailFragment"
             android:exported="false" >
         </activity>
 

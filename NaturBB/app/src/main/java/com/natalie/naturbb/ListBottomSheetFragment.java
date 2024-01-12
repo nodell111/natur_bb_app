@@ -1,6 +1,5 @@
-package com.natalie.naturbb.fragments;
+package com.natalie.naturbb;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.Html;
@@ -17,9 +16,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.natalie.naturbb.MainActivity;
-import com.natalie.naturbb.MapsDetailFragment;
-import com.natalie.naturbb.R;
 
 public class ListBottomSheetFragment extends BottomSheetDialogFragment {
 
@@ -106,15 +102,17 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         // Set the visibility of relevant views to GONE
         TextView titleTextView = requireView().findViewById(R.id.listBottomSheet_title);
         TextView descriptionTextView = requireView().findViewById(R.id.listBottomSheet_description);
+        TextView infoTextView = requireView().findViewById(R.id.listBottomSheet_info);
         ImageView imageView = requireView().findViewById(R.id.listBottomSheet_image);
         AppCompatButton startMapButton = requireView().findViewById(R.id.button_start_map);
 
+        infoTextView.setVisibility(View.GONE);
         descriptionTextView.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE);
         startMapButton.setVisibility(View.GONE);
 
         // Create an instance of the fragment you want to show
-        MapsDetailFragment mapsDetailFragment = new MapsDetailFragment();
+        MapDetailFragment mapsDetailFragment = new MapDetailFragment();
 
         // Use a FragmentTransaction to replace the current fragment with the new one
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();

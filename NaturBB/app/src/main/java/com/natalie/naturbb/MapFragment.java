@@ -1,9 +1,8 @@
-package com.natalie.naturbb.fragments;
+package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +10,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,16 +34,12 @@ import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonMultiPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
-import com.natalie.naturbb.MainActivity;
-import com.natalie.naturbb.Park;
-import com.natalie.naturbb.MapMarkersRenderer;
-import com.natalie.naturbb.R;
 
 import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -53,7 +47,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private SearchView searchView;
     private boolean isMarkerAdded = false;
 
-    public MapsFragment() {
+    public MapFragment() {
         // Required empty public constructor
     }
 
@@ -61,7 +55,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = getActivity().findViewById(R.id.searchbar);
 
         // Retrieve the value from arguments
@@ -210,8 +204,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(requireContext(), "User location not available", Toast.LENGTH_SHORT).show();
         }
 
-        //Remember to change to listfragment or listfragment_dist when testing sort distance
-        SQLiteDatabase database = listfragment_dist.dbHelper.getDataBase();
+        //Remember to change to listfragment or ListFragment when testing sort distance
+        SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
 
         //app crashes is trying to run Show All maps and Cursor single query at the same time
 //        //if intent_extra is not null, let Cursor query run
@@ -372,7 +366,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 //                public boolean onQueryTextChange (String newText){
 //                    String keyword = searchView.getQuery().toString();
 //
-//                    SQLiteDatabase database = listfragment_dist.dbHelper.getDataBase();
+//                    SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
 //
 //                    //query everything from table
 //                    Cursor dbCursor;

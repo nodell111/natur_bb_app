@@ -1,6 +1,5 @@
-package com.natalie.naturbb.fragments;
+package com.natalie.naturbb;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -23,10 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.natalie.naturbb.DatabaseHelper;
-import com.natalie.naturbb.MainActivity;
-import com.natalie.naturbb.R;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +38,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class listfragment_dist extends Fragment {
+public class ListFragment extends Fragment {
 
     public static DatabaseHelper dbHelper;
     // Declare variables
