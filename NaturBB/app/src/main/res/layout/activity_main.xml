@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/light_green"
     android:textAlignment="center">
-
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,8 +37,153 @@
         android:contentDescription="@string/info_button"
         android:scaleType="center" />
 
+    <android.widget.SearchView
+        android:id="@+id/searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border"
+        android:contextClickable="true"
+        android:iconifiedByDefault="false"
+        android:outlineProvider="none"
+        android:queryBackground="@null"
+        android:queryHint="Search for a park" />
 
-    <!-- Bottom Toolbar -->
+    <TextView
+        android:id="@+id/sortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@id/searchbar"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/averiaseriflibre_bold"
+        android:gravity="center"
+        android:text="@string/sort_by"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textColorLink="#ffdc00"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_below="@id/searchbar"
+        android:layout_toEndOf="@id/sortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/sortName"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="1dp"
+            android:checked="true"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:showText="false"
+            android:splitTrack="false"
+            android:switchMinWidth="30dp"
+            android:switchPadding="1dp"
+            android:text="@string/name"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Switch
+            android:id="@+id/sortSize"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:switchMinWidth="30dp"
+            android:switchPadding="3dp"
+            android:text="@string/size"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Switch
+            android:id="@+id/sortDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:switchMinWidth="30dp"
+            android:switchPadding="3dp"
+            android:text="@string/distance"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_selector"
+            android:trackTint="@color/switch_track_selector"
+            android:trackTintMode="src_over"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </RadioGroup>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabListMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sortBy"
+        android:layout_marginTop="10dp"
+        android:background="@color/mid_green"
+        app:tabBackground="@color/mid_green"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/light_green"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="7dp"
+        app:tabMaxWidth="0dp"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="@color/gray">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/list" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/map" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabListMap"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapsdetail_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_below="@id/infoButton" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -50,10 +195,6 @@
         app:itemIconTint="@color/cream"
         app:labelVisibilityMode="auto"
         android:background="@color/dark_green">
-
-
-
     </com.google.android.material.bottomnavigation.BottomNavigationView>
-
 
 </RelativeLayout>

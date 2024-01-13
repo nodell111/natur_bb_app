@@ -7,25 +7,16 @@
     <string name="sort_by">Sort By</string>
     <string name="name">Name</string>
     <string name="distance">Distance</string>
-
     <string name="AboutTitle">About the App</string>
-
     <string name="About_text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </string>
-
     <string name="CreditsTitle">Credits</string>
-
     <string name="Credits_text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </string>
-
     <string name="parks">Parks</string>
     <string name="favorites">Favorites</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="Home">Home</string>
-
-    <string name="hello_blank_fragment">hello_blank_fragment</string>
-
-
+    <string name="size">Size</string>
 </resources>
