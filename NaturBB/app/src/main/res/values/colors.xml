@@ -6,4 +6,6 @@
     <color name="light_green">#718944</color>
     <color name="mid_green">#5c7826</color>
     <color name="dark_green">#3B5500</color>
+    <color name="cream">#FFFDD0</color>
+    <color name="cream_semi_transparent">#FFFDD0F2</color>
 </resources>

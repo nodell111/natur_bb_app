@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.NaturBB" parent="Base.Theme.NaturBB" />
+
+    <style name="BottomNavigationHighlight" parent="Widget.Design.BottomNavigationView">
+        <item name="android:backgroundTint">@color/cream</item>
+        <item name="android:textColor">@color/cream</item>
+    </style>
 </resources>

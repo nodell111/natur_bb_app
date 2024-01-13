@@ -25,5 +25,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="Home">Home</string>
 
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+
 
 </resources>
