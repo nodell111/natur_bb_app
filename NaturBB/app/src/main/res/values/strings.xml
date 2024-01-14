@@ -9,12 +9,37 @@
     <string name="distance">Distance</string>
     <string name="AboutTitle">About the App</string>
     <string name="About_text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Welcome to Natur Brandenburg, the official mobile application designed to seamlessly complement the information available on the Natur Brandenburg website. Immerse yourself in the beauty of Brandenburg\'s nature parks using our interactive map, providing a convenient way to explore the rich biodiversity and natural wonders this region has to offer./n
     </string>
+    <string name="KeyFeaturesTitle">Key Features</string>
+    <string name="KeyF_text">
+
+        <b>Comprehensive Exploration:</b>
+        Navigate through a wealth of information about various nature parks in Brandenburg.\n
+        \n
+        <b>Efficient Search Functionality:</b>
+        Easily locate parks by name or discover the nearest parks through advanced geolocation.\n
+        \n
+        <b>In-Depth Information:</b>
+        Gain insights into each park\'s distinctive features, available activities, and stunning visuals.
+
+
+    </string>
+    <string name="SourcesTitle">Sources</string>
+    <string name="SourcesText">    In developing this app, we have collaborated with several sources to enhance accuracy and reliability:\n
+    \n
+    <b>Natur Brandenburg Website:</b> Primary data source, offering authentic and up-to-date information about the nature parks in Brandenburg.\n
+    <b>OpenStreetMap:</b> Contributing to precise geolocation services within the app.</string>
     <string name="CreditsTitle">Credits</string>
     <string name="Credits_text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </string>
+    Designed and Developed by:
+    Dilara Bozkurt,
+    Natalie O’Del,
+    Phoebe Li,
+    Yi Zhen Chew </string>
+
+
+
     <string name="parks">Parks</string>
     <string name="favorites">Favorites</string>
     <string name="Home">Home</string>

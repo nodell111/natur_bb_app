@@ -44,11 +44,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/infoButton"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:text="@string/AboutTitle"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textStyle="bold" />
 
 
     <TextView
@@ -57,21 +56,58 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/aboutTitle"
         android:padding="2dp"
-        android:text="@string/About_text"
-        android:layout_marginBottom="16dp"/>
+        android:text="@string/About_text" />
+
+    <TextView
+        android:id="@+id/KeyFeaturesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutText"
+        android:padding="5dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/KeyFeaturesTitle"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/KeyFeaturesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/KeyFeaturesTitle"
+        android:padding="5dp"
+        android:text="@string/KeyF_text" />
+
+    <TextView
+        android:id="@+id/SourcesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/KeyFeaturesText"
+        android:padding="5dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/SourcesTitle"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/SourcesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SourcesTitle"
+        android:padding="5dp"
+        android:text="@string/SourcesText" />
+
 
     <!-- Title and Lorem for 'creditsText' -->
     <TextView
         android:id="@+id/creditsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/aboutText"
+        android:layout_below="@id/SourcesText"
         android:padding="5dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:text="@string/CreditsTitle"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/creditsText"
