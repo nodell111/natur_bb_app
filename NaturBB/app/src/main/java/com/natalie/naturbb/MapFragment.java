@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,11 +40,10 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    //    private String intent_extra;
     private SearchView searchView;
     private boolean isMarkerAdded = false;
 
@@ -58,9 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = getActivity().findViewById(R.id.searchbar);
 
-        // Retrieve the value from arguments
-//        intent_extra = getArguments().getString("name_extra");
-
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
@@ -74,74 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
-    //KEEP THIS CODE FOR PROGRAMMING ONCLICK LIST ITEM THEN EXPLORE FULL PARK MAP
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        mMap.getUiSettings().setZoomControlsEnabled(true);
-//        mMap.setOnMarkerClickListener(this);
-//
-//        SQLiteDatabase database = listfragment.dbHelper.getDataBase();
-//
-//        //app crashes is trying to run Show All maps and Cursor single query at the same time
-//        //if intent_extra is not null, let Cursor query run
-//        if (intent_extra != null) {
-//
-//            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE Name LIKE '"+ intent_extra +"';", null);
-//
-//            dbCursor.moveToFirst();
-//
-//            LatLng park_pos = new LatLng (dbCursor.getDouble(4),dbCursor.getDouble(5));
-//
-//            mMap.addMarker(new MarkerOptions()
-//                    .position(park_pos)
-//                    //position marker at latlng of park_pos
-//                    .title(intent_extra)
-//                    //set title at name that has been stored in intent_extra
-//                    .snippet(dbCursor.getString(1)));
-//            //set snippet as url which is at index 1
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 14));
-//            //zoom into clicked position park_pos
-//        }
-//        // only for when we add all universities to the map
-//        else {
-//            //query everything from table
-//            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
-//
-//            //after the query the cursor is at the bottom
-//            // bring the cursor back to first record because you need to iterate through again
-//            dbCursor.moveToFirst();
-//
-//            LatLngBounds.Builder builder = LatLngBounds.builder();
-//            // so far empty but then can feed it in the for loop
-//
-//            for (int i = 0; i < dbCursor.getCount(); i++) {
-//
-//                LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-//
-//                mMap.addMarker(new MarkerOptions()
-//                                .position(park_pos)
-//                                //position marker at latlng of park_pos
-//                                .title(dbCursor.getString(0))
-//                                //set title at name that has been stored in intent_extra
-//                                .snippet(dbCursor.getString(1)))
-//                        .setTag(0);
-//
-//                //include bounds of the data record
-//                builder.include(park_pos);
-//
-//                //need to move cursor to next line until the end
-//                dbCursor.moveToNext();
-//            }
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),200));
-//            //zoom into bounds of all park_pos points
-//        }
-//
-//    }
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -207,28 +136,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //Remember to change to listfragment or ListFragment when testing sort distance
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
 
-        //app crashes is trying to run Show All maps and Cursor single query at the same time
-//        //if intent_extra is not null, let Cursor query run
-//        if (intent_extra != null) {
-        //            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE Name LIKE '"+ intent_extra +"';", null);
-//
-//            dbCursor.moveToFirst();
-//
-//            LatLng park_pos = new LatLng (dbCursor.getDouble(4),dbCursor.getDouble(5));
-//
-//            mMap.addMarker(new MarkerOptions()
-//                    .position(park_pos)
-//                    //position marker at latlng of park_pos
-//                    .title(intent_extra)
-//                    //set title at name that has been stored in intent_extra
-//                    .snippet(dbCursor.getString(1)));
-//            //set snippet as url which is at index 1
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 14));
-//            //zoom into clicked position park_pos
-//        }
-        // only for when we add all parks to the map
-//        else {
         //query everything from table
         Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
 
@@ -244,6 +151,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         clusterManager.setRenderer(mapRenderer);
         googleMap.setOnCameraIdleListener(clusterManager);
         googleMap.setOnMarkerClickListener(clusterManager);
+        googleMap.setOnInfoWindowClickListener(clusterManager);
 
         for (int i = 0; i < dbCursor.getCount(); i++) {
 
@@ -267,9 +175,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         }
         clusterManager.cluster();
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
         //zoom into bounds of all park_pos points
-//    }
+        // Set the info window click listener
+//
         GeoJsonLayer layer = null;
         try {
             layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
@@ -334,26 +245,141 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        // Get the park name from the marker's title
+        String parkName = getParkNameFromMarker(marker);
 
-//    @Override
-//    //true: NOT centering on the marker;
-//    //false: DOES centering on the marker;
-//    public boolean onMarkerClick(@NonNull Marker marker) {
-//        if (intent_extra != null) {
-//            return false;
-//        } else {
-//
-//            // change count from get tag into integer with (Integer)
-////            Integer clickCount = (Integer) marker.getTag();
-////            clickCount++;
-////            marker.setTag(clickCount);
-////            Toast.makeText(this,marker.getTitle()+" has been clicked " + clickCount + " times.", Toast.LENGTH_SHORT).show();
-//
-//            return true;
-//
-//        }
-//    }
+        // Check if the parkName is not empty
+        if (!TextUtils.isEmpty(parkName)) {
+            // Show the ListBottomSheetFragment with park details
+            showListBottomSheetFragment(parkName); // You need to provide the actual park image
+        } else {
+            // Handle the case where parkName is empty or not available
+            Toast.makeText(requireContext(), "Park name not available", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    // Method to get the park name from the marker's title
+    private String getParkNameFromMarker(Marker marker) {
+        // Check if the marker is not null and has a title
+        if (marker != null && marker.getTitle() != null) {
+            return marker.getTitle();
+        } else {
+            // Return an empty string or handle the case where title is not available
+            return "";
+        }
+    }
+
+    // Method to show the ListBottomSheetFragment with park details
+    private void showListBottomSheetFragment(String parkName) {
+
+        ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
+
+        // Retrieve other details for the park (description, info, etc.)
+        String description = getDescriptionFromDatabase(parkName);
+        String info = getInfoFromDatabase(parkName);
+        String parkImage = getImageFromDatabase(parkName);
+
+        // Pass data to the fragment using a bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("park_name", parkName);
+        bundle.putString("park_image", parkImage);
+        bundle.putString("description", description);
+        bundle.putString("info", info);
+        bottomSheetFragment.setArguments(bundle);
+
+        // Show the bottom sheet fragment
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+
+        // Clear focus from the search view (if needed)
+        searchView.clearFocus();
+    }
+
+    private String getImageFromDatabase(String parkName) {
+        String image = "";
+        SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
+        Cursor cursor = database.rawQuery(
+                "SELECT image_name FROM natur_table_park WHERE region = ?",
+                new String[]{parkName}
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("image_name");
+                if (columnIndex != -1) {
+                    image = cursor.getString(columnIndex);
+                } else {
+                    Log.e("getInfoFromDatabase", "Column 'image_name' not found in the cursor.");
+                }
+            } else {
+                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return image;
+    }
+
+    private String getInfoFromDatabase(String parkName) {
+        String info = "";
+        SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
+        Cursor cursor = database.rawQuery(
+                "SELECT info FROM natur_table_park WHERE region = ?",
+                new String[]{parkName}
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("info");
+                if (columnIndex != -1) {
+                    info = cursor.getString(columnIndex);
+                } else {
+                    Log.e("getInfoFromDatabase", "Column 'info' not found in the cursor.");
+                }
+            } else {
+                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return info;
+    }
+
+
+    private String getDescriptionFromDatabase(String parkName) {
+        String description = "";
+        SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
+        Cursor cursor = database.rawQuery(
+                "SELECT descrip FROM natur_table_park WHERE region = ?",
+                new String[]{parkName}
+        );
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex("descrip");
+                if (columnIndex != -1) {
+                    description = cursor.getString(columnIndex);
+                } else {
+                    Log.e("getDescriptionFromDatabase", "Column 'descrip' not found in the cursor.");
+                }
+            } else {
+                Log.e("getDescriptionFromDatabase", "Cursor is null or empty.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            return description;
+        }
+    }
 
 //    //Filter map when user searches for a park - STILL BUGGY, stops working for list view after
 //    //search happens in map view
