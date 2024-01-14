@@ -8,7 +8,8 @@
     android:background="@color/dark_green"
     android:textAlignment="center">
 
-<fragment     xmlns:tools="http://schemas.android.com/tools"
+
+    <fragment     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="670dp"
     android:id="@+id/fragmentwindow"

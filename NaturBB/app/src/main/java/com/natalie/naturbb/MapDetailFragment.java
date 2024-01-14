@@ -2,6 +2,7 @@ package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -61,8 +62,8 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                     startActivity(intent);
                     return true;
                 } else if (itemId == R.id.action_favorites) {
-                    Intent intent = new Intent(getActivity(), FavoritesFragment.class);  // Replace with the correct activity class
-                    startActivity(intent);
+                    // Replace the fragment with FavoritesFragment
+                    replaceFragment(new FavoritesFragment());
                     return true;
                 }
                 return false;
@@ -70,6 +71,13 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         });
 
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentwindow, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @SuppressLint("MissingPermission")
