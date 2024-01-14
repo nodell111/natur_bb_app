@@ -177,24 +177,12 @@
         android:focusableInTouchMode="true" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mapsdetail_view"
+        android:id="@+id/fragmentContainer_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_below="@id/infoButton" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_menu"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        app:itemTextColor="@color/cream"
-        app:itemIconTint="@color/cream"
-        app:labelVisibilityMode="auto"
-        android:background="@color/dark_green">
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </RelativeLayout>

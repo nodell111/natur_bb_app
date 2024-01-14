@@ -116,7 +116,7 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
 
         // Use a FragmentTransaction to replace the current fragment with the new one
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.mapsdetail_view, mapsDetailFragment); // R.id.fragment_container is the ID of the container where you want to place the fragment
+        transaction.replace(R.id.fragmentContainer_main, mapsDetailFragment); // R.id.fragment_container is the ID of the container where you want to place the fragment
         transaction.addToBackStack(null); // Optional: This allows users to navigate back to the previous fragment
         transaction.commit();
 
