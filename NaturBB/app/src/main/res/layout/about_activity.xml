@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/aboutText"
         android:padding="5dp"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:text="@string/KeyFeaturesTitle"
         android:layout_marginTop="10dp"/>
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/KeyFeaturesText"
         android:padding="5dp"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         android:text="@string/SourcesTitle"
         android:layout_marginTop="10dp"/>
@@ -106,7 +106,7 @@
         android:padding="5dp"
         android:layout_marginTop="10dp"
         android:text="@string/CreditsTitle"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:textStyle="bold" />
 
     <TextView

@@ -32,7 +32,7 @@
     <b>OpenStreetMap:</b> Contributing to precise geolocation services within the app.</string>
     <string name="CreditsTitle">Credits</string>
     <string name="Credits_text">
-    Designed and Developed by:
+    <i>Designed and Developed by:</i>
     Dilara Bozkurt,
     Natalie O’Del,
     Phoebe Li,
