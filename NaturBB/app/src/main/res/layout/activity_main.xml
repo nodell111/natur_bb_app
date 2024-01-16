@@ -183,5 +183,4 @@
         android:focusableInTouchMode="true"
         android:layout_below="@id/infoButton" />
 
-
 </RelativeLayout>
