@@ -2,13 +2,16 @@ package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
@@ -42,12 +46,38 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
-            getChildFragmentManager().beginTransaction().replace(R.id.mapsdetail, mapFragment).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.fragmentwindow, mapFragment).commit();
         }
 
         mapFragment.getMapAsync(this);
 
+
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.action_favorites) {
+                    // Replace the fragment with FavoritesFragment
+                    replaceFragment(new FavoritesFragment());
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentwindow, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @SuppressLint("MissingPermission")

@@ -42,6 +42,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        // Find the ImageButton by its ID
+        info_Button = findViewById(R.id.infoButton);
+
+        info_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+
+            }
+
+
+        });
+
         // Check if the app is opened after quitting
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         boolean isAfterQuit = settings.getBoolean(FIRST_TIME_KEY, true);
