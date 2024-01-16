@@ -14,14 +14,14 @@ public class Park implements ClusterItem {
     private final String mSnippet;
     public Park(LatLng position, String name, String snippet) {
         this.name = name;
-        mPosition = position;
+        this.mPosition = position;
         this.mSnippet = snippet;
     }
 
     @NonNull
     @Override
     public LatLng getPosition() {
-        return mPosition;
+        return this.mPosition;
     }
 
     @Nullable
@@ -33,8 +33,7 @@ public class Park implements ClusterItem {
     @Nullable
     @Override
     public String getSnippet() {
-        Log.d("snippet", this.mSnippet);
-        return null;
+        return this.mSnippet;
     }
 
     @Nullable
