@@ -3,12 +3,15 @@ package com.natalie.naturbb;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,13 +27,18 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
+import java.util.Objects;
+import com.natalie.naturbb.ListFragment;
+
 
 /**
  * Demonstrates heavy customisation of the look of rendered clusters.
  */
 public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
+    private ClusterManager clusterManager;
     public MapMarkersRenderer(Context context, GoogleMap map, ClusterManager<Park> clusterManager) {
         super(context, map, clusterManager);
+        this.clusterManager = clusterManager;
     }
 //        private final IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
 //        private final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
@@ -56,16 +64,20 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
     @Override
     protected void onBeforeClusterItemRendered(@NonNull Park Park, @NonNull MarkerOptions markerOptions) {
         // Draw a single Park - show their profile photo and set the info window to show their name
+        Log.e("call", "on before cluster item rendered");
         markerOptions
                 .icon(getItemIcon(Park))
-                .title(Park.name);
+                .title(Park.name)
+                .snippet(Park.getSnippet());
     }
 
     @Override
     protected void onClusterItemUpdated(@NonNull Park Park, @NonNull Marker marker) {
         // Same implementation as onBeforeClusterItemRendered() (to update cached markers)
+        Log.e("call", "onclusteritem updated");
         marker.setIcon(getItemIcon(Park));
         marker.setTitle(Park.name);
+        marker.setSnippet(Park.getSnippet());
     }
 
     /**
@@ -127,4 +139,5 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
 //            return cluster.getSize() > 1;
 //        }
 }
+
 

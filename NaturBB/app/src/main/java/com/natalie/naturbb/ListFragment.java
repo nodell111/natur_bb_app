@@ -151,9 +151,9 @@ public class ListFragment extends Fragment {
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
-        String description = getDescriptionFromDatabase(parkName);
-
-        String info = getInfoFromDatabase(parkName);
+        GetBottomSheetData getBottomSheetData = new GetBottomSheetData(parkName);
+        String description = getBottomSheetData.description;
+        String info = getBottomSheetData.info;
 
         // Pass data to the fragment using a bundle
         Bundle bundle = new Bundle();
@@ -168,61 +168,6 @@ public class ListFragment extends Fragment {
         searchView.clearFocus();
 
     }
-
-    private String getInfoFromDatabase(String parkName) {
-        String info = "";
-        Cursor cursor = database.rawQuery(
-                "SELECT info FROM natur_table_park WHERE region = ?",
-                new String[]{parkName}
-        );
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("info");
-                if (columnIndex != -1) {
-                    info = cursor.getString(columnIndex);
-                } else {
-                    Log.e("getInfoFromDatabase", "Column 'info' not found in the cursor.");
-                }
-            } else {
-                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return info;
-    }
-
-
-    private String getDescriptionFromDatabase(String parkName) {
-        String description = "";
-        Cursor cursor = database.rawQuery(
-                "SELECT descrip FROM natur_table_park WHERE region = ?",
-                new String[]{parkName}
-        );
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("descrip");
-                if (columnIndex != -1) {
-                    description = cursor.getString(columnIndex);
-                } else {
-                    Log.e("getDescriptionFromDatabase", "Column 'descrip' not found in the cursor.");
-                }
-            } else {
-                Log.e("getDescriptionFromDatabase", "Cursor is null or empty.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            return description;
-        }
-        }
 
 
     private void setupSearchView() {
@@ -472,7 +417,6 @@ public class ListFragment extends Fragment {
         }
         super.onDestroy();
     }
-
 
 
 }

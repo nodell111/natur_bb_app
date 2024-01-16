@@ -112,7 +112,7 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         startMapButton.setVisibility(View.GONE);
 
         // Create an instance of the fragment you want to show
-        MapDetailFragment mapsDetailFragment = new MapDetailFragment();
+        MapDetailFragment mapsDetailFragment = new MapDetailFragment(parkName);
 
         // Use a FragmentTransaction to replace the current fragment with the new one
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
