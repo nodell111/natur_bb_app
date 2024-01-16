@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:textAlignment="center">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/dark_green"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="232dp"
+        android:layout_height="43dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/logo"
+        app:srcCompat="@drawable/natur_brandenburg" />
+
+    <ImageButton
+        android:id="@+id/infoButton"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:drawable/ic_menu_info_details"
+        android:contentDescription="@string/info_button"
+        android:scaleType="center" />
+
+
+    <TextView
+        android:id="@+id/aboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoButton"
+        android:layout_marginTop="12dp"
+        android:text="@string/AboutTitle"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/aboutText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutTitle"
+        android:padding="2dp"
+        android:text="@string/About_text" />
+
+    <TextView
+        android:id="@+id/KeyFeaturesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutText"
+        android:padding="5dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:text="@string/KeyFeaturesTitle"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/KeyFeaturesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/KeyFeaturesTitle"
+        android:padding="5dp"
+        android:text="@string/KeyF_text" />
+
+    <TextView
+        android:id="@+id/SourcesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/KeyFeaturesText"
+        android:padding="5dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:text="@string/SourcesTitle"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/SourcesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SourcesTitle"
+        android:padding="5dp"
+        android:text="@string/SourcesText" />
+
+
+    <!-- Title and Lorem for 'creditsText' -->
+    <TextView
+        android:id="@+id/creditsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SourcesText"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/CreditsTitle"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/creditsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/creditsTitle"
+        android:padding="5dp"
+        android:text="@string/Credits_text"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- For example, a ScrollView containing your main content -->
+
+
+    <!-- Bottom Toolbar -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_menu"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        app:itemTextColor="@color/cream"
+        app:itemIconTint="@color/cream"
+        app:labelVisibilityMode="auto"
+        android:background="@color/dark_green">
+
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+</RelativeLayout>

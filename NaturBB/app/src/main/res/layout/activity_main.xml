@@ -7,7 +7,6 @@
     android:background="@color/light_green"
     android:textAlignment="center">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -184,6 +183,21 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_below="@id/infoButton" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_green"
+        app:itemIconTint="@drawable/selector_bottom_nav"
+        app:itemTextAppearanceActive="@color/light_green"
+        app:itemTextColor="@drawable/selector_bottom_nav_text"
+        app:labelVisibilityMode="auto"
+        android:padding="0dp"
+        app:menu="@menu/bottom_menu"/>
 
 
 </RelativeLayout>

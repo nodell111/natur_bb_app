@@ -1,28 +1,33 @@
 package com.natalie.naturbb;
 
+import androidx.annotation.NonNull;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager2.widget.ViewPager2;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.view.MenuItem;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
-
+    ImageButton info_Button;
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String FIRST_TIME_KEY = "isFirstTime";
 
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
         // Check if the app is opened after quitting
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         boolean isAfterQuit = settings.getBoolean(FIRST_TIME_KEY, true);
@@ -119,6 +125,42 @@ public class MainActivity extends AppCompatActivity {
             };
             locationPermissionRequest.launch(PERMISSIONS);
         }
+
+
+
+        // Find the ImageButton by its ID
+        info_Button = findViewById(R.id.infoButton);
+
+        info_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+
+                    return true;
+                } else if (itemId == R.id.action_favorites) {
+                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
 
@@ -127,3 +169,4 @@ public class MainActivity extends AppCompatActivity {
         return userLocation;
     }
 }
+

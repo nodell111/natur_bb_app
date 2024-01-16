@@ -49,6 +49,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".AboutActivity"
+            android:exported="false" >
+        </activity>
+        <activity
             android:name=".MapDetailFragment"
             android:exported="false" >
         </activity>
