@@ -120,7 +120,6 @@
 
     <!-- For example, a ScrollView containing your main content -->
 
-
     <!-- Bottom Toolbar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

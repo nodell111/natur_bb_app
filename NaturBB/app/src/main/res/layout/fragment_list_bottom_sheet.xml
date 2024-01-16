@@ -32,7 +32,9 @@
                 android:freezesText="true"
                 android:padding="15dp"
                 android:textColor="@color/white"
-                android:textSize="24sp"></TextView>
+                android:textSize="24sp">
+
+            </TextView>
 
             <ImageView
                 android:id="@+id/listBottomSheet_image"
@@ -40,7 +42,9 @@
                 android:layout_height="135dp"
                 android:contentDescription="picture of naturpark barnim"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/natur_barnim"></ImageView>
+                app:srcCompat="@drawable/natur_barnim">
+
+            </ImageView>
 
             <TextView
                 android:id="@+id/listBottomSheet_description"
@@ -52,7 +56,9 @@
                 android:padding="15dp"
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
-                android:textSize="16sp"></TextView>
+                android:textSize="16sp">
+
+            </TextView>
 
             <TextView
                 android:id="@+id/listBottomSheet_info"
@@ -70,9 +76,6 @@
                 android:focusable="true"
                 android:textSize="16sp">
             </TextView>
-
-
-
 
 
             <androidx.appcompat.widget.AppCompatButton
