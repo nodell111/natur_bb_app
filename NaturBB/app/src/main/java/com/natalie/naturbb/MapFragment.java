@@ -98,7 +98,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 //            builder.include(userLatLng);
 
             // Move the camera to the user's location
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
 
             mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
                 public void onMyLocationClick(@NonNull Location location) {
@@ -207,15 +207,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     }
 
                     GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                    polygonStyle.setFillColor(Color.argb(100, 0, 255, 0));
-                    polygonStyle.setStrokeColor(Color.RED);
+                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+                    polygonStyle.setStrokeWidth(7);
                     feature.setPolygonStyle(polygonStyle);
 
                 }
             }
             LatLngBounds bounds = builder.build();
             /**create the camera with bounds and padding to set into map*/
-            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 10);
+            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 150);
             /**call the map call back to know map is loaded or not*/
             googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
