@@ -2,8 +2,10 @@ package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -11,11 +13,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +35,7 @@ import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonMultiPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 
@@ -60,12 +63,38 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
-            getChildFragmentManager().beginTransaction().replace(R.id.mapsdetail, mapFragment).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.fragmentwindow, mapFragment).commit();
         }
 
         mapFragment.getMapAsync(this);
 
+
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.action_favorites) {
+                    // Replace the fragment with FavoritesFragment
+                    replaceFragment(new FavoritesFragment());
+                    return true;
+                }
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentwindow, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @SuppressLint("MissingPermission")
@@ -194,8 +223,9 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                     GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                    polygonStyle.setFillColor(Color.argb(80, 0, 255, 0));
-                    polygonStyle.setStrokeColor(Color.RED);
+                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+                    polygonStyle.setStrokeWidth(9);
                     feature.setPolygonStyle(polygonStyle);
                 } else {
                     GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();

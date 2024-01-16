@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/dark_green"
-        android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
     <ImageView
@@ -177,7 +176,7 @@
         android:focusableInTouchMode="true" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mapsdetail_view"
+        android:id="@+id/fragmentContainer_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"

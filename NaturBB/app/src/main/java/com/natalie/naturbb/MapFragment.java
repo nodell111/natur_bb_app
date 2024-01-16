@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +101,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //            builder.include(userLatLng);
 
             // Move the camera to the user's location
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
 
             mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
                 public void onMyLocationClick(@NonNull Location location) {
@@ -161,9 +162,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                     GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                    polygonStyle.setFillColor(Color.argb(100, 0, 255, 0));
-                    polygonStyle.setStrokeColor(Color.RED);
-                    polygonStyle.setStrokeWidth(2f);
+                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+                    polygonStyle.setStrokeWidth(9);
                     feature.setPolygonStyle(polygonStyle);
                 }
             }
@@ -307,7 +308,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Clear focus from the search view (if needed)
         searchView.clearFocus();
     }
-
-
 
 }

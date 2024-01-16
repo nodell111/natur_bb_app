@@ -57,27 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(intent);
-
-                    return true;
-                } else if (itemId == R.id.action_favorites) {
-                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(intent);
-
-                    return true;
-                }
-                return false;
-            }
-        });
-
         // Check if the app is opened after quitting
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         boolean isAfterQuit = settings.getBoolean(FIRST_TIME_KEY, true);
@@ -161,6 +140,42 @@ public class MainActivity extends AppCompatActivity {
             };
             locationPermissionRequest.launch(PERMISSIONS);
         }
+
+
+
+        // Find the ImageButton by its ID
+        info_Button = findViewById(R.id.infoButton);
+
+        info_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_home) {
+                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+
+                    return true;
+                } else if (itemId == R.id.action_favorites) {
+                    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
 
