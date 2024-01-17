@@ -9,7 +9,7 @@
     <string name="distance">Distance</string>
     <string name="AboutTitle">About the App</string>
     <string name="About_text">
-        Welcome to Natur Brandenburg, the official mobile application designed to seamlessly complement the information available on the Natur Brandenburg website. Immerse yourself in the beauty of Brandenburg\'s nature parks using our interactive map, providing a convenient way to explore the rich biodiversity and natural wonders this region has to offer./n
+        Welcome to Natur Brandenburg, the official mobile application designed to seamlessly complement the information available on the Natur Brandenburg website. Immerse yourself in the beauty of Brandenburg\'s nature parks using our interactive map, providing a convenient way to explore the rich biodiversity and natural wonders this region has to offer.
     </string>
     <string name="KeyFeaturesTitle">Key Features</string>
     <string name="KeyF_text">
@@ -39,9 +39,10 @@
     Yi Zhen Chew </string>
 
 
-
     <string name="parks">Parks</string>
     <string name="favorites">Favorites</string>
     <string name="Home">Home</string>
     <string name="size">Size</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
