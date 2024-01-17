@@ -46,6 +46,9 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private String parkName;
+
+    private Park clickedClusterItem;
+
     SupportMapFragment mapFragment;
 
     private boolean isMarkerAdded = false;
@@ -97,7 +100,7 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         transaction.commit();
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "PotentialBehaviorOverride"})
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -145,7 +148,7 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-//                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 10));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 10));
                     return true;
                 }
             });
@@ -169,8 +172,33 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
             ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
             DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
             clusterManager.setRenderer(mapRenderer);
-            googleMap.setOnCameraIdleListener(clusterManager);
-            googleMap.setOnMarkerClickListener(clusterManager);
+            mMap.setOnCameraIdleListener(clusterManager);
+
+            mMap.setOnInfoWindowClickListener(clusterManager);
+            mMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
+            clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter(getActivity(), clickedClusterItem));
+            mMap.setOnMarkerClickListener(clusterManager);
+
+            clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> {
+//                        Toast.makeText(getActivity(), "Cluster click", Toast.LENGTH_SHORT).show();
+                Log.e("cluster", "clicked");
+                return false;
+            });
+
+            clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
+                clickedClusterItem = item;
+                Log.e("cluster item", item.getSnippet());
+                Log.e("cluster item stored", clickedClusterItem.getSnippet());
+                Log.e("cluster item", "clicked");
+                return false;
+            });
+//
+            clusterManager.setOnClusterItemInfoWindowClickListener((ClusterManager.OnClusterItemInfoWindowClickListener<Park>) clusterItem -> {
+//                Toast.makeText(getContext(), "Clicked info window: " + stringClusterItem.name,
+//                        Toast.LENGTH_SHORT).show();
+
+                showMapBottomSheetFragment(clusterItem.name);
+            });
 
             for (int i = 0; i < dbCursor.getCount(); i++) {
                 String latLngString = dbCursor.getString(5); // Assuming column 5 contains "lat,lng"
@@ -250,5 +278,29 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+
     }
+
+    private void showMapBottomSheetFragment(String poiName) {
+
+        MapBottomSheetFragment bottomSheetFragment = new MapBottomSheetFragment();
+        // Retrieve other details for the poi (description, info, etc.)
+        GetBottomSheetDataMapDetail getBottomSheetDataMapDetail = new GetBottomSheetDataMapDetail(poiName);
+        String description = getBottomSheetDataMapDetail.description;
+        String category = getBottomSheetDataMapDetail.category;
+        String city = getBottomSheetDataMapDetail.city;
+
+        // Pass data to the fragment using a bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("poi_name", poiName);
+        bundle.putString("description", description);
+        bundle.putString("category", category);
+        bundle.putString("city", city);
+        bottomSheetFragment.setArguments(bundle);
+
+        // Show the bottom sheet fragment
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+
+    }
+
 }

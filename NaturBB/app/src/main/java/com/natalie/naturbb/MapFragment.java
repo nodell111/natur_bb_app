@@ -15,8 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -57,6 +58,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        toggleRadioGroupOff();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -308,5 +314,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Clear focus from the search view (if needed)
         searchView.clearFocus();
     }
+
+    private void toggleRadioGroupOff() {
+        Log.d("Toggle", "Toggling radio group off");
+
+        RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
+        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+
+        // Iterate through each child in the RadioGroup
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View child = radioGroup.getChildAt(i);
+
+            // Check if the child is a Switch
+            if (child instanceof Switch) {
+                Switch switchView = (Switch) child;
+                // Set the checked state of the Switch to false
+                switchView.setChecked(false);
+                // Disable switches
+                switchView.setEnabled(false);
+            }
+        }
+
+        // Disable the entire RadioGroup to prevent user interaction
+        radioGroup.setEnabled(false);
+        searchView1.setQueryHint("Sorry, not working for map :(");
+
+    }
+
 
 }

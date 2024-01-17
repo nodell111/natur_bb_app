@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/light_green"
     android:textAlignment="center">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/maintitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/dark_green"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/white"
+        android:text="Natur Brandenburg"
+        android:fontFamily="@font/averiaseriflibre_bold"
+        android:textSize="28sp"
+        android:typeface="serif"/>
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="232dp"
-        android:layout_height="43dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/logo"
-        android:src="@drawable/natur_brandenburg" />
+        android:id="@+id/mainbg"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/maintitle"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="50dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mainbgnew" />
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_below="@id/mainbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:text="Exploring parks"
+        android:fontFamily="@font/averiaseriflibre_bold"
+        android:textSize="28sp"
+        android:typeface="serif"/>
+
 
     <Button
         android:id="@+id/mapButton"
@@ -30,35 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/dark_green"
         android:fontFamily="@font/averiaseriflibre_regular"
-        android:strokeColor="#FFFFFF"
-        android:text="FIND A PARK"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
-
-    <ImageButton
-        android:id="@+id/infoButton"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:drawable/ic_menu_info_details"
-        android:contentDescription="@string/info_button"
-        android:scaleType="center" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="440dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="205dp"
-        android:src="@drawable/mainbg" />
-
-
+        android:paddingHorizontal="80dp"
+        android:paddingVertical="10dp"
+        android:text="Get started"
+        android:textSize="24sp"
+        android:typeface="serif"
+        app:cornerRadius="10dp" />
 
 </RelativeLayout>
