@@ -43,5 +43,7 @@
     <string name="parks">Parks</string>
     <string name="favorites">Favorites</string>
     <string name="Home">Home</string>
+    <string name="about">About</string>
+
     <string name="size">Size</string>
 </resources>
