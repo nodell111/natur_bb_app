@@ -72,23 +72,23 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
 
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_home) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.action_favorites) {
-                    // Replace the fragment with FavoritesFragment
-                    replaceFragment(new FavoritesFragment());
-                    return true;
-                }
-                return false;
-            }
-        });
+//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+//        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                int itemId = item.getItemId();
+//                if (itemId == R.id.action_home) {
+//                    Intent intent = new Intent(getActivity(), MainActivity.class);
+//                    startActivity(intent);
+//                    return true;
+//                } else if (itemId == R.id.action_favorites) {
+//                    // Replace the fragment with FavoritesFragment
+//                    replaceFragment(new FavoritesFragment());
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         return view;
     }
