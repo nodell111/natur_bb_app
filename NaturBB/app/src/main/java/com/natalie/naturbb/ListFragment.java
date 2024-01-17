@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Switch;
 
@@ -50,6 +52,12 @@ public class ListFragment extends Fragment {
     private Switch switchSortName;
     private Switch switchSortDistance;
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        toggleRadioGroupOn();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,11 +120,6 @@ public class ListFragment extends Fragment {
         int index_name = cursor.getColumnIndex("region");
         int image_name = cursor.getColumnIndex("image_name");
 
-//        int index_name_en = cursor.getColumnIndex("region_en");
-//        for (int i = 0; i < length; i++) {
-//            html_array[i] = Html.fromHtml(cursor.getString(index_name) + "<br><i>" + cursor.getString(index_name_en) + "</i>");
-//            cursor.moveToNext();
-//        }
 
         for (int i = 0; i < length; i++) {
             html_array[i] = Html.fromHtml(cursor.getString(index_name));
@@ -138,7 +141,11 @@ public class ListFragment extends Fragment {
                 // Set background drawable dynamically based on image_name
                 String imageName = image_names[position];
                 int resId = getResources().getIdentifier(imageName, "drawable", getActivity().getPackageName());
-                view.setBackgroundResource(resId);
+                // Get reference to the ImageView
+                ImageView imageView = view.findViewById(R.id.imageViewItem);
+
+                // Set the image resource dynamically
+                imageView.setImageResource(resId);
 
                 return view;
             }
@@ -193,6 +200,7 @@ public class ListFragment extends Fragment {
                 if (list_view != null) {
                     list_view.setAdapter(adapter);
                 }
+
                 return true;
             }
         });
@@ -406,6 +414,32 @@ public class ListFragment extends Fragment {
         }
     }
 
+
+    private void toggleRadioGroupOn() {
+        Log.d("Toggle", "Toggling radio group on");
+
+        RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
+        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+
+        // Iterate through each child in the RadioGroup
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View child = radioGroup.getChildAt(i);
+
+            // Check if the child is a Switch
+            if (child instanceof Switch) {
+                Switch switchView = (Switch) child;
+
+                // Enable switches
+                switchView.setEnabled(true);
+            }
+        }
+
+        // Enable the entire RadioGroup to prevent user interaction
+        radioGroup.setEnabled(true);
+        searchView1.setQueryHint("Search for a park");
+
+
+    }
 
     @Override
     public void onDestroy() {
