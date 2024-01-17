@@ -24,7 +24,7 @@
         android:layout_marginStart="-20dp"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/logo"
-        app:srcCompat="@drawable/natur_brandenburg_left" />
+        app:srcCompat="@drawable/natur_brandenburg_final" />
 
 
     <TextView
