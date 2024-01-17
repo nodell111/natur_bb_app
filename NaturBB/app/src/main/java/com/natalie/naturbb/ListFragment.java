@@ -406,9 +406,6 @@ public class ListFragment extends Fragment {
         }
     }
 
-    //create intent for list item onclick -> show bottom dialog fragment/popup
-    //button in dialog to show park on map -> zooms to park
-
 
     @Override
     public void onDestroy() {
