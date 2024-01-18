@@ -10,28 +10,11 @@
     android:background="@color/dark_green"
     android:textAlignment="center">
 
-
     <fragment xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragmentwindow"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
         tools:context=".MapDetailFragment" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/dark_green"
-        app:itemIconTint="@color/cream"
-        app:itemTextColor="@color/cream"
-        app:labelVisibilityMode="auto"
-        app:menu="@menu/bottom_menu">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
 
 </RelativeLayout>
