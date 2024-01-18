@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AppFeaturesPage extends Fragment {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +29,7 @@ public class AppFeaturesPage extends Fragment {
     public AppFeaturesPage() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -55,10 +58,13 @@ public class AppFeaturesPage extends Fragment {
         }
     }
 
+    // Set up the click listener for the email link
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_app_features_page, container, false);
+
     }
 }

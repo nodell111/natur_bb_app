@@ -11,33 +11,69 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
 
     <TextView
         android:id="@+id/AboutIntro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Features"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_marginTop="20dp" />
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:text="Contact us"
+        android:textSize="40dp"
+        android:layout_marginTop ="70dp"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/AboutIntro"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:padding="15dp"
-        android:text="@string/About_text"
+        android:text="Have Suggestions? Shoot an email to us."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:gravity="end"
         tools:layout_below="@id/AboutIntro" />
 
+        <TextView
+            android:id="@+id/contactDeveloperLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Developer"
+            android:textColor="@color/black"
+            android:clickable="true"
+            android:onClick="sendEmail"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:layout_below="@id/textView3"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AboutIntro"
+            android:layout_marginTop="30dp"
+            android:padding="15dp"
+            android:text="Meet us"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:gravity="end"
+            tools:layout_below="@id/contactDeveloperLink" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/AboutIntro"
+            android:layout_marginTop="30dp"
+            android:padding="15dp"
+            android:text="Adress"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:gravity="end"
+            tools:layout_below="@id/textView4" />
     </RelativeLayout>
 
 
