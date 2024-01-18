@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:textAlignment="center">
+    android:gravity="center|center_horizontal"
+    android:textAlignment="center"
+    android:background="@color/cream_background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -26,85 +28,58 @@
         android:contentDescription="@string/logo"
         app:srcCompat="@drawable/natur_brandenburg_final" />
 
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
 
+
+    </FrameLayout>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="169dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        app:srcCompat="@drawable/info_pagefun"
+        android:layout_below="@id/toolbar"/>
     <TextView
         android:id="@+id/aboutTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/imageView3"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp"
         android:layout_marginTop="12dp"
-        android:text="@string/AboutTitle"
+        android:text="General Info:"
+        android:textColorHighlight="@color/cream"
         android:textSize="20sp"
-        android:textStyle="bold" />
-
+        android:textStyle="bold"
+        android:fontFamily="@font/averiaseriflibre_bold"/>
 
     <TextView
-        android:id="@+id/aboutText"
+        android:id="@+id/sourcesAndCreditsLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/aboutTitle"
-        android:padding="2dp"
-        android:text="@string/About_text" />
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:text="Sources and Credits"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/KeyFeaturesTitle"
+        android:id="@+id/appFeaturesLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/aboutText"
+        android:layout_below="@id/sourcesAndCreditsLink"
+        android:layout_centerHorizontal="true"
         android:padding="5dp"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:text="@string/KeyFeaturesTitle"
-        android:layout_marginTop="10dp"/>
+        android:text="Contact us"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/KeyFeaturesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/KeyFeaturesTitle"
-        android:padding="5dp"
-        android:text="@string/KeyF_text" />
-
-    <TextView
-        android:id="@+id/SourcesTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/KeyFeaturesText"
-        android:padding="5dp"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:text="@string/SourcesTitle"
-        android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:id="@+id/SourcesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/SourcesTitle"
-        android:padding="5dp"
-        android:text="@string/SourcesText" />
-
-
-    <!-- Title and Lorem for 'creditsText' -->
-    <TextView
-        android:id="@+id/creditsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/SourcesText"
-        android:padding="5dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/CreditsTitle"
-        android:textSize="17sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/creditsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/creditsTitle"
-        android:padding="5dp"
-        android:text="@string/Credits_text"
-        android:layout_marginBottom="16dp"/>
 
 
 </RelativeLayout>

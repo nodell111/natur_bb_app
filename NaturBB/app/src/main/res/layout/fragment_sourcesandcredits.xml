@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sourcesandcredits">
+
+    <RelativeLayout
+        android:id="@+id/sourcesAndCreditsLink"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cream_background"
+        android:textAlignment="textEnd">
+
+        <TextView
+            android:id="@+id/SourcesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:text="@string/SourcesTitle"
+            android:textColor="@color/dark_gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/SourcesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SourcesTitle"
+            android:fontFamily="@font/inter"
+            android:gravity="left"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:text="@string/SourcesText"
+            android:textColor="@color/dark_gray" />
+
+
+        <!-- Title and Lorem for 'creditsText' -->
+        <TextView
+            android:id="@+id/creditsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SourcesText"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/CreditsTitle"
+            android:textColor="@color/dark_gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/creditsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/creditsTitle"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/inter"
+            android:gravity="start|end"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:text="@string/Credits_text"
+            android:textColor="@color/dark_gray" />
+
+
+        <!-- For example, a ScrollView containing your main content -->
+
+    </RelativeLayout>
+
+</FrameLayout>
