@@ -63,7 +63,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_listfragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         list_view = view.findViewById(R.id.parkList);
         //parkList is an adapter for list_view
 
