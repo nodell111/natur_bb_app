@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -384,6 +385,7 @@ public class ListFragment extends Fragment {
             });
         } else {
             Log.e("sortListByDistance", "User location is null.");
+            Toast.makeText(requireContext(), "User location not available", Toast.LENGTH_SHORT).show();
         }
     }
 
