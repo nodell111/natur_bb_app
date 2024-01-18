@@ -1,28 +1,20 @@
 package com.natalie.naturbb;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AppFeaturesPage#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AppFeaturesPage extends Fragment {
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -30,16 +22,6 @@ public class AppFeaturesPage extends Fragment {
         // Required empty public constructor
     }
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AppFeaturesPage.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AppFeaturesPage newInstance(String param1, String param2) {
         AppFeaturesPage fragment = new AppFeaturesPage();
         Bundle args = new Bundle();
@@ -58,22 +40,69 @@ public class AppFeaturesPage extends Fragment {
         }
     }
 
-    // Set up the click listener for the email link
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_app_features_page, container, false);
 
         // Hide existing content when the fragment is created
         ((AboutActivity) requireActivity()).hideExistingContent();
+
+        // Set up the click listener for the email link
+        TextView emailLink = view.findViewById(R.id.contactDeveloperLink);
+        emailLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail();
+            }
+        });
+
+        // Set up the click listener for the map link
+        TextView mapLink = view.findViewById(R.id.adresstext);
+        mapLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMap();
+            }
+        });
 
         // Set up other views and listeners
 
         return view;
     }
 
-    // Other methods
+    private void sendEmail() {
+        String email = "dilara.bozkurt@tum.de";
+        String subject = "Feedback";
+        String body = ""; // Customize the email body
+
+        composeEmail(email, subject, body);
+    }
+
+    private void composeEmail(String address, String subject, String body) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + address));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void openMap() {
+        // Coordinates for TU Dresden
+        String mapUrl = "geo:51.0290301,13.7212011?q=H%C3%BClsse-Bau,+Helmholtzstra%C3%9Fe+10,+01069+Dresden";
+        showMap(mapUrl);
+    }
+
+    private void showMap(String mapUrl) {
+        Uri geoUri = Uri.parse(mapUrl);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
+
+        if (mapIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -81,8 +110,7 @@ public class AppFeaturesPage extends Fragment {
         // Show existing content when the fragment is destroyed (user navigates back)
         ((AboutActivity) requireActivity()).showExistingContent();
     }
-
-
-
 }
+
+
 
