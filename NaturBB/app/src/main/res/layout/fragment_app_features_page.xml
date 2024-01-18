@@ -18,8 +18,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:paddingLeft="30dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/message" />
@@ -29,12 +27,11 @@
             android:id="@+id/AboutIntro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="2dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/averiaseriflibre_regular"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
+            android:textColor="@color/dark_gray"
             android:text="Have Suggestions? Shoot an email to us."
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="25sp"
@@ -45,35 +42,39 @@
             android:id="@+id/contactDeveloperLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contact Developer"
-            android:textColor="@color/black"
-            android:paddingRight="30dp"
+            android:text="Contact us"
+            android:pointerIcon="arrow"
+            android:textColor="@color/blue"
             android:paddingLeft="30dp"
             android:paddingTop="10dp"
-            android:layout_below="@id/AboutIntro"/>
+            android:layout_below="@id/AboutIntro"
+            android:clickable="true"
+            android:onClick="sendEmail" />
+
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/meetus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/dark_gray"
             android:paddingLeft="30dp"
-            android:text="Meet us"
+            android:text="Meet us!"
             android:fontFamily="@font/averiaseriflibre_regular"
             android:textSize="25dp"
-            tools:layout_below="@id/contactDeveloperLink" />
+            android:layout_below="@id/contactDeveloperLink" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/adresstext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/blue"
             android:layout_marginTop="10dp"
             android:paddingLeft="30dp"
             android:text="Helmholtzstraße 10, 01069 Dresden"
-            tools:layout_below="@id/textView4" />
-
-
-
+            android:clickable="true"
+            android:onClick="openMap"
+            android:layout_below="@id/meetus"/>
 
     </RelativeLayout>
 
