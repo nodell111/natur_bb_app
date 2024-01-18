@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Switch;
 
@@ -52,10 +54,16 @@ public class ListFragment extends Fragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+        toggleRadioGroupOn();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_listfragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         list_view = view.findViewById(R.id.parkList);
         //parkList is an adapter for list_view
 
@@ -112,11 +120,6 @@ public class ListFragment extends Fragment {
         int index_name = cursor.getColumnIndex("region");
         int image_name = cursor.getColumnIndex("image_name");
 
-//        int index_name_en = cursor.getColumnIndex("region_en");
-//        for (int i = 0; i < length; i++) {
-//            html_array[i] = Html.fromHtml(cursor.getString(index_name) + "<br><i>" + cursor.getString(index_name_en) + "</i>");
-//            cursor.moveToNext();
-//        }
 
         for (int i = 0; i < length; i++) {
             html_array[i] = Html.fromHtml(cursor.getString(index_name));
@@ -138,7 +141,11 @@ public class ListFragment extends Fragment {
                 // Set background drawable dynamically based on image_name
                 String imageName = image_names[position];
                 int resId = getResources().getIdentifier(imageName, "drawable", getActivity().getPackageName());
-                view.setBackgroundResource(resId);
+                // Get reference to the ImageView
+                ImageView imageView = view.findViewById(R.id.imageViewItem);
+
+                // Set the image resource dynamically
+                imageView.setImageResource(resId);
 
                 return view;
             }
@@ -151,9 +158,9 @@ public class ListFragment extends Fragment {
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
-        String description = getDescriptionFromDatabase(parkName);
-
-        String info = getInfoFromDatabase(parkName);
+        GetBottomSheetData getBottomSheetData = new GetBottomSheetData(parkName);
+        String description = getBottomSheetData.description;
+        String info = getBottomSheetData.info;
 
         // Pass data to the fragment using a bundle
         Bundle bundle = new Bundle();
@@ -168,61 +175,6 @@ public class ListFragment extends Fragment {
         searchView.clearFocus();
 
     }
-
-    private String getInfoFromDatabase(String parkName) {
-        String info = "";
-        Cursor cursor = database.rawQuery(
-                "SELECT info FROM natur_table_park WHERE region = ?",
-                new String[]{parkName}
-        );
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("info");
-                if (columnIndex != -1) {
-                    info = cursor.getString(columnIndex);
-                } else {
-                    Log.e("getInfoFromDatabase", "Column 'info' not found in the cursor.");
-                }
-            } else {
-                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return info;
-    }
-
-
-    private String getDescriptionFromDatabase(String parkName) {
-        String description = "";
-        Cursor cursor = database.rawQuery(
-                "SELECT descrip FROM natur_table_park WHERE region = ?",
-                new String[]{parkName}
-        );
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("descrip");
-                if (columnIndex != -1) {
-                    description = cursor.getString(columnIndex);
-                } else {
-                    Log.e("getDescriptionFromDatabase", "Column 'descrip' not found in the cursor.");
-                }
-            } else {
-                Log.e("getDescriptionFromDatabase", "Cursor is null or empty.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            return description;
-        }
-        }
 
 
     private void setupSearchView() {
@@ -248,6 +200,7 @@ public class ListFragment extends Fragment {
                 if (list_view != null) {
                     list_view.setAdapter(adapter);
                 }
+
                 return true;
             }
         });
@@ -461,9 +414,32 @@ public class ListFragment extends Fragment {
         }
     }
 
-    //create intent for list item onclick -> show bottom dialog fragment/popup
-    //button in dialog to show park on map -> zooms to park
 
+    private void toggleRadioGroupOn() {
+        Log.d("Toggle", "Toggling radio group on");
+
+        RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
+        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+
+        // Iterate through each child in the RadioGroup
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View child = radioGroup.getChildAt(i);
+
+            // Check if the child is a Switch
+            if (child instanceof Switch) {
+                Switch switchView = (Switch) child;
+
+                // Enable switches
+                switchView.setEnabled(true);
+            }
+        }
+
+        // Enable the entire RadioGroup to prevent user interaction
+        radioGroup.setEnabled(true);
+        searchView1.setQueryHint("Search for a park");
+
+
+    }
 
     @Override
     public void onDestroy() {
@@ -472,7 +448,6 @@ public class ListFragment extends Fragment {
         }
         super.onDestroy();
     }
-
 
 
 }

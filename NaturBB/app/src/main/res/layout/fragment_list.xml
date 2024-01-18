@@ -6,7 +6,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusable="auto"
     android:focusableInTouchMode="true"
-    tools:context=".fragments.listfragment">
+    tools:context=".ListFragment">
 
     <ListView
         android:id="@+id/parkList"

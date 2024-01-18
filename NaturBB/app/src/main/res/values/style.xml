@@ -5,4 +5,9 @@
         <item name="android:textSize">25sp</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_gravity">start</item>
+        <item name="android:gravity">start</item>
+    </style>
+
 </resources>

@@ -5,16 +5,52 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.widget.Toolbar;
 
 public class AboutActivity extends AppCompatActivity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.home) {
+            Intent homeIntent = new Intent(AboutActivity.this, MainActivity.class);
+            startActivity(homeIntent);
+            return true;
+        } else if (itemId == R.id.about) {
+            // Handle the About menu item for the AboutActivity (if needed)
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
+
+        // Setting up the Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         // Add this code to connect fragments
         TextView sourcesLink = findViewById(R.id.sourcesAndCreditsLink);
@@ -64,11 +100,12 @@ public class AboutActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
-// Call showExistingContent when you want to display the existing content again
-
-
 }
+
+
+
+
+
 
 
 

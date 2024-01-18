@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textViewItem"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="135dp"
-    android:background="@drawable/natur_niederheide"
-    android:backgroundTint="#66131313"
-    android:backgroundTintMode="src_over"
-    android:fontFamily="@font/averiaseriflibre_regular"
-    android:padding="30dp"
-    android:paddingBottom="1dp"
-    android:textColor="@color/white"
-    android:textSize="24sp">
+    android:layout_height="135dp">
 
-</TextView>
+    <ImageView
+        android:id="@+id/imageViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/natur_hoherflaming"
+        android:tintMode="src_over"
+        app:tint="#66131313">
+
+    </ImageView>
+
+
+    <TextView
+        android:id="@+id/textViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:fontFamily="@font/averiaseriflibre_regular"
+        android:padding="30dp"
+        android:paddingBottom="1dp"
+        android:textColor="@color/white"
+        android:textSize="24sp">
+
+    </TextView>
+
+
+</RelativeLayout>

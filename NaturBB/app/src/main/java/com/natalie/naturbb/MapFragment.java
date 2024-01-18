@@ -1,6 +1,7 @@
 package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
@@ -9,11 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -27,6 +31,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.data.geojson.GeoJsonFeature;
@@ -36,6 +42,7 @@ import com.google.maps.android.data.geojson.GeoJsonPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
 
 import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -43,23 +50,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
-    //    private String intent_extra;
     private SearchView searchView;
+    private Park clickedClusterItem;
     private boolean isMarkerAdded = false;
 
     public MapFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        toggleRadioGroupOff();
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = getActivity().findViewById(R.id.searchbar);
-
-        // Retrieve the value from arguments
-//        intent_extra = getArguments().getString("name_extra");
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -69,80 +77,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mapFragment.getMapAsync(this);
 
-//        setupSearchViewMap();
-
         return view;
     }
 
-
-    //KEEP THIS CODE FOR PROGRAMMING ONCLICK LIST ITEM THEN EXPLORE FULL PARK MAP
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        mMap.getUiSettings().setZoomControlsEnabled(true);
-//        mMap.setOnMarkerClickListener(this);
-//
-//        SQLiteDatabase database = listfragment.dbHelper.getDataBase();
-//
-//        //app crashes is trying to run Show All maps and Cursor single query at the same time
-//        //if intent_extra is not null, let Cursor query run
-//        if (intent_extra != null) {
-//
-//            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE Name LIKE '"+ intent_extra +"';", null);
-//
-//            dbCursor.moveToFirst();
-//
-//            LatLng park_pos = new LatLng (dbCursor.getDouble(4),dbCursor.getDouble(5));
-//
-//            mMap.addMarker(new MarkerOptions()
-//                    .position(park_pos)
-//                    //position marker at latlng of park_pos
-//                    .title(intent_extra)
-//                    //set title at name that has been stored in intent_extra
-//                    .snippet(dbCursor.getString(1)));
-//            //set snippet as url which is at index 1
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 14));
-//            //zoom into clicked position park_pos
-//        }
-//        // only for when we add all universities to the map
-//        else {
-//            //query everything from table
-//            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
-//
-//            //after the query the cursor is at the bottom
-//            // bring the cursor back to first record because you need to iterate through again
-//            dbCursor.moveToFirst();
-//
-//            LatLngBounds.Builder builder = LatLngBounds.builder();
-//            // so far empty but then can feed it in the for loop
-//
-//            for (int i = 0; i < dbCursor.getCount(); i++) {
-//
-//                LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-//
-//                mMap.addMarker(new MarkerOptions()
-//                                .position(park_pos)
-//                                //position marker at latlng of park_pos
-//                                .title(dbCursor.getString(0))
-//                                //set title at name that has been stored in intent_extra
-//                                .snippet(dbCursor.getString(1)))
-//                        .setTag(0);
-//
-//                //include bounds of the data record
-//                builder.include(park_pos);
-//
-//                //need to move cursor to next line until the end
-//                dbCursor.moveToNext();
-//            }
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),200));
-//            //zoom into bounds of all park_pos points
-//        }
-//
-//    }
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "PotentialBehaviorOverride"})
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -169,7 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //            builder.include(userLatLng);
 
             // Move the camera to the user's location
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
 
             mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
                 public void onMyLocationClick(@NonNull Location location) {
@@ -177,11 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         LatLng userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                         // Add a marker for the user's current location
-                        Marker userLocationMarker = mMap.addMarker(new MarkerOptions()
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                                .alpha(0.7f)
-                                .position(userLatLng)
-                                .title("Your Location"));
+                        Marker userLocationMarker = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).alpha(0.7f).position(userLatLng).title("Your Location"));
 
                         userLocationMarker.showInfoWindow(); // Show the info window
 
@@ -207,28 +141,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //Remember to change to listfragment or ListFragment when testing sort distance
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
 
-        //app crashes is trying to run Show All maps and Cursor single query at the same time
-//        //if intent_extra is not null, let Cursor query run
-//        if (intent_extra != null) {
-        //            Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE Name LIKE '"+ intent_extra +"';", null);
-//
-//            dbCursor.moveToFirst();
-//
-//            LatLng park_pos = new LatLng (dbCursor.getDouble(4),dbCursor.getDouble(5));
-//
-//            mMap.addMarker(new MarkerOptions()
-//                    .position(park_pos)
-//                    //position marker at latlng of park_pos
-//                    .title(intent_extra)
-//                    //set title at name that has been stored in intent_extra
-//                    .snippet(dbCursor.getString(1)));
-//            //set snippet as url which is at index 1
-//
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 14));
-//            //zoom into clicked position park_pos
-//        }
-        // only for when we add all parks to the map
-//        else {
         //query everything from table
         Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
 
@@ -239,48 +151,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         LatLngBounds.Builder builder = LatLngBounds.builder();
         // so far empty but then can feed it in the for loop
 
-        ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
-        DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
-        clusterManager.setRenderer(mapRenderer);
-        googleMap.setOnCameraIdleListener(clusterManager);
-        googleMap.setOnMarkerClickListener(clusterManager);
-
-        for (int i = 0; i < dbCursor.getCount(); i++) {
-
-            LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-            Log.d("park pos", park_pos.toString());
-//            mMap.addMarker(new MarkerOptions()
-//                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-//                                    .position(park_pos)
-//                                    .title(dbCursor.getString(0))
-//                            //set title at name that has been stored in intent_extra
-////                            .snippet(dbCursor.getString(1))
-//                    )
-//                    .setTag(0);
-            clusterManager.addItem(new Park(park_pos, dbCursor.getString(0), dbCursor.getString(1)));
-
-            //include bounds of the data record
-            builder.include(park_pos);
-
-            //need to move cursor to next line until the end
-            dbCursor.moveToNext();
-
-        }
-        clusterManager.cluster();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
-        //zoom into bounds of all park_pos points
-//    }
         GeoJsonLayer layer = null;
         try {
             layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
-//            GeoJsonPolygonStyle polyStyle = layer.getDefaultPolygonStyle();
-//            polyStyle.setFillColor(Color.GREEN);
-//            polyStyle.setStrokeColor(Color.RED);
-//            polyStyle.setStrokeWidth(4f);
-//            layer.addLayerToMap();
-//            LatLngBounds.Builder builder = LatLngBounds.builder();
-
-
             for (GeoJsonFeature feature : layer.getFeatures()) {
                 if (feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
                     Log.d("polygon here", "");
@@ -294,17 +167,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             }
                         }
                     }
-
                     GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                    polygonStyle.setFillColor(Color.argb(100, 0, 255, 0));
-                    polygonStyle.setStrokeColor(Color.RED);
+                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+                    polygonStyle.setStrokeWidth(9);
                     feature.setPolygonStyle(polygonStyle);
-
                 }
             }
             LatLngBounds bounds = builder.build();
             /**create the camera with bounds and padding to set into map*/
-            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 10);
+            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 150);
             /**call the map call back to know map is loaded or not*/
             googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
@@ -318,11 +190,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         GeoJsonLayer finalLayer = layer;
-        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+
+        ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 clusterManager.onCameraIdle();
-
                 float zoomLevel = googleMap.getCameraPosition().zoom;
                 Log.d("zoom level", String.valueOf(zoomLevel));
                 if (zoomLevel > 8 && finalLayer != null) {
@@ -332,86 +205,141 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
-    }
+//        googleMap.setOnCameraIdleListener(clusterManager);
+//        mMap.setOnMarkerClickListener(clusterManager);
+        DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
+        clusterManager.setRenderer(mapRenderer);
+        mMap.setOnInfoWindowClickListener(clusterManager);
+        mMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
+        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter(getActivity(), clickedClusterItem));
+        mMap.setOnMarkerClickListener(clusterManager);
 
-
-//    @Override
-//    //true: NOT centering on the marker;
-//    //false: DOES centering on the marker;
-//    public boolean onMarkerClick(@NonNull Marker marker) {
-//        if (intent_extra != null) {
-//            return false;
-//        } else {
-//
-//            // change count from get tag into integer with (Integer)
-////            Integer clickCount = (Integer) marker.getTag();
-////            clickCount++;
-////            marker.setTag(clickCount);
-////            Toast.makeText(this,marker.getTitle()+" has been clicked " + clickCount + " times.", Toast.LENGTH_SHORT).show();
-//
-//            return true;
-//
-//        }
-//    }
-
-
-//    //Filter map when user searches for a park - STILL BUGGY, stops working for list view after
-//    //search happens in map view
-//    private void setupSearchViewMap() {
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//        clusterManager.getMarkerCollection().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
 //            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // Handle the query submission if needed
-//                return false;
-//                public boolean onQueryTextChange (String newText){
-//                    String keyword = searchView.getQuery().toString();
+//            public void onInfoWindowClick(@NonNull Marker marker) {
+//                Log.e("call", marker.getTitle() + "hellllo");
+//                marker.showInfoWindow();
+//            }
+//        } );
+//        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter(getActivity(), clickedClusterItem));
+//                new GoogleMap.InfoWindowAdapter(){
+//            @Override
+//            public View getInfoContents(@NonNull Marker marker) {
+//                Log.e("call", "get info contents");
+//                // Getting view from the layout file info_window_layout
+//                View v = LayoutInflater.from(getActivity()).inflate(R.layout.window_layout, null, false);
+//                // Getting reference to the TextView to set latitude
+//                TextView tvName = v.findViewById(R.id.tv_name);
+//                // Getting reference to the TextView to set longitude
+//                TextView tvSnippet = v.findViewById(R.id.tv_snippet);
+//                // Setting the latitude
+//                tvName.setText(String.valueOf(tvName));
+//                // Setting the longitude
+//                tvSnippet.setText(String.valueOf(tvSnippet));
+//                return v;
+//            }
 //
-//                    SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
-//
-//                    //query everything from table
-//                    Cursor dbCursor;
-//
-//                    if (TextUtils.isEmpty(keyword)) {
-//                        // If the keyword is empty, show all points
-//                        dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
-//                    } else {
-//                        // If there is a keyword, filter the results
-//                        dbCursor = database.rawQuery(
-//                                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
-//                                new String[]{"%" + keyword + "%"}
-//                        );
-//                    }
-//                    dbCursor.moveToFirst();
-//                    LatLngBounds.Builder builder = LatLngBounds.builder();
-//
-//                    for (int i = 0; i < dbCursor.getCount(); i++) {
-//                        LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-//                        Marker marker = mMap.addMarker(new MarkerOptions()
-//                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-//                                        .position(park_pos)
-//                                        //position marker at latlng of park_pos
-//                                        .title(dbCursor.getString(0))
-//                                //set title at name that has been stored in intent_extra
-////                            .snippet(dbCursor.getString(1))
-//                        );
-//                        marker.setTag(0);
-//                        //include bounds of the data record
-//                        builder.include(park_pos);
-//                        //need to move cursor to next line until the end
-//                        dbCursor.moveToNext();
-//                        //zoom into bounds of all park_pos points
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(park_pos, 12));
-//                    }
-//
-//                    // Move the camera to show all points
-//                    if (TextUtils.isEmpty(keyword)) {
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
-//                    }
-//
-//                    return true;
-//                }
+//            @Override
+//            public View getInfoWindow(@NonNull Marker marker) {
+//                return null;
 //            }
 //        });
-//    }
+//        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+
+//        mMap.setOnCameraChangeListener(clusterManager);
+        clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> {
+//                        Toast.makeText(getActivity(), "Cluster click", Toast.LENGTH_SHORT).show();
+            Log.e("cluster", "clicked");
+            return false;
+        });
+        //                        Toast.makeText(getActivity(), "Cluster item click", Toast.LENGTH_SHORT).show();
+// if true, click handling stops here and do not show info view, do not move camera
+// you can avoid this by calling:
+// renderer.getMarker(clusterItem).showInfoWindow();
+        clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
+            clickedClusterItem = item;
+            Log.e("cluster item", item.getSnippet());
+            Log.e("cluster item stored", clickedClusterItem.getSnippet());
+            Log.e("cluster item", "clicked");
+            return false;
+        });
+        clusterManager.setOnClusterItemInfoWindowClickListener((ClusterManager.OnClusterItemInfoWindowClickListener<Park>) clusterItem -> {
+//                Toast.makeText(getContext(), "Clicked info window: " + stringClusterItem.name,
+//                        Toast.LENGTH_SHORT).show();
+
+            showListBottomSheetFragment(clusterItem.name);
+        });
+
+
+
+
+
+        for (int i = 0; i < dbCursor.getCount(); i++) {
+
+            LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
+            clusterManager.addItem(new Park(park_pos, dbCursor.getString(0), dbCursor.getString(1)));
+
+            //include bounds of the data record
+            builder.include(park_pos);
+
+            //need to move cursor to next line until the end
+            dbCursor.moveToNext();
+
+        }
+        clusterManager.cluster();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+        //zoom into bounds of all park_pos points
+
+    }
+    private void showListBottomSheetFragment(String parkName) {
+
+        ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
+        // Retrieve other details for the park (description, info, etc.)
+        GetBottomSheetData getBottomSheetData = new GetBottomSheetData(parkName);
+        String description = getBottomSheetData.description;
+        String info = getBottomSheetData.info;
+        String parkImage = getBottomSheetData.park_image;
+
+        // Pass data to the fragment using a bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("park_name", parkName);
+        bundle.putString("park_image", parkImage);
+        bundle.putString("description", description);
+        bundle.putString("info", info);
+        bottomSheetFragment.setArguments(bundle);
+
+        // Show the bottom sheet fragment
+        bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
+
+        // Clear focus from the search view (if needed)
+        searchView.clearFocus();
+    }
+
+    private void toggleRadioGroupOff() {
+        Log.d("Toggle", "Toggling radio group off");
+
+        RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
+        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+
+        // Iterate through each child in the RadioGroup
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View child = radioGroup.getChildAt(i);
+
+            // Check if the child is a Switch
+            if (child instanceof Switch) {
+                Switch switchView = (Switch) child;
+                // Set the checked state of the Switch to false
+                switchView.setChecked(false);
+                // Disable switches
+                switchView.setEnabled(false);
+            }
+        }
+
+        // Disable the entire RadioGroup to prevent user interaction
+        radioGroup.setEnabled(false);
+        searchView1.setQueryHint("Sorry, not working for map :(");
+
+    }
+
 
 }
