@@ -12,12 +12,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:textColor="@color/white"
-        android:text="Natur Brandenburg"
+        android:layout_marginTop="85dp"
         android:fontFamily="@font/averiaseriflibre_bold"
+        android:text="Natur \nBrandenburg"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="37sp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/maintitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/bellota"
+        android:text="Exploring parks"
+        android:textColor="#D8DFD0"
         android:textSize="28sp"
-        android:typeface="serif"/>
+        android:typeface="serif" />
+
 
     <ImageView
         android:id="@+id/mainbg"
@@ -25,22 +40,11 @@
         android:layout_height="250dp"
         android:layout_below="@id/maintitle"
         android:layout_centerInParent="true"
+        android:paddingTop="11dp"
         android:layout_marginHorizontal="50dp"
         android:layout_marginVertical="50dp"
         android:scaleType="fitCenter"
         android:src="@drawable/mainbgnew" />
-
-    <TextView
-        android:id="@+id/slogan"
-        android:layout_below="@id/mainbg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:text="Exploring parks"
-        android:fontFamily="@font/averiaseriflibre_bold"
-        android:textSize="28sp"
-        android:typeface="serif"/>
 
 
     <Button
@@ -49,14 +53,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="75dp"
         android:backgroundTint="@color/dark_green"
         android:fontFamily="@font/averiaseriflibre_regular"
         android:paddingHorizontal="80dp"
         android:paddingVertical="10dp"
         android:text="Get started"
-        android:textSize="24sp"
+        android:textSize="25sp"
         android:typeface="serif"
         app:cornerRadius="10dp" />
 
 </RelativeLayout>
+
+
+
+
+
+
+
