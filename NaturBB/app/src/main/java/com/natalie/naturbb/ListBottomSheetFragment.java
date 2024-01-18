@@ -13,6 +13,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -110,6 +111,12 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         descriptionTextView.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE);
         startMapButton.setVisibility(View.GONE);
+
+        // Set Nested Scroll View to layout_width="wrap_content"
+        NestedScrollView nestedScrollView = requireView().findViewById(R.id.nestedScrollView);
+        ViewGroup.LayoutParams params = nestedScrollView.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        nestedScrollView.setLayoutParams(params);
 
         // Create an instance of the fragment you want to show
         MapDetailFragment mapsDetailFragment = new MapDetailFragment(parkName);

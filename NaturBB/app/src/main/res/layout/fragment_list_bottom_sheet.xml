@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="300dp"
-    android:layout_marginHorizontal="10dp"
+    android:layout_marginHorizontal="5dp"
     android:background="@color/transparent"
     android:focusable="auto"
     android:focusableInTouchMode="true"
     tools:context=".ListBottomSheetFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_height="480dp"
+        android:background="@color/transparent"
         android:clipToPadding="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -22,8 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border_green"
-            android:orientation="vertical"
-            android:paddingBottom="15dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/listBottomSheet_title"
@@ -71,11 +70,11 @@
                 android:focusable="true"
                 android:fontFamily="@font/averiaseriflibre_bold"
                 android:lineSpacingExtra="8sp"
-                android:textColorLink="@color/yellow"
                 android:onClick="openWebsite"
                 android:padding="15dp"
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
+                android:textColorLink="@color/yellow"
                 android:textSize="15sp">
 
             </TextView>
@@ -85,7 +84,9 @@
                 android:id="@+id/button_start_map"
                 android:layout_width="249dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/button_green"
                 android:backgroundTint="@color/dark_green"
                 android:fontFamily="@font/averiaseriflibre_bold"
