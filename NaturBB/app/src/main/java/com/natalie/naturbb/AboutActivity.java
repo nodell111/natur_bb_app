@@ -1,12 +1,18 @@
 package com.natalie.naturbb;
 
-import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.widget.Toolbar;
 
 public class AboutActivity extends AppCompatActivity {
@@ -26,12 +32,18 @@ public class AboutActivity extends AppCompatActivity {
             startActivity(homeIntent);
             return true;
         } else if (itemId == R.id.about) {
-            // Handle the About menu item for the AboutActivity (if needed)
+            Intent aboutIntent = new Intent(AboutActivity.this, AboutActivity.class);
+            startActivity(aboutIntent);
+            return true;
+        } else if (itemId == R.id.howto) {
+            HowTo howtoDialogFragment = new HowTo();
+            howtoDialogFragment.show(getSupportFragmentManager(), howtoDialogFragment.getTag());
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +56,62 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+
+        // Add this code to connect fragments
+        TextView sourcesLink = findViewById(R.id.sourcesAndCreditsLink);
+        TextView appFeaturesLink = findViewById(R.id.appFeaturesLink);
+
+        TextView aboutTitle = findViewById(R.id.aboutTitle);
+        aboutTitle.setPaintFlags(aboutTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        sourcesLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new sourcesandcredits());
+            }
+        });
+
+        appFeaturesLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new AppFeaturesPage());
+            }
+        });
+    }
+
+    // Method to show existing content
+    public void showExistingContent() {
+        findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.VISIBLE);
+        findViewById(R.id.appFeaturesLink).setVisibility(View.VISIBLE);
+        findViewById(R.id.imageView3).setVisibility(View.VISIBLE);
+        findViewById(R.id.aboutTitle).setVisibility(View.VISIBLE);
+        // Add more views as needed
+    }
+    // Method to hide existing content
+    public void hideExistingContent() {
+        findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.GONE);
+        findViewById(R.id.appFeaturesLink).setVisibility(View.GONE);
+        findViewById(R.id.imageView3).setVisibility(View.GONE);
+        findViewById(R.id.aboutTitle).setVisibility(View.GONE);
+        // Add more views as needed
+    }
+
+    private void loadFragment(Fragment fragment) {
+        // Hide existing content
+        hideExistingContent();
+
+        // Load the fragment into the fragmentContainer
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
+
+
+
+
+
+
+
+
