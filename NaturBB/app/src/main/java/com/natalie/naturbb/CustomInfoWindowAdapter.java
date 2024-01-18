@@ -18,9 +18,9 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-    FragmentActivity activity;
+    Context activity;
     ClusterItem clusterItem;
-    public CustomInfoWindowAdapter(FragmentActivity activity, ClusterItem clickedClusterItem) {
+    public CustomInfoWindowAdapter(Context activity, ClusterItem clickedClusterItem) {
         this.activity = activity;
         this.clusterItem = clickedClusterItem;
 //        Log.d("call", clickedClusterItem.getSnippet());
@@ -40,6 +40,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         String parkName = "Not Found";
         String snippet = "";
         if(clusterItem != null) {
+            Log.e("call","not null!");
             parkName = clusterItem.getTitle();
             snippet = clusterItem.getSnippet();
         }

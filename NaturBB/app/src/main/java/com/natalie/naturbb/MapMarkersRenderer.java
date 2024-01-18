@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,9 +37,13 @@ import com.natalie.naturbb.ListFragment;
  */
 public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
     private ClusterManager clusterManager;
+    private final IconGenerator mClusterIconGenerator;
+    private final Context context;
     public MapMarkersRenderer(Context context, GoogleMap map, ClusterManager<Park> clusterManager) {
         super(context, map, clusterManager);
+        this.context = context;
         this.clusterManager = clusterManager;
+        mClusterIconGenerator = new IconGenerator(context.getApplicationContext());
     }
 //        private final IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
 //        private final IconGenerator mClusterIconGenerator = new IconGenerator(getApplicationContext());
@@ -97,7 +102,12 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
 //        protected void onBeforeClusterRendered(@NonNull Cluster<Park> cluster, @NonNull MarkerOptions markerOptions) {
 //            // Draw multiple people.
 //            // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
-//            markerOptions.icon(getClusterIcon(cluster));
+////            markerOptions.icon(getClusterIcon(cluster));
+//            mClusterIconGenerator.setBackground(
+//                    ContextCompat.getDrawable(context, R.drawable.cluster_icon));
+//            mClusterIconGenerator.setTextAppearance(R.style.WhiteTextAppearance);
+//            final Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
 //        }
 //
 //        @Override

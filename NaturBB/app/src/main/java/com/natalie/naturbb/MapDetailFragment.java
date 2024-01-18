@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonMultiPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygon;
 import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 
@@ -70,25 +67,6 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mapFragment.getMapAsync(this);
-
-
-//        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
-//        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                int itemId = item.getItemId();
-//                if (itemId == R.id.action_home) {
-//                    Intent intent = new Intent(getActivity(), MainActivity.class);
-//                    startActivity(intent);
-//                    return true;
-//                } else if (itemId == R.id.action_favorites) {
-//                    // Replace the fragment with FavoritesFragment
-//                    replaceFragment(new FavoritesFragment());
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         return view;
     }
@@ -209,12 +187,6 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                         double lng = Double.parseDouble(latLngArray[1].trim());
 
                         point_pos = new LatLng(lat, lng);
-//                        mMap.addMarker(new MarkerOptions()
-//                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-//                                .position(point_pos)
-//                                .title(dbCursor.getString(0))
-//                                .snippet(dbCursor.getString((12)))
-//                        );
                         builder.include(point_pos);
                         clusterManager.addItem(new Park(point_pos, dbCursor.getString(0), dbCursor.getString(12)));
                     }
@@ -223,6 +195,7 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                 //need to move cursor to next line until the end
                 dbCursor.moveToNext();
             }
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
         } else {
             dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE region = ?",
                     new String[]{parkName});
@@ -235,11 +208,13 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                     .snippet("Sorry there is no information. Explore yourself, have fun!")
             );
             builder.include(point_pos);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point_pos, 8));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point_pos, 11));
         }
+        boolean parkBoundaryAdded = false;
         try {
             GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());;
             for (GeoJsonFeature feature : layer.getFeatures()) {
+                GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
                 Log.d("match feature name", String.valueOf(feature.getProperty("name").matches(parkName)));
                 if (feature.getProperty("name").matches(parkName) && feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
                     for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
@@ -250,35 +225,22 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                             }
                         }
                     }
-                    GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
                     polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
                     polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
                     polygonStyle.setStrokeWidth(9);
-                    feature.setPolygonStyle(polygonStyle);
+                    parkBoundaryAdded = true;
                 } else {
-                    GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
                     polygonStyle.setVisible(false);
-                    feature.setPolygonStyle(polygonStyle);
                 }
+                feature.setPolygonStyle(polygonStyle);
             }
             layer.addLayerToMap();
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
-
-//            /**create the camera with bounds and padding to set into map*/
-//            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 150);
-//            /**call the map call back to know map is loaded or not*/
-//            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-//                @Override
-//                public void onMapLoaded() {
-//                    /**set animated zoom camera into map*/
-//                    googleMap.animateCamera(cu);
-//                }
-//            });
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
+        if(parkBoundaryAdded) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+        }
     }
 
     private void showMapBottomSheetFragment(String poiName) {
