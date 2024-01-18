@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,32 +13,33 @@
         android:background="?android:attr/selectableItemBackground">
 
 
-
-    <TextView
-        android:id="@+id/AboutIntro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="30dp"
-        android:paddingLeft="30dp"
-        android:text="Contact us"
-        android:textSize="40dp"
-        android:layout_marginTop ="70dp"
-        android:fontFamily="@font/averiaseriflibre_regular"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <ImageView
+            android:id="@+id/messageIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:paddingLeft="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/message" />
 
 
+        <TextView
+            android:id="@+id/AboutIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="Have Suggestions? Shoot an email to us."
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="25sp"
+            android:layout_below="@id/messageIcon"/>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/AboutIntro"
-        android:layout_marginTop="30dp"
-        android:padding="15dp"
-        android:text="Have Suggestions? Shoot an email to us."
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:gravity="end"
-        tools:layout_below="@id/AboutIntro" />
 
         <TextView
             android:id="@+id/contactDeveloperLink"
@@ -45,35 +47,34 @@
             android:layout_height="wrap_content"
             android:text="Contact Developer"
             android:textColor="@color/black"
-            android:clickable="true"
-            android:onClick="sendEmail"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"
-            android:layout_below="@id/textView3"/>
+            android:paddingTop="10dp"
+            android:layout_below="@id/AboutIntro"/>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/AboutIntro"
-            android:layout_marginTop="30dp"
-            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="30dp"
             android:text="Meet us"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:gravity="end"
+            android:fontFamily="@font/averiaseriflibre_regular"
+            android:textSize="25dp"
             tools:layout_below="@id/contactDeveloperLink" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/AboutIntro"
-            android:layout_marginTop="30dp"
-            android:padding="15dp"
-            android:text="Adress"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:gravity="end"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="30dp"
+            android:text="Helmholtzstraße 10, 01069 Dresden"
             tools:layout_below="@id/textView4" />
+
+
+
+
     </RelativeLayout>
 
 

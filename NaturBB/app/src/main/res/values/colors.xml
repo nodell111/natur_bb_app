@@ -11,4 +11,5 @@
     <color name="transparent">#00000000</color>
     <color name="nav_active">#9bc748</color>
     <color name="cream_background">#FBF9DA</color>
+    <color name="dark_gray">#171616</color>
 </resources>

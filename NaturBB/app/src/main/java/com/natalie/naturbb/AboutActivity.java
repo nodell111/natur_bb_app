@@ -36,15 +36,21 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
     }
-    private void hideExistingContent() {
-        findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.GONE);
-        findViewById(R.id.appFeaturesLink).setVisibility(View.GONE);
-        // Add more views as needed
-    }
 
-    private void showExistingContent() {
+    // Method to show existing content
+    public void showExistingContent() {
         findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.VISIBLE);
         findViewById(R.id.appFeaturesLink).setVisibility(View.VISIBLE);
+        findViewById(R.id.imageView3).setVisibility(View.VISIBLE);
+        findViewById(R.id.aboutTitle).setVisibility(View.VISIBLE);
+        // Add more views as needed
+    }
+    // Method to hide existing content
+    public void hideExistingContent() {
+        findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.GONE);
+        findViewById(R.id.appFeaturesLink).setVisibility(View.GONE);
+        findViewById(R.id.imageView3).setVisibility(View.GONE);
+        findViewById(R.id.aboutTitle).setVisibility(View.GONE);
         // Add more views as needed
     }
 

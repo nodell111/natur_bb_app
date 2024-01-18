@@ -10,7 +10,8 @@
         android:id="@+id/sourcesAndCreditsLink"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cream_background">
+        android:background="@color/cream_background"
+        android:textAlignment="textEnd">
 
         <TextView
             android:id="@+id/SourcesTitle"
@@ -21,7 +22,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="15dp"
             android:text="@string/SourcesTitle"
-            android:textColor="@color/black"
+            android:textColor="@color/dark_gray"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -36,7 +37,7 @@
             android:paddingTop="10dp"
             android:paddingRight="20dp"
             android:text="@string/SourcesText"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_gray" />
 
 
         <!-- Title and Lorem for 'creditsText' -->
@@ -51,7 +52,7 @@
             android:paddingTop="20dp"
             android:paddingRight="20dp"
             android:text="@string/CreditsTitle"
-            android:textColor="@color/black"
+            android:textColor="@color/dark_gray"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -67,17 +68,8 @@
             android:paddingTop="10dp"
             android:paddingRight="20dp"
             android:text="@string/Credits_text"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_gray" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="-14dp"
-            android:layout_marginBottom="-224dp"
-            tools:src="@tools:sample/backgrounds/scenic" />
 
         <!-- For example, a ScrollView containing your main content -->
 
