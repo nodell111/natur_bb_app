@@ -10,31 +10,25 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/dark_green"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        style="@style/AppTheme.Toolbar"
+        android:gravity="start">
+    </androidx.appcompat.widget.Toolbar>
+
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="232dp"
         android:layout_height="43dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="-20dp"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/logo"
-        app:srcCompat="@drawable/natur_brandenburg" />
-
-    <ImageButton
-        android:id="@+id/infoButton"
-        android:layout_width="50dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:drawable/ic_menu_info_details"
-        android:contentDescription="@string/info_button"
-        android:scaleType="center" />
+        app:srcCompat="@drawable/natur_brandenburg_final" />
 
     <android.widget.SearchView
         android:id="@+id/searchbar"
@@ -180,7 +174,6 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_below="@id/infoButton" />
-
+        android:layout_below="@id/toolbar" />
 
 </RelativeLayout>

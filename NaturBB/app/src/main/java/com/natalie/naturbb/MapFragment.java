@@ -1,26 +1,24 @@
 package com.natalie.naturbb;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,8 +29,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.data.geojson.GeoJsonFeature;
@@ -58,6 +54,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        toggleRadioGroupOff();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -315,10 +316,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Clear focus from the search view (if needed)
         searchView.clearFocus();
     }
-
-
     public class CustomInfoWindowAdapter2 implements GoogleMap.InfoWindowAdapter {
-//        private LayoutInflater inflater;
+        //        private LayoutInflater inflater;
 //        private ViewGroup container;
         @Override
         public View getInfoWindow(@NonNull Marker marker) {
@@ -329,8 +328,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             TextView tvSnippet = v.findViewById(R.id.tv_snippet);
             String parkName = "Not Found";
             String snippet = "";
-            if(clickedClusterItem != null) {
-                Log.e("call","not null!");
+            if (clickedClusterItem != null) {
+                Log.e("call", "not null!");
                 parkName = clickedClusterItem.getTitle();
                 snippet = clickedClusterItem.getSnippet();
             }
@@ -345,6 +344,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         public View getInfoContents(@NonNull Marker marker) {
             return null;
         }
+    }
+
+    private void toggleRadioGroupOff() {
+        Log.d("Toggle", "Toggling radio group off");
+
+        RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
+        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+
+        // Iterate through each child in the RadioGroup
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            View child = radioGroup.getChildAt(i);
+
+            // Check if the child is a Switch
+            if (child instanceof Switch) {
+                Switch switchView = (Switch) child;
+                // Set the checked state of the Switch to false
+                switchView.setChecked(false);
+                // Disable switches
+                switchView.setEnabled(false);
+            }
+        }
+
+        // Disable the entire RadioGroup to prevent user interaction
+        radioGroup.setEnabled(false);
+        searchView1.setQueryHint("Sorry, not working for map :(");
     }
 
 
