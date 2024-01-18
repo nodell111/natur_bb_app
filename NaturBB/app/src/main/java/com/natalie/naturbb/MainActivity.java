@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
             return true;
-        } else if (itemId == R.id.howto) {
-            HowTo howtoDialogFragment = new HowTo();
-            howtoDialogFragment.show(getSupportFragmentManager(), howtoDialogFragment.getTag());
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

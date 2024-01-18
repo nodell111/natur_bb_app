@@ -18,12 +18,6 @@
                 app:showAsAction="never"
                 />
 
-            <item
-                android:id="@+id/howto"
-                android:title="How To Use"
-                app:showAsAction="never"
-                />
-
         </menu>
     </item>
 

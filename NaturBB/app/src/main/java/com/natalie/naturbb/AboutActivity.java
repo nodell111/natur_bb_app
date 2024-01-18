@@ -35,10 +35,6 @@ public class AboutActivity extends AppCompatActivity {
             Intent aboutIntent = new Intent(AboutActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
             return true;
-        } else if (itemId == R.id.howto) {
-            HowTo howtoDialogFragment = new HowTo();
-            howtoDialogFragment.show(getSupportFragmentManager(), howtoDialogFragment.getTag());
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -61,6 +57,8 @@ public class AboutActivity extends AppCompatActivity {
         // Add this code to connect fragments
         TextView sourcesLink = findViewById(R.id.sourcesAndCreditsLink);
         TextView appFeaturesLink = findViewById(R.id.appFeaturesLink);
+        TextView howtoLink = findViewById(R.id.howtoLink);
+
 
         TextView aboutTitle = findViewById(R.id.aboutTitle);
         aboutTitle.setPaintFlags(aboutTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -77,12 +75,21 @@ public class AboutActivity extends AppCompatActivity {
                 loadFragment(new AppFeaturesPage());
             }
         });
+
+        howtoLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HowTo howtoDialogFragment = new HowTo();
+                howtoDialogFragment.show(getSupportFragmentManager(), howtoDialogFragment.getTag());
+            }
+        });
     }
 
     // Method to show existing content
     public void showExistingContent() {
         findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.VISIBLE);
         findViewById(R.id.appFeaturesLink).setVisibility(View.VISIBLE);
+        findViewById(R.id.howtoLink).setVisibility(View.VISIBLE);
         findViewById(R.id.imageView3).setVisibility(View.VISIBLE);
         findViewById(R.id.aboutTitle).setVisibility(View.VISIBLE);
         // Add more views as needed
@@ -91,6 +98,7 @@ public class AboutActivity extends AppCompatActivity {
     public void hideExistingContent() {
         findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.GONE);
         findViewById(R.id.appFeaturesLink).setVisibility(View.GONE);
+        findViewById(R.id.howtoLink).setVisibility(View.GONE);
         findViewById(R.id.imageView3).setVisibility(View.GONE);
         findViewById(R.id.aboutTitle).setVisibility(View.GONE);
         // Add more views as needed
