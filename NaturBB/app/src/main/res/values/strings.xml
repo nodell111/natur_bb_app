@@ -23,8 +23,30 @@
         <b>In-Depth Information:</b>\n
         Gain insights into each park\'s distinctive features, available activities, and stunning visuals.
 
+    </string>
+
+    <string name="Howto_text1">
+
+        <b>Comprehensive Exploration:</b>\n
+        Navigate through a wealth of information about various nature parks in Brandenburg.
 
     </string>
+
+    <string name="Howto_text2">
+
+      <b>Efficient Search Functionality:</b>\n
+        Easily locate parks by name or discover the nearest parks through advanced geolocation.
+
+    </string>
+
+    <string name="Howto_text3">
+
+        <b>In-Depth Information:</b>\n
+        Gain insights into each park\'s distinctive features, available activities, and stunning visuals.
+
+    </string>
+
+
     <string name="SourcesTitle">Sources</string>
     <string name="SourcesText">    In developing this app, we have collaborated with several sources to enhance accuracy and reliability:\n
     \n
