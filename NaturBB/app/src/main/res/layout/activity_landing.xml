@@ -37,14 +37,14 @@
     <ImageView
         android:id="@+id/mainbg"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="245dp"
         android:layout_below="@id/maintitle"
         android:layout_centerInParent="true"
         android:paddingTop="11dp"
         android:layout_marginHorizontal="50dp"
         android:layout_marginVertical="50dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/mainbgnew" />
+        android:src="@drawable/landingimage" />
 
 
     <Button
