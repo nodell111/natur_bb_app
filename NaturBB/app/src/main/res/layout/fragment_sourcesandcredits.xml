@@ -40,8 +40,6 @@
             android:text="@string/SourcesText"
             android:textColor="@color/dark_gray" />
 
-
-        <!-- Title and Lorem for 'creditsText' -->
         <TextView
             android:id="@+id/creditsTitle"
             android:layout_width="wrap_content"
@@ -71,9 +69,6 @@
             android:paddingRight="20dp"
             android:text="@string/Credits_text"
             android:textColor="@color/dark_gray" />
-
-
-        <!-- For example, a ScrollView containing your main content -->
 
     </RelativeLayout>
 

@@ -12,9 +12,7 @@
         android:src="@drawable/natur_hoherflaming"
         android:tintMode="src_over"
         app:tint="#66131313">
-
     </ImageView>
-
 
     <TextView
         android:id="@+id/textViewItem"
@@ -25,8 +23,6 @@
         android:paddingBottom="1dp"
         android:textColor="@color/white"
         android:textSize="24sp">
-
     </TextView>
-
 
 </RelativeLayout>

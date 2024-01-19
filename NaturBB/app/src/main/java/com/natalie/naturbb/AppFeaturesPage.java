@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 public class AppFeaturesPage extends Fragment {
 
-
     public AppFeaturesPage() {
         // Required empty public constructor
     }
@@ -21,7 +20,6 @@ public class AppFeaturesPage extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     // Called to create the fragment's view
@@ -49,7 +47,6 @@ public class AppFeaturesPage extends Fragment {
                 openMap(); // Call the openMap method when the map link is clicked
             }
         });
-
         return view;
     }
 

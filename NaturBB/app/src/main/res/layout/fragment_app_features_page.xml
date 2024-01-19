@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground">
 
-
         <ImageView
             android:id="@+id/messageIcon"
             android:layout_width="100dp"
@@ -21,7 +20,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/message" />
-
 
         <TextView
             android:id="@+id/AboutIntro"
@@ -37,7 +35,6 @@
             android:textSize="25sp"
             android:layout_below="@id/messageIcon"/>
 
-
         <TextView
             android:id="@+id/contactDeveloperLink"
             android:layout_width="wrap_content"
@@ -50,7 +47,6 @@
             android:layout_below="@id/AboutIntro"
             android:clickable="true"
             android:onClick="sendEmail" />
-
 
         <TextView
             android:id="@+id/meetus"
@@ -77,6 +73,5 @@
             android:layout_below="@id/meetus"/>
 
     </RelativeLayout>
-
 
 </FrameLayout>

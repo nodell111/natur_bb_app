@@ -33,7 +33,6 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:text="How To Use the App">
-
             </TextView>
 
             <androidx.cardview.widget.CardView
@@ -53,7 +52,6 @@
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/howto_list4">
-
                 </ImageView>
 
             </androidx.cardview.widget.CardView>
@@ -90,7 +88,6 @@
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/howto_list1">
-
                 </ImageView>
 
             </androidx.cardview.widget.CardView>
@@ -108,7 +105,6 @@
                 android:text="@string/Howto_text2"
                 android:textColor="@color/white"
                 android:textSize="16sp">
-
             </TextView>
 
             <androidx.cardview.widget.CardView
@@ -128,7 +124,6 @@
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/howto_list2">
-
                 </ImageView>
 
             </androidx.cardview.widget.CardView>
@@ -146,9 +141,7 @@
                 android:text="@string/Howto_text3"
                 android:textColor="@color/white"
                 android:textSize="16sp">
-
             </TextView>
-
 
         </LinearLayout>
 

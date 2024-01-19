@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class GetBottomSheetDataMapDetail {
+
     public String description; // Variable to store point of interest description
     public String category; // Variable to store point of interest category
     public String city; // Variable to store city of the point of interest
@@ -55,7 +56,7 @@ public class GetBottomSheetDataMapDetail {
         String description = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
         Cursor cursor = database.rawQuery(
-                "SELECT description FROM natur_table_park WHERE title = ?",
+                "SELECT description FROM natur_table WHERE title = ?",
                 new String[]{poiName}
         );
         try {
@@ -84,7 +85,7 @@ public class GetBottomSheetDataMapDetail {
         String city = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
         Cursor cursor = database.rawQuery(
-                "SELECT city FROM natur_table_park WHERE title = ?",
+                "SELECT city FROM natur_table WHERE title = ?",
                 new String[]{poiName}
         );
         try {
