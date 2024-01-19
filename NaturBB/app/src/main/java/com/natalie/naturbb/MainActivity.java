@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private MyViewPageAdapter myViewPageAdapter;
 
+    // Method to create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
