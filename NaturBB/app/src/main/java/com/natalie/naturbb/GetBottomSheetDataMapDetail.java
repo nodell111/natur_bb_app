@@ -51,7 +51,7 @@ public class GetBottomSheetDataMapDetail {
         String description = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
         Cursor cursor = database.rawQuery(
-                "SELECT description FROM natur_table_park WHERE title = ?",
+                "SELECT description FROM natur_table WHERE title = ?",
                 new String[]{poiName}
         );
         try {
@@ -79,7 +79,7 @@ public class GetBottomSheetDataMapDetail {
         String city = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
         Cursor cursor = database.rawQuery(
-                "SELECT city FROM natur_table_park WHERE title = ?",
+                "SELECT city FROM natur_table WHERE title = ?",
                 new String[]{poiName}
         );
         try {

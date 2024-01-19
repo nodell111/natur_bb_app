@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,11 +44,8 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private String parkName;
-
     private Park clickedClusterItem;
-
     SupportMapFragment mapFragment;
-
     private boolean isMarkerAdded = false;
 
 
@@ -86,11 +84,8 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
 
         Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
 
@@ -146,37 +141,9 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         LatLngBounds.Builder builder = LatLngBounds.builder();
         LatLng point_pos = null;
 //        some parks do not have point of interests
+        ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
+        boolean onePoint = (dbCursor.getCount() > 1) ? false : true;
         if (dbCursor.getCount() > 0) {
-            ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
-            DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
-            clusterManager.setRenderer(mapRenderer);
-            mMap.setOnCameraIdleListener(clusterManager);
-
-            mMap.setOnInfoWindowClickListener(clusterManager);
-            mMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
-            clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter(getActivity(), clickedClusterItem));
-            mMap.setOnMarkerClickListener(clusterManager);
-
-            clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> {
-//                        Toast.makeText(getActivity(), "Cluster click", Toast.LENGTH_SHORT).show();
-                Log.e("cluster", "clicked");
-                return false;
-            });
-
-            clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
-                clickedClusterItem = item;
-                Log.e("cluster item", item.getSnippet());
-                Log.e("cluster item stored", clickedClusterItem.getSnippet());
-                Log.e("cluster item", "clicked");
-                return false;
-            });
-//
-            clusterManager.setOnClusterItemInfoWindowClickListener((ClusterManager.OnClusterItemInfoWindowClickListener<Park>) clusterItem -> {
-//                Toast.makeText(getContext(), "Clicked info window: " + stringClusterItem.name,
-//                        Toast.LENGTH_SHORT).show();
-
-                showMapBottomSheetFragment(clusterItem.name);
-            });
 
             for (int i = 0; i < dbCursor.getCount(); i++) {
                 String latLngString = dbCursor.getString(5); // Assuming column 5 contains "lat,lng"
@@ -191,56 +158,87 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
                         clusterManager.addItem(new Park(point_pos, dbCursor.getString(0), dbCursor.getString(12)));
                     }
                 }
-                clusterManager.cluster();
                 //need to move cursor to next line until the end
                 dbCursor.moveToNext();
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+
         } else {
             dbCursor = database.rawQuery("SELECT * FROM natur_table_park WHERE region = ?",
                     new String[]{parkName});
             dbCursor.moveToFirst();
             point_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
-            mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
-                    .position(point_pos)
-                    .title(parkName)
-                    .snippet("Sorry there is no information. Explore yourself, have fun!")
-            );
+            clusterManager.addItem(new Park(point_pos, parkName, "Sorry there is no information. Explore yourself, have fun!"));
+//            mMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid))
+//                    .position(point_pos)
+//                    .title(parkName)
+//                    .snippet("Sorry there is no information. Explore yourself, have fun!")
+//            );
             builder.include(point_pos);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point_pos, 11));
         }
-        boolean parkBoundaryAdded = false;
-        try {
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());;
-            for (GeoJsonFeature feature : layer.getFeatures()) {
-                GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                Log.d("match feature name", String.valueOf(feature.getProperty("name").matches(parkName)));
-                if (feature.getProperty("name").matches(parkName) && feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
-                    for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
-                        List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
-                        for (List<LatLng> list : polygonList) {
-                            for (LatLng latLng : list) {
-                                builder.include(latLng);
-                            }
-                        }
-                    }
-                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
-                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
-                    polygonStyle.setStrokeWidth(9);
-                    parkBoundaryAdded = true;
-                } else {
-                    polygonStyle.setVisible(false);
-                }
-                feature.setPolygonStyle(polygonStyle);
-            }
-            layer.addLayerToMap();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-        if(parkBoundaryAdded) {
+        clusterManager.cluster();
+        Log.e( "still in map detail", "clicked");
+        mMap.setOnCameraIdleListener(clusterManager);
+        DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
+        clusterManager.setRenderer(mapRenderer);
+        clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> {
+//                        Toast.makeText(getActivity(), "Cluster click", Toast.LENGTH_SHORT).show();
+            Log.e("cluster", "clicked");
+            return false;
+        });
+
+        clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
+            clickedClusterItem = item;
+            Log.e("cluster item map detail", item.getSnippet());
+            Log.e("cluster item stored map detail", clickedClusterItem.getSnippet());
+            Log.e("cluster item map detail", "clicked");
+            return false;
+        });
+        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter2());
+        mMap.setOnMarkerClickListener(clusterManager);
+        mMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
+        clusterManager.setOnClusterItemInfoWindowClickListener((ClusterManager.OnClusterItemInfoWindowClickListener<Park>) clusterItem -> {
+            showMapBottomSheetFragment(clusterItem.name);
+        });
+        mMap.setOnInfoWindowClickListener(clusterManager);
+        Log.e("what is  one point", String.valueOf(onePoint));
+        if(onePoint) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point_pos, 10));
+        } else {
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
         }
+
+//        boolean parkBoundaryAdded = false;
+//        try {
+//            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());;
+//            for (GeoJsonFeature feature : layer.getFeatures()) {
+//                GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
+//                Log.d("match feature name", String.valueOf(feature.getProperty("name").matches(parkName)));
+//                if (feature.getProperty("name").matches(parkName) && feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
+//                    for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
+//                        List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
+//                        for (List<LatLng> list : polygonList) {
+//                            for (LatLng latLng : list) {
+//                                builder.include(latLng);
+//                            }
+//                        }
+//                    }
+//                    polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+//                    polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+//                    polygonStyle.setStrokeWidth(9);
+//                    parkBoundaryAdded = true;
+//                } else {
+//                    polygonStyle.setVisible(false);
+//                }
+//                feature.setPolygonStyle(polygonStyle);
+//            }
+//            layer.addLayerToMap();
+//        } catch (IOException | JSONException e) {
+//            e.printStackTrace();
+//        }
+//        if(parkBoundaryAdded) {
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+//        }
     }
 
     private void showMapBottomSheetFragment(String poiName) {
@@ -264,5 +262,31 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
 
     }
+    public class CustomInfoWindowAdapter2 implements GoogleMap.InfoWindowAdapter {
+        @Override
+        public View getInfoWindow(@NonNull Marker marker) {
+            Log.e("call", "get info contents");
+            // Getting view from the layout file info_window_layout
+            View v = LayoutInflater.from(getContext()).inflate(R.layout.window_layout, null, false);
+            TextView tvName = v.findViewById(R.id.tv_name);
+            TextView tvSnippet = v.findViewById(R.id.tv_snippet);
+            String parkName = "Not Found";
+            String snippet = "";
+            if (clickedClusterItem != null) {
+                Log.e("call", "not null!");
+                parkName = clickedClusterItem.getTitle();
+                snippet = clickedClusterItem.getSnippet();
+            }
+            // Setting the latitude
+            tvName.setText(parkName);
+            // Setting the longitude
+            tvSnippet.setText(snippet);
+            return v;
+        }
 
+        @Override
+        public View getInfoContents(@NonNull Marker marker) {
+            return null;
+        }
+    }
 }

@@ -1,14 +1,10 @@
 package com.natalie.naturbb;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -19,8 +15,6 @@ public class MapBottomSheetFragment extends BottomSheetDialogFragment {
     private String description;
     private String category;
     private String city;
-
-    //add more variables as needed for additional arguments
 
     public MapBottomSheetFragment() {
         // Required empty public constructor
@@ -37,10 +31,8 @@ public class MapBottomSheetFragment extends BottomSheetDialogFragment {
             description = args.getString("description", "");
             category = args.getString("category", "");
             city = args.getString("city", "");
-
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,8 +49,5 @@ public class MapBottomSheetFragment extends BottomSheetDialogFragment {
         categoryTextView.setText(Html.fromHtml(category, Html.FROM_HTML_MODE_COMPACT));
 
         return view;
-
     }
-
-
 }

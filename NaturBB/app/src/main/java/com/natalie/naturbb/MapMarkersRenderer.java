@@ -98,6 +98,24 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
         return BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid);
     }
 
+//    @Override
+//    public void setOnClusterItemInfoWindowClickListener(ClusterManager.OnClusterItemInfoWindowClickListener<Park> listener) {
+////                Toast.makeText(getContext(), "Clicked info window: " + stringClusterItem.name,
+////                        Toast.LENGTH_SHORT).show();
+//
+//        Log.e("cluster item stored HEREEEE", Objects.requireNonNull(Park.getSnippet()));
+////        showListBottomSheetFragment(Park.name);
+//    };
+
+//    @Override
+//    protected void setOnClusterItemInfoWindowClickListener(@NonNull Park Park, @NonNull Marker marker) {
+//        // Same implementation as onBeforeClusterItemRendered() (to update cached markers)
+//        Log.e("call", "onclusteritem updated");
+//        marker.setIcon(getItemIcon(Park));
+//        marker.setTitle(Park.name);
+//        marker.setSnippet(Park.getSnippet());
+//    }
+
 //        @Override
 //        protected void onBeforeClusterRendered(@NonNull Cluster<Park> cluster, @NonNull MarkerOptions markerOptions) {
 //            // Draw multiple people.
