@@ -301,7 +301,7 @@ public class ListFragment extends Fragment {
                         Log.d("ParkCoordinates", "Park Lat: " + parkLat + ", Park Lng: " + parkLng);
 
                         // Make API request to get distance matrix
-                        String apiKey = "AIzaSyCFbT2GLzWBitk4BRiIglO-2SHU93cziUw";
+                        String apiKey = BuildConfig.MAPS_API_KEY;
                         String apiUrl = "https://maps.googleapis.com/maps/api/distancematrix/json" +
                                 "?origins=" + userLocation.getLatitude() + "," + userLocation.getLongitude() +
                                 "&destinations=" + parkLat + "," + parkLng +
