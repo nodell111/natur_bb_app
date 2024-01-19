@@ -27,8 +27,6 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
 
     private SearchView searchView;
 
-    //add more variables as needed for additional arguments
-
     public ListBottomSheetFragment() {
         // Required empty public constructor
     }
@@ -78,6 +76,7 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+        //Clear search bar to prevent keyboard
         searchView.clearFocus();
 
         return view;
@@ -101,7 +100,6 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
     public void onClickStartMap() {
 
         // Set the visibility of relevant views to GONE
-        TextView titleTextView = requireView().findViewById(R.id.listBottomSheet_title);
         TextView descriptionTextView = requireView().findViewById(R.id.listBottomSheet_description);
         TextView infoTextView = requireView().findViewById(R.id.listBottomSheet_info);
         ImageView imageView = requireView().findViewById(R.id.listBottomSheet_image);

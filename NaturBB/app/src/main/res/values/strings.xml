@@ -27,22 +27,22 @@
 
     <string name="Howto_text1">
 
-        <b>Comprehensive Exploration:</b>\n
-        Navigate through a wealth of information about various nature parks in Brandenburg.
+        <b>In-Depth Information:</b>\n
+        Tap on a park from the list or map to gain insights into each park\'s distinctive features, available activities, and stunning visuals.
 
     </string>
 
     <string name="Howto_text2">
 
-      <b>Efficient Search Functionality:</b>\n
-        Easily locate parks by name or discover the nearest parks through advanced geolocation.
+        <b>Comprehensive Exploration:</b>\n
+        Navigate through a wealth of information about various nature parks in Brandenburg. In map view, tap on the park name to learn more.
 
     </string>
 
     <string name="Howto_text3">
 
-        <b>In-Depth Information:</b>\n
-        Gain insights into each park\'s distinctive features, available activities, and stunning visuals.
+      <b>Efficient Search Functionality:</b>\n
+        Easily locate parks by name, size or discover the nearest parks through advanced geolocation.
 
     </string>
 
