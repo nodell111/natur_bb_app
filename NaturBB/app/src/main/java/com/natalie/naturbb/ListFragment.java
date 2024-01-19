@@ -23,6 +23,8 @@ import android.widget.Switch;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ import java.util.List;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -41,7 +44,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ListFragmentListener {
 
     public static DatabaseHelper dbHelper;
     // Declare variables
@@ -52,12 +55,19 @@ public class ListFragment extends Fragment {
     private Switch switchSortSize;
     private Switch switchSortName;
     private Switch switchSortDistance;
+    private SearchViewModel searchViewModel;
 
 
     @Override
     public void onResume() {
         super.onResume();
         toggleRadioGroupOn();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
     }
 
     @Override
@@ -107,13 +117,52 @@ public class ListFragment extends Fragment {
         switchSortDistance = getActivity().findViewById(R.id.sortDistance);
 
 
-        setupSearchView();
         setupSwitchGroup();
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    private ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
+        // Observe search query changes
+        searchViewModel.getSearchQuery().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String newQuery) {
+                // Handle search query changes, e.g., update list with new data
+                handleSearch(newQuery);
+                MapFragment mapFragment = (MapFragment) getParentFragmentManager().findFragmentById(R.id.map);
+                if (mapFragment != null) {
+                    mapFragment.handleSearch(newQuery);
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void setListFragmentListener(ListFragmentListener listener) {
+
+    }
+
+    @Override
+    public void handleSearch(String query) {
+        // Perform search using the query
+        // Update the list with the new data
+        if (dbCursor != null) {
+            dbCursor.close();
+        }
+        dbCursor = database.rawQuery(
+                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                new String[]{"%" + query + "%"}
+        );
+        ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+        if (list_view != null) {
+            list_view.setAdapter(adapter);
+        }
+    }
+
+    public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         int length = cursor.getCount();
         cursor.moveToFirst();
         Spanned[] html_array = new Spanned[length];
@@ -156,6 +205,7 @@ public class ListFragment extends Fragment {
         return adapter;
     }
 
+
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
@@ -178,36 +228,56 @@ public class ListFragment extends Fragment {
     }
 
 
-    private void setupSearchView() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+//    private void setupSearchView() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                String keyword = searchView.getQuery().toString();
+//                if (dbCursor != null) {
+//                    dbCursor.close();
+//                }
+//                dbCursor = database.rawQuery(
+//                        "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
+//                        new String[]{"%" + keyword + "%"}
+//                );
+//                ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+//                if (list_view != null) {
+//                    list_view.setAdapter(adapter);
+//                }
+//
+//                return true;
+//            }
+//        });
+//
+//
+//    }
 
-                searchView.clearFocus();
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                String keyword = searchView.getQuery().toString();
-                if (dbCursor != null) {
-                    dbCursor.close();
-                }
-                dbCursor = database.rawQuery(
-                        "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
-                        new String[]{"%" + keyword + "%"}
-                );
-                ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
-                if (list_view != null) {
-                    list_view.setAdapter(adapter);
-                }
-
-                return true;
-            }
-        });
-
-
-    }
+    // In the ListFragment or wherever you are using setupSearchView()
+//    private void setupSearchView() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if (getActivity() instanceof MainActivity) {
+//                    ((MainActivity) getActivity()).handleSearch(newText);
+//                }
+//                return true;
+//            }
+//        });
+//    }
 
     //when switch for size is checked then sort list by size column
     private void setupSwitchGroup() {
@@ -442,6 +512,7 @@ public class ListFragment extends Fragment {
 
 
     }
+
 
     @Override
     public void onDestroy() {
