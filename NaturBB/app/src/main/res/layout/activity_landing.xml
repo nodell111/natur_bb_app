@@ -33,7 +33,6 @@
         android:textSize="28sp"
         android:typeface="serif" />
 
-
     <ImageView
         android:id="@+id/mainbg"
         android:layout_width="match_parent"
@@ -45,7 +44,6 @@
         android:layout_marginVertical="50dp"
         android:scaleType="fitCenter"
         android:src="@drawable/landingimage" />
-
 
     <Button
         android:id="@+id/mapButton"

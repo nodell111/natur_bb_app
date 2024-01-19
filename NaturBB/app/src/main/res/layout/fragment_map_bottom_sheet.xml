@@ -34,7 +34,6 @@
                 android:padding="15dp"
                 android:textColor="@color/white"
                 android:textSize="24sp">
-
             </TextView>
 
 <!--            <ImageView-->
@@ -57,8 +56,8 @@
                 android:padding="15dp"
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
+                android:textStyle="italic"
                 android:textSize="14sp">
-
             </TextView>
 
             <TextView
@@ -72,9 +71,7 @@
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
                 android:textSize="16sp">
-
             </TextView>
-
 
         </LinearLayout>
 

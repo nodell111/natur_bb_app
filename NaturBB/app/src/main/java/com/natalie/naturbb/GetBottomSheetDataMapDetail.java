@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class GetBottomSheetDataMapDetail {
+
     public String description; // Variable to store point of interest description
     public String category; // Variable to store point of interest category
     public String city; // Variable to store city of the point of interest

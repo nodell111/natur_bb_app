@@ -33,9 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
-
-
     </FrameLayout>
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="169dp"
@@ -44,6 +43,7 @@
         android:layout_marginTop="130dp"
         app:srcCompat="@drawable/info_pagefun"
         android:layout_below="@id/toolbar"/>
+
     <TextView
         android:id="@+id/aboutTitle"
         android:layout_width="wrap_content"
@@ -90,7 +90,5 @@
         android:text="How to use"
         android:fontFamily="@font/averiaseriflibre_regular"
         android:textSize="20sp" />
-
-
 
 </RelativeLayout>

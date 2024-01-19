@@ -24,7 +24,6 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
     private String parkImage;
     private String description;
     private String info;
-
     private SearchView searchView;
 
     public ListBottomSheetFragment() {
@@ -124,7 +123,6 @@ public class ListBottomSheetFragment extends BottomSheetDialogFragment {
         transaction.replace(R.id.fragmentContainer_main, mapsDetailFragment); // R.id.fragment_container is the ID of the container where you want to place the fragment
         transaction.addToBackStack(null); // Optional: This allows users to navigate back to the previous fragment
         transaction.commit();
-
     }
 
 }

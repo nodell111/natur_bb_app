@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class GetBottomSheetData {
+
     public String description; // Variable to store park description
     public String info; // Variable to store park information
     public String park_image; // Variable to store park image name

@@ -159,11 +159,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
             LatLngBounds bounds = builder.build();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
         GeoJsonLayer finalLayer = layer;
 
         ClusterManager clusterManager = new ClusterManager<Park>(getContext(), googleMap);
@@ -193,93 +192,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+        // to customise the markers
         DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
         clusterManager.setRenderer(mapRenderer);
-        clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> {
-//                        Toast.makeText(getActivity(), "Cluster click", Toast.LENGTH_SHORT).show();
-            Log.e("cluster", "clicked");
-            return false;
-        });
-        //            mapRenderer.getMarker(item).showInfoWindow(new CustomInfoWindowAdapter(getContext(),item.()));
-//            return false;
+        clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> false);
+
         clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
             clickedClusterItem = item;
-            Log.e("cluster item", item.getSnippet());
-            Log.e("cluster item stored", clickedClusterItem.getSnippet());
-            Log.e("cluster item", "clicked");
             return false;
         });
 
-
-        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter2());
+        // to customise marker pop up window
+        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter());
         mMap.setOnMarkerClickListener(clusterManager);
         mMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
         clusterManager.setOnClusterItemInfoWindowClickListener((ClusterManager.OnClusterItemInfoWindowClickListener<Park>) clusterItem -> {
-//                Toast.makeText(getContext(), "Clicked info window: " + stringClusterItem.name,
-//                        Toast.LENGTH_SHORT).show();
-
-            Log.e("cluster item stored HEREEEE", clickedClusterItem.getSnippet());
             showListBottomSheetFragment(clusterItem.name);
         });
         mMap.setOnInfoWindowClickListener(clusterManager);
-//        clusterManager.getMarkerCollection().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-//            @Override
-//            public void onInfoWindowClick(@NonNull Marker marker) {
-//                Log.e("on info window clikc", "hereeeee!!" + clickedClusterItem.getSnippet());
-//            }
-//        });
-
-
-
-
-
-
-
-
-//        clusterManager.getMarkerCollection().setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
-//            @Override
-//            public void onInfoWindowClick(@NonNull Marker marker) {
-//                Log.e("call", marker.getTitle() + "hellllo");
-//                marker.showInfoWindow();
-//            }
-//        } );
-//        clusterManager.getMarkerCollection().setInfoWindowAdapter(new CustomInfoWindowAdapter(getActivity(), clickedClusterItem));
-//                new GoogleMap.InfoWindowAdapter(){
-//            @Override
-//            public View getInfoContents(@NonNull Marker marker) {
-//                Log.e("call", "get info contents");
-//                // Getting view from the layout file info_window_layout
-//                View v = LayoutInflater.from(getActivity()).inflate(R.layout.window_layout, null, false);
-//                // Getting reference to the TextView to set latitude
-//                TextView tvName = v.findViewById(R.id.tv_name);
-//                // Getting reference to the TextView to set longitude
-//                TextView tvSnippet = v.findViewById(R.id.tv_snippet);
-//                // Setting the latitude
-//                tvName.setText(String.valueOf(tvName));
-//                // Setting the longitude
-//                tvSnippet.setText(String.valueOf(tvSnippet));
-//                return v;
-//            }
-//
-//            @Override
-//            public View getInfoWindow(@NonNull Marker marker) {
-//                return null;
-//            }
-//        });
-//        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-
-//        mMap.setOnCameraChangeListener(clusterManager);
-
-
-
-
-
-
-
-
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150));
-        //zoom into bounds of all park_pos points
-
     }
     private void showListBottomSheetFragment(String parkName) {
 
@@ -304,12 +234,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Clear focus from the search view (if needed)
         searchView.clearFocus();
     }
-    public class CustomInfoWindowAdapter2 implements GoogleMap.InfoWindowAdapter {
-        //        private LayoutInflater inflater;
-//        private ViewGroup container;
-        @Override
+    public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public View getInfoWindow(@NonNull Marker marker) {
-            Log.e("call", "get info contents");
+            Log.d("call", "get info window");
             // Getting view from the layout file info_window_layout
             View v = LayoutInflater.from(getContext()).inflate(R.layout.window_layout, null, false);
             TextView tvName = v.findViewById(R.id.tv_name);
@@ -317,13 +244,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             String parkName = "Not Found";
             String snippet = "";
             if (clickedClusterItem != null) {
-                Log.e("call", "not null!");
                 parkName = clickedClusterItem.getTitle();
                 snippet = clickedClusterItem.getSnippet();
             }
-            // Setting the latitude
             tvName.setText(parkName);
-            // Setting the longitude
             tvSnippet.setText(snippet);
             return v;
         }
@@ -361,6 +285,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         sortBy.setVisibility(View.GONE);
         searchView1.setQueryHint("Sorry, not working for map :(");
     }
-
 
 }

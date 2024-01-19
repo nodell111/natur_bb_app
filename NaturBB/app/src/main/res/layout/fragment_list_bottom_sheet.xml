@@ -33,7 +33,6 @@
                 android:padding="15dp"
                 android:textColor="@color/white"
                 android:textSize="24sp">
-
             </TextView>
 
             <ImageView
@@ -43,7 +42,6 @@
                 android:contentDescription="picture of naturpark barnim"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/natur_barnim">
-
             </ImageView>
 
             <TextView
@@ -57,7 +55,6 @@
                 android:paddingBottom="1dp"
                 android:textColor="@color/white"
                 android:textSize="16sp">
-
             </TextView>
 
             <TextView
@@ -76,7 +73,6 @@
                 android:textColor="@color/white"
                 android:textColorLink="@color/yellow"
                 android:textSize="15sp">
-
             </TextView>
 
 
