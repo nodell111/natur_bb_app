@@ -52,7 +52,7 @@
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/howto_list">
+                    app:srcCompat="@drawable/howto_list0">
 
                 </ImageView>
 
@@ -125,7 +125,7 @@
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/howto_list">
+                    app:srcCompat="@drawable/howto_list3">
 
                 </ImageView>
 
