@@ -204,24 +204,28 @@ public class MainActivity extends AppCompatActivity implements ListFragmentListe
             listFragment.handleSearch(query);
         }
 
-        updateListAndMap(dbCursor);
-    }
-
-    private void updateListAndMap(Cursor cursor) {
-        ListView list_view = findViewById(R.id.parkList);
-
-        ArrayAdapter<CharSequence> adapter = createAdapterHtml(cursor);
-
-        if (list_view != null) {
-            list_view.setAdapter(adapter);
-        }
-
-        // Call a method in the map fragment to update markers
+        // Call handleSearch in MapFragment
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.updateMarkers(cursor.toString());
+            mapFragment.handleSearch(query);
         }
     }
+
+//    private void updateListAndMap(Cursor cursor) {
+//        ListView list_view = findViewById(R.id.parkList);
+//
+//        ArrayAdapter<CharSequence> adapter = createAdapterHtml(cursor);
+//
+//        if (list_view != null) {
+//            list_view.setAdapter(adapter);
+//        }
+//
+////         Call a method in the map fragment to update markers
+//        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//        if (mapFragment != null) {
+//            mapFragment.updateMarkers(cursor.toString());
+//        }
+//    }
 
 
     @Override

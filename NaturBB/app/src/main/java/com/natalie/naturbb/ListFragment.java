@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.os.AsyncTask;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
@@ -492,6 +493,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
 
         RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
         SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+        TextView sortBy = getActivity().findViewById(R.id.sortBy);
 
         // Iterate through each child in the RadioGroup
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
@@ -508,6 +510,8 @@ public class ListFragment extends Fragment implements ListFragmentListener {
 
         // Enable the entire RadioGroup to prevent user interaction
         radioGroup.setEnabled(true);
+        radioGroup.setVisibility(View.VISIBLE);
+        sortBy.setVisibility(View.VISIBLE);
         searchView1.setQueryHint("Search for a park");
 
 
