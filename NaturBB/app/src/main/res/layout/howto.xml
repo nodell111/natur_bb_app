@@ -52,7 +52,7 @@
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/howto_list">
+                    app:srcCompat="@drawable/howto_list4">
 
                 </ImageView>
 
@@ -65,7 +65,8 @@
                 android:fontFamily="@font/averiaseriflibre_regular"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
-                android:padding="20dp"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="30dp"
                 android:paddingBottom="1dp"
                 android:text="@string/Howto_text1"
                 android:textColor="@color/white"
@@ -88,7 +89,7 @@
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/howto_list">
+                    app:srcCompat="@drawable/howto_list1">
 
                 </ImageView>
 
@@ -101,7 +102,8 @@
                 android:fontFamily="@font/averiaseriflibre_regular"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
-                android:padding="20dp"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="30dp"
                 android:paddingBottom="1dp"
                 android:text="@string/Howto_text2"
                 android:textColor="@color/white"
@@ -125,7 +127,7 @@
                     android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/howto_list">
+                    app:srcCompat="@drawable/howto_list2">
 
                 </ImageView>
 
@@ -138,7 +140,8 @@
                 android:fontFamily="@font/averiaseriflibre_regular"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
-                android:padding="20dp"
+                android:paddingVertical="20dp"
+                android:paddingHorizontal="30dp"
                 android:paddingBottom="1dp"
                 android:text="@string/Howto_text3"
                 android:textColor="@color/white"

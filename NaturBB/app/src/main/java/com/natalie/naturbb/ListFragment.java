@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.os.AsyncTask;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -57,6 +58,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Ensure that radio buttons are enabled when the fragment resumes
         toggleRadioGroupOn();
     }
 
@@ -77,18 +79,19 @@ public class ListFragment extends Fragment {
         } catch (IOException ioe) {
         }
         database = dbHelper.getDataBase();
-
+        // Query the database for park information and populate the ListView
         dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region asc;", null);
 
 
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         //create HTML list items with adapter
         list_view.setAdapter(adapter);
-        //adapter needs the layout view file and data (the dbCursor points to the data records)
 
+        // Set up item click listener for the ListView
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get park details from the clicked item and display a bottom sheet
                 dbCursor.moveToPosition(position);
                 String park_name = dbCursor.getString(0);
                 String park_image = dbCursor.getString(3);
@@ -106,13 +109,13 @@ public class ListFragment extends Fragment {
         switchSortName = getActivity().findViewById(R.id.sortName);
         switchSortDistance = getActivity().findViewById(R.id.sortDistance);
 
-
+        // Set up search functionality, switch group, and return the view
         setupSearchView();
         setupSwitchGroup();
         return view;
     }
 
-
+    // Helper method to create an ArrayAdapter with HTML formatted text and images
     private ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         int length = cursor.getCount();
         cursor.moveToFirst();
@@ -156,6 +159,7 @@ public class ListFragment extends Fragment {
         return adapter;
     }
 
+    // Method to show a bottom sheet fragment with park details
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
@@ -177,7 +181,7 @@ public class ListFragment extends Fragment {
 
     }
 
-
+    // Set up search functionality for the SearchView
     private void setupSearchView() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -209,7 +213,7 @@ public class ListFragment extends Fragment {
 
     }
 
-    //when switch for size is checked then sort list by size column
+    // Set up switch group functionality for sorting options
     private void setupSwitchGroup() {
         switchSortSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -245,6 +249,7 @@ public class ListFragment extends Fragment {
         });
     }
 
+    // Sort the list of parks by size
     private void sortListBySize() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -257,6 +262,7 @@ public class ListFragment extends Fragment {
         }
     }
 
+    // Sort the list of parks by name
     private void sortListByName() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -270,6 +276,7 @@ public class ListFragment extends Fragment {
     }
 
 
+    // Sort the list of parks by distance using the Google Maps Distance Matrix API
     private void sortListByDistance() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -295,7 +302,7 @@ public class ListFragment extends Fragment {
                         Log.d("ParkCoordinates", "Park Lat: " + parkLat + ", Park Lng: " + parkLng);
 
                         // Make API request to get distance matrix
-                        String apiKey = "AIzaSyCFbT2GLzWBitk4BRiIglO-2SHU93cziUw";
+                        String apiKey = BuildConfig.MAPS_API_KEY;
                         String apiUrl = "https://maps.googleapis.com/maps/api/distancematrix/json" +
                                 "?origins=" + userLocation.getLatitude() + "," + userLocation.getLongitude() +
                                 "&destinations=" + parkLat + "," + parkLng +
@@ -398,6 +405,7 @@ public class ListFragment extends Fragment {
         return orderByClause.toString();
     }
 
+    // Inner class to represent a park and its distance
     public class ParkDistance {
         private final String parkName;
         private final float distance;
@@ -416,12 +424,13 @@ public class ListFragment extends Fragment {
         }
     }
 
-
+    // Enable radio group switches when the fragment resumes
     private void toggleRadioGroupOn() {
         Log.d("Toggle", "Toggling radio group on");
 
         RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
         SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+        TextView sortBy = getActivity().findViewById(R.id.sortBy);
 
         // Iterate through each child in the RadioGroup
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
@@ -438,11 +447,14 @@ public class ListFragment extends Fragment {
 
         // Enable the entire RadioGroup to prevent user interaction
         radioGroup.setEnabled(true);
+        radioGroup.setVisibility(View.VISIBLE);
+        sortBy.setVisibility(View.VISIBLE);
         searchView1.setQueryHint("Search for a park");
 
 
     }
 
+    // Override onDestroy method to close the database cursor
     @Override
     public void onDestroy() {
         if (dbCursor != null && !dbCursor.isClosed()) {

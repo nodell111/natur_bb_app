@@ -93,18 +93,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (userLocation != null) {
             LatLng userLatLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
 
-            // Add a marker for the user's current location
-//            mMap.addMarker(new MarkerOptions()
-//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-//                    .position(userLatLng)
-//                    .title("Your Location"));
-
-//            LatLngBounds.Builder builder = LatLngBounds.builder();
-//            builder.include(userLatLng);
-
-            // Move the camera to the user's location
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
-
             mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
                 public void onMyLocationClick(@NonNull Location location) {
                     if (!isMarkerAdded) { // Check if the marker has not been added
@@ -351,6 +339,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
         SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+        TextView sortBy = getActivity().findViewById(R.id.sortBy);
 
         // Iterate through each child in the RadioGroup
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
@@ -368,6 +357,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Disable the entire RadioGroup to prevent user interaction
         radioGroup.setEnabled(false);
+        radioGroup.setVisibility(View.GONE);
+        sortBy.setVisibility(View.GONE);
         searchView1.setQueryHint("Sorry, not working for map :(");
     }
 

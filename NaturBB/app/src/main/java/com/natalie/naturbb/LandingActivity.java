@@ -20,7 +20,7 @@ public class LandingActivity extends AppCompatActivity {
         findParkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open the "list" page when the button is clicked
+                // Open the Main Activity when the button is clicked
                 Intent intent = new Intent(LandingActivity.this, MainActivity.class);
                 startActivity(intent);
             }

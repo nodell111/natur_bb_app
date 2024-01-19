@@ -17,21 +17,25 @@ import androidx.appcompat.widget.Toolbar;
 
 public class AboutActivity extends AppCompatActivity {
 
+    // Method to create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
+    // Method to handle menu item selection
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
         if (itemId == R.id.home) {
+            // Navigate to the MainActivity when home is selected
             Intent homeIntent = new Intent(AboutActivity.this, MainActivity.class);
             startActivity(homeIntent);
             return true;
         } else if (itemId == R.id.about) {
+            // Navigate to the AboutActivity when about is selected
             Intent aboutIntent = new Intent(AboutActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
             return true;
@@ -40,7 +44,7 @@ public class AboutActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    // Method called when the activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +56,16 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-
-        // Add this code to connect fragments
+        // Connect fragments
         TextView sourcesLink = findViewById(R.id.sourcesAndCreditsLink);
         TextView appFeaturesLink = findViewById(R.id.appFeaturesLink);
         TextView howtoLink = findViewById(R.id.howtoLink);
 
-
+        // Underline the 'aboutTitle' TextView
         TextView aboutTitle = findViewById(R.id.aboutTitle);
         aboutTitle.setPaintFlags(aboutTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        // Set click listeners for the links to load fragments-connecting email and maps
         sourcesLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +83,7 @@ public class AboutActivity extends AppCompatActivity {
         howtoLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Show the 'HowTo' dialog fragment
                 HowTo howtoDialogFragment = new HowTo();
                 howtoDialogFragment.show(getSupportFragmentManager(), howtoDialogFragment.getTag());
             }
@@ -94,7 +99,8 @@ public class AboutActivity extends AppCompatActivity {
         findViewById(R.id.aboutTitle).setVisibility(View.VISIBLE);
         // Add more views as needed
     }
-    // Method to hide existing content
+
+    // Method to hide existing content when switched to fragments
     public void hideExistingContent() {
         findViewById(R.id.sourcesAndCreditsLink).setVisibility(View.GONE);
         findViewById(R.id.appFeaturesLink).setVisibility(View.GONE);
@@ -104,6 +110,7 @@ public class AboutActivity extends AppCompatActivity {
         // Add more views as needed
     }
 
+    // Method to load a fragment into the fragmentContainer
     private void loadFragment(Fragment fragment) {
         // Hide existing content
         hideExistingContent();

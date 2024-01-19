@@ -5,19 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class GetBottomSheetData {
-    public String description;
-    public String info;
-    public String park_image;
+    public String description; // Variable to store park description
+    public String info; // Variable to store park information
+    public String park_image; // Variable to store park image name
 
+    // Constructor that initializes data based on the provided park name
     public GetBottomSheetData(String parkName) {
         showListBottomSheetFragment(parkName);
     }
+
+    // Method to populate data based on the provided park name
     private void showListBottomSheetFragment(String parkName) {
         description = getDescriptionFromDatabase(parkName);
         info = getInfoFromDatabase(parkName);
         park_image = getImageFromDatabase(parkName);
     }
 
+    // Method to get the park image name from the database
     private String getImageFromDatabase(String parkName) {
         String image = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
@@ -31,10 +35,10 @@ public class GetBottomSheetData {
                 if (columnIndex != -1) {
                     image = cursor.getString(columnIndex);
                 } else {
-                    Log.e("getInfoFromDatabase", "Column 'image_name' not found in the cursor.");
+                    Log.e("getImageFromDatabase", "Column 'image_name' not found in the cursor.");
                 }
             } else {
-                Log.e("getInfoFromDatabase", "Cursor is null or empty.");
+                Log.e("getImageFromDatabase", "Cursor is null or empty.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,6 +50,7 @@ public class GetBottomSheetData {
         return image;
     }
 
+    // Method to get park information from the database
     private String getInfoFromDatabase(String parkName) {
         String info = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
@@ -74,7 +79,7 @@ public class GetBottomSheetData {
         return info;
     }
 
-
+    // Method to get park description from the database
     private String getDescriptionFromDatabase(String parkName) {
         String description = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
@@ -103,3 +108,4 @@ public class GetBottomSheetData {
         }
     }
 }
+

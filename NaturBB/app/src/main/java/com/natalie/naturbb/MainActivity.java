@@ -24,21 +24,24 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private MyViewPageAdapter myViewPageAdapter;
 
+    // Method to create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
+    // Handle action bar item clicks
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-
+        // Navigate to the main activity
         if (itemId == R.id.home) {
             Intent homeIntent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(homeIntent);
             return true;
         } else if (itemId == R.id.about) {
+            // Navigate to the about activity
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
             return true;
@@ -58,14 +61,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
+        // Find views in the layout
         tabLayout = findViewById(R.id.tabListMap);
         viewPager2 = findViewById(R.id.view_pager);
         myViewPageAdapter = new MyViewPageAdapter(this);
+        // Set up ViewPager and TabLayout
         viewPager2.setAdapter(myViewPageAdapter);
-
         viewPager2.setUserInputEnabled(false);
 
+        // Handle tab selection
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -101,13 +105,14 @@ public class MainActivity extends AppCompatActivity {
             public void onProviderDisabled(@NonNull String provider) {
             }
         };
-
+        // Request location updates if permissions are granted
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
         }
     }
 
+    // Check and request location permissions if not granted
     private void checkLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Handle the result of the location permission request
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -130,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Getter method to retrieve the user's location
     public Location getUserLocation() {
         return userLocation;
     }

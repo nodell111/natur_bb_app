@@ -5,19 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class GetBottomSheetDataMapDetail {
-    public String description;
-    public String category;
-    public String city;
+    public String description; // Variable to store point of interest description
+    public String category; // Variable to store point of interest category
+    public String city; // Variable to store city of the point of interest
 
+    // Constructor that initializes data based on the provided point of interest name
     public GetBottomSheetDataMapDetail(String poiName) {
         showMapBottomSheetFragment(poiName);
     }
+
+    // Method to populate data based on the provided point of interest name
     private void showMapBottomSheetFragment(String poiName) {
         description = getDescriptionFromDatabase(poiName);
         category = getCategoryFromDatabase(poiName);
         city = getCityFromDatabase(poiName);
     }
 
+    // Method to get the category of the point of interest from the database
     private String getCategoryFromDatabase(String poiName) {
         String category = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
@@ -46,7 +50,7 @@ public class GetBottomSheetDataMapDetail {
         return category;
     }
 
-
+    // Method to get the description of the point of interest from the database
     private String getDescriptionFromDatabase(String poiName) {
         String description = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
@@ -75,6 +79,7 @@ public class GetBottomSheetDataMapDetail {
         }
     }
 
+    // Method to get the city of the point of interest from the database
     private String getCityFromDatabase(String poiName) {
         String city = "";
         SQLiteDatabase database = ListFragment.dbHelper.getDataBase();
