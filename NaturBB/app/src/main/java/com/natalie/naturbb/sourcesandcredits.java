@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class sourcesandcredits extends Fragment {
-
+    // Required empty public constructor
     public sourcesandcredits() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -22,17 +22,15 @@ public class sourcesandcredits extends Fragment {
         // Hide existing content when the fragment is created
         ((AboutActivity) requireActivity()).hideExistingContent();
 
-        // Set up other views and listeners
-
         return view;
     }
 
-    // Other methods
 
+// Show existing content when the fragment is destroyed (user navigates back)
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Show existing content when the fragment is destroyed (user navigates back)
+
         ((AboutActivity) requireActivity()).showExistingContent();
     }
 }

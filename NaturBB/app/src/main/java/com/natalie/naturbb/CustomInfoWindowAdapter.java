@@ -1,21 +1,18 @@
 package com.natalie.naturbb;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
-import com.google.maps.android.clustering.ClusterManager;
+
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     Context activity;
@@ -25,9 +22,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         this.clusterItem = clickedClusterItem;
 //        Log.d("call", clickedClusterItem.getSnippet());
     }
-    private LayoutInflater inflater;
-//    private View inflater;
-    private ViewGroup container;
+
     @Override
     public View getInfoContents(@NonNull Marker marker) {
         Log.e("call", "get info contents");

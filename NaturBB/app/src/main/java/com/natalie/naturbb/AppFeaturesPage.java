@@ -22,24 +22,19 @@ public class AppFeaturesPage extends Fragment {
         // Required empty public constructor
     }
 
-    public static AppFeaturesPage newInstance(String param1, String param2) {
-        AppFeaturesPage fragment = new AppFeaturesPage();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    // Called when the fragment is created
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retrieve arguments if any
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    // Called to create the fragment's view
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_app_features_page, container, false);
@@ -52,7 +47,7 @@ public class AppFeaturesPage extends Fragment {
         emailLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmail();
+                sendEmail(); // Call the sendEmail method when the email link is clicked
             }
         });
 
@@ -61,56 +56,59 @@ public class AppFeaturesPage extends Fragment {
         mapLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMap();
+                openMap(); // Call the openMap method when the map link is clicked
             }
         });
-
-        // Set up other views and listeners
 
         return view;
     }
 
+    // Method to send an email
     private void sendEmail() {
         String email = "dilara.bozkurt@tum.de";
         String subject = "Feedback";
         String body = ""; // Customize the email body
 
-        composeEmail(email, subject, body);
+        composeEmail(email, subject, body); // Call the composeEmail method
     }
 
+    // Method to create an email intent
     private void composeEmail(String address, String subject, String body) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:" + address));
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, body);
 
+        // Check if there's an app that can handle the email intent
         if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            startActivity(intent);
+            startActivity(intent); // Start the email intent
         }
     }
 
+    // Method to open a map
     private void openMap() {
         // Coordinates for TU Dresden
         String mapUrl = "geo:51.0290301,13.7212011?q=H%C3%BClsse-Bau,+Helmholtzstra%C3%9Fe+10,+01069+Dresden";
-        showMap(mapUrl);
+        showMap(mapUrl); // Call the showMap method with the map URL
     }
 
+    // Method to create a map intent
     private void showMap(String mapUrl) {
         Uri geoUri = Uri.parse(mapUrl);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
 
+        // Check if there's an app that can handle the map intent
         if (mapIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            startActivity(mapIntent);
+            startActivity(mapIntent); // Start the map intent
         }
     }
 
+    // Called when the fragment is destroyed (user navigates back)
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Show existing content when the fragment is destroyed (user navigates back)
+        // Show existing content when the fragment is destroyed
         ((AboutActivity) requireActivity()).showExistingContent();
     }
 }
-
-
 
