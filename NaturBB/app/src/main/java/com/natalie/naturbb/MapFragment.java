@@ -339,6 +339,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
         SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+        TextView sortBy = getActivity().findViewById(R.id.sortBy);
 
         // Iterate through each child in the RadioGroup
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
@@ -356,6 +357,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Disable the entire RadioGroup to prevent user interaction
         radioGroup.setEnabled(false);
+        radioGroup.setVisibility(View.GONE);
+        sortBy.setVisibility(View.GONE);
         searchView1.setQueryHint("Sorry, not working for map :(");
     }
 
