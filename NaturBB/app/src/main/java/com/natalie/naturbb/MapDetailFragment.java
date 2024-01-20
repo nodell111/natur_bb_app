@@ -112,7 +112,6 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
         Cursor dbCursor = database.rawQuery("SELECT * FROM natur_table WHERE region = ?",
                 new String[]{parkName});
-        Log.d("in map detail fragment", "");
 
         dbCursor.moveToFirst();
         LatLngBounds.Builder builder = LatLngBounds.builder();
@@ -167,7 +166,6 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
             showMapBottomSheetFragment(clusterItem.name);
         });
         mMap.setOnInfoWindowClickListener(clusterManager);
-        Log.e("what is  one point", String.valueOf(onePoint));
         if(onePoint) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point_pos, 10));
         } else {
@@ -194,12 +192,10 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
 
         // Show the bottom sheet fragment
         bottomSheetFragment.show(getParentFragmentManager(), bottomSheetFragment.getTag());
-
     }
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         @Override
         public View getInfoWindow(@NonNull Marker marker) {
-            Log.e("call", "get info contents");
             // Getting view from the layout file info_window_layout
             View v = LayoutInflater.from(getContext()).inflate(R.layout.window_layout, null, false);
             TextView tvName = v.findViewById(R.id.tv_name);
@@ -220,4 +216,5 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
             return null;
         }
     }
+
 }

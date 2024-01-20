@@ -1,7 +1,6 @@
 package com.natalie.naturbb;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -20,9 +19,8 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
 
     @Override
     protected void onBeforeClusterItemRendered(@NonNull Park Park, @NonNull MarkerOptions markerOptions) {
-        Log.e("call", "on before cluster item rendered");
         markerOptions
-                .icon(getItemIcon(Park))
+                .icon(getItemIcon())
                 .title(Park.name)
                 .snippet(Park.getSnippet());
     }
@@ -30,13 +28,12 @@ public class MapMarkersRenderer extends DefaultClusterRenderer<Park> {
     @Override
     protected void onClusterItemUpdated(@NonNull Park Park, @NonNull Marker marker) {
         // Same implementation as onBeforeClusterItemRendered() (to update cached markers)
-        Log.e("call", "onclusteritem updated");
-        marker.setIcon(getItemIcon(Park));
+        marker.setIcon(getItemIcon());
         marker.setTitle(Park.name);
         marker.setSnippet(Park.getSnippet());
     }
 
-    private BitmapDescriptor getItemIcon(Park Park) {
+    private BitmapDescriptor getItemIcon() {
         return BitmapDescriptorFactory.fromResource(R.drawable.location_dot_solid);
     }
 

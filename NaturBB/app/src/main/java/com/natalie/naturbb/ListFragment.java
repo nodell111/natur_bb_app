@@ -451,7 +451,6 @@ public class ListFragment extends Fragment {
         sortBy.setVisibility(View.VISIBLE);
         searchView1.setQueryHint("Search for a park");
 
-
     }
 
     // Override onDestroy method to close the database cursor

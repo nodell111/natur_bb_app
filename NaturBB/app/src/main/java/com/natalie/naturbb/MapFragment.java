@@ -140,9 +140,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
             for (GeoJsonFeature feature : layer.getFeatures()) {
                 if (feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
-                    Log.d("polygon here", "");
-                    Log.d("tag", feature.getProperty("name"));
-
                     for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
                         List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
                         for (List<LatLng> list : polygonList) {
@@ -179,24 +176,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         }
         clusterManager.cluster();
-        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
-                clusterManager.onCameraIdle();
-                float zoomLevel = googleMap.getCameraPosition().zoom;
-                Log.d("zoom level", String.valueOf(zoomLevel));
-                if (zoomLevel > 8 && finalLayer != null) {
-                    finalLayer.addLayerToMap();
-                } else {
-                    finalLayer.removeLayerFromMap();
-                }
+        mMap.setOnCameraIdleListener(() -> {
+            clusterManager.onCameraIdle();
+            float zoomLevel = googleMap.getCameraPosition().zoom;
+            if (zoomLevel > 8 && finalLayer != null) {
+                finalLayer.addLayerToMap();
+            } else {
+                finalLayer.removeLayerFromMap();
             }
         });
         // to customise the markers
         DefaultClusterRenderer mapRenderer = new MapMarkersRenderer(getContext(), googleMap, clusterManager);
         clusterManager.setRenderer(mapRenderer);
         clusterManager.setOnClusterClickListener((ClusterManager.OnClusterClickListener<Park>) cluster -> false);
-
         clusterManager.setOnClusterItemClickListener((ClusterManager.OnClusterItemClickListener<Park>) item -> {
             clickedClusterItem = item;
             return false;
@@ -236,7 +228,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public View getInfoWindow(@NonNull Marker marker) {
-            Log.d("call", "get info window");
             // Getting view from the layout file info_window_layout
             View v = LayoutInflater.from(getContext()).inflate(R.layout.window_layout, null, false);
             TextView tvName = v.findViewById(R.id.tv_name);
