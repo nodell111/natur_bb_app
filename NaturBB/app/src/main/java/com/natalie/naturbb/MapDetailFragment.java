@@ -57,13 +57,6 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentwindow, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
     @SuppressLint({"MissingPermission", "PotentialBehaviorOverride"})
     @Override
     public void onMapReady(GoogleMap googleMap) {

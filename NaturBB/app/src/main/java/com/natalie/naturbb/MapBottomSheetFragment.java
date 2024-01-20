@@ -46,7 +46,7 @@ public class MapBottomSheetFragment extends BottomSheetDialogFragment {
 
         titleTextView.setText(poiName);
         descriptionTextView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
-        categoryTextView.setText(Html.fromHtml(category, Html.FROM_HTML_MODE_COMPACT));
+        categoryTextView.setText(Html.fromHtml(city, Html.FROM_HTML_MODE_COMPACT));
 
         return view;
     }
