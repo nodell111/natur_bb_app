@@ -63,28 +63,34 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
     private SearchViewModel searchViewModel;
     private ListFragmentListener listFragmentListener;
 
+
+    // Set the ListFragmentListener for communication between fragments
     @Override
     public void setListFragmentListener(ListFragmentListener listener) {
         this.listFragmentListener = listener;
 
     }
 
+    // Default constructor for MapFragment
     public MapFragment() {
         // Required empty public constructor
     }
 
+
+    // Called when the fragment is resumed; toggle radio group off
     @Override
     public void onResume() {
         super.onResume();
         toggleRadioGroupOff();
     }
 
+    // Called when the fragment is created; initialize ViewModel and set ListFragmentListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
 
-
+        // Set ListFragmentListener to communicate with the ListFragment
         ListFragment listFragment = (ListFragment) getParentFragmentManager().findFragmentById(R.id.list);
         if (listFragment != null) {
             listFragment.setListFragmentListener(this); // 'this' refers to the MapFragment itself
@@ -92,11 +98,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
 
     }
 
+
+    // Called when the fragment view is created; inflate layout and initialize map
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = getActivity().findViewById(R.id.searchbar);
 
+        // Initialize or retrieve the SupportMapFragment
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = SupportMapFragment.newInstance();
@@ -108,6 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         return view;
     }
 
+    // Called after the view is created; observe search query changes
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,6 +133,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         });
     }
 
+    // Handle search query changes
     @Override
     public void handleSearch(String query) {
         // Check if the map is ready
@@ -135,6 +146,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
     }
 
 
+    // Called when the map is ready; set up map features and handle pending search query
     @SuppressLint({"MissingPermission", "PotentialBehaviorOverride"})
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -152,7 +164,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
 
         searchView.clearFocus();
 
-
+        // Get user location from main activity
         Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
 
         if (userLocation != null) {
@@ -174,6 +186,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
             });
 
 
+            //On my location button click, move camera to current location
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
@@ -210,7 +223,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         dbCursor.moveToFirst();
 
         LatLngBounds.Builder builder = LatLngBounds.builder();
-        // so far empty but then can feed it in the for loop
+        //Bounds for map, so far empty but then can feed it in the for loop
 
         GeoJsonLayer layer = null;
         try {
@@ -284,6 +297,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
 
     }
 
+    // Show the bottom sheet fragment with park details
     private void showListBottomSheetFragment(String parkName) {
 
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
@@ -308,7 +322,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         searchView.clearFocus();
     }
 
-    //with clustering
+    // Update markers based on the search keyword
     public void updateMarkers(String keyword) {
 
         // Check if the map is not empty before clearing
@@ -385,7 +399,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
 
             }
             if (resultNumber > 0) {
-                final CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(builder.build().getCenter(), 7);
+                final CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(builder.build().getCenter(), 8);
                 mMap.animateCamera(cu);
             }
             clusterManager.cluster();
@@ -427,7 +441,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
     public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         return null;
     }
-    
+
+    // Custom info window adapter for marker pop-up
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public View getInfoWindow(@NonNull Marker marker) {
             // Getting view from the layout file info_window_layout
@@ -451,6 +466,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         }
     }
 
+    // Toggle off the radio group and disable switches
     private void toggleRadioGroupOff() {
         Log.d("Toggle", "Toggling radio group off");
 
@@ -476,7 +492,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         radioGroup.setEnabled(false);
         radioGroup.setVisibility(View.GONE);
         sortBy.setVisibility(View.GONE);
-//        searchView1.setQueryHint("Sorry, not working for map :(");
     }
 
 }
