@@ -23,6 +23,8 @@ import android.widget.Switch;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -42,7 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ListFragmentListener {
 
     public static DatabaseHelper dbHelper;
     // Declare variables
@@ -53,6 +56,7 @@ public class ListFragment extends Fragment {
     private Switch switchSortSize;
     private Switch switchSortName;
     private Switch switchSortDistance;
+    private SearchViewModel searchViewModel;
 
 
     @Override
@@ -60,6 +64,12 @@ public class ListFragment extends Fragment {
         super.onResume();
         // Ensure that radio buttons are enabled when the fragment resumes
         toggleRadioGroupOn();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
     }
 
     @Override
@@ -86,6 +96,7 @@ public class ListFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         //create HTML list items with adapter
         list_view.setAdapter(adapter);
+        //adapter needs the layout view file and data (the dbCursor points to the data records)
 
         // Set up item click listener for the ListView
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,14 +120,53 @@ public class ListFragment extends Fragment {
         switchSortName = getActivity().findViewById(R.id.sortName);
         switchSortDistance = getActivity().findViewById(R.id.sortDistance);
 
-        // Set up search functionality, switch group, and return the view
-        setupSearchView();
+
         setupSwitchGroup();
         return view;
     }
 
-    // Helper method to create an ArrayAdapter with HTML formatted text and images
-    private ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Observe search query changes
+        searchViewModel.getSearchQuery().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String newQuery) {
+                // Handle search query changes, e.g., update list with new data
+                handleSearch(newQuery);
+                MapFragment mapFragment = (MapFragment) getParentFragmentManager().findFragmentById(R.id.map);
+                if (mapFragment != null) {
+                    mapFragment.handleSearch(newQuery);
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void setListFragmentListener(ListFragmentListener listener) {
+
+    }
+
+    @Override
+    public void handleSearch(String query) {
+        // Perform search using the query
+        // Update the list with the new data
+        if (dbCursor != null) {
+            dbCursor.close();
+        }
+        dbCursor = database.rawQuery(
+                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                new String[]{"%" + query + "%"}
+        );
+        ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+        if (list_view != null) {
+            list_view.setAdapter(adapter);
+        }
+    }
+
+    public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         int length = cursor.getCount();
         cursor.moveToFirst();
         Spanned[] html_array = new Spanned[length];
@@ -159,7 +209,6 @@ public class ListFragment extends Fragment {
         return adapter;
     }
 
-    // Method to show a bottom sheet fragment with park details
     private void showListBottomSheetFragment(String parkName, String parkImage) {
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
 
@@ -181,39 +230,59 @@ public class ListFragment extends Fragment {
 
     }
 
-    // Set up search functionality for the SearchView
-    private void setupSearchView() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
 
-                searchView.clearFocus();
-                return false;
-            }
+//    private void setupSearchView() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                String keyword = searchView.getQuery().toString();
+//                if (dbCursor != null) {
+//                    dbCursor.close();
+//                }
+//                dbCursor = database.rawQuery(
+//                        "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
+//                        new String[]{"%" + keyword + "%"}
+//                );
+//                ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
+//                if (list_view != null) {
+//                    list_view.setAdapter(adapter);
+//                }
+//
+//                return true;
+//            }
+//        });
+//
+//
+//    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                String keyword = searchView.getQuery().toString();
-                if (dbCursor != null) {
-                    dbCursor.close();
-                }
-                dbCursor = database.rawQuery(
-                        "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region asc",
-                        new String[]{"%" + keyword + "%"}
-                );
-                ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
-                if (list_view != null) {
-                    list_view.setAdapter(adapter);
-                }
 
-                return true;
-            }
-        });
+    // In the ListFragment or wherever you are using setupSearchView()
+//    private void setupSearchView() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                searchView.clearFocus();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if (getActivity() instanceof MainActivity) {
+//                    ((MainActivity) getActivity()).handleSearch(newText);
+//                }
+//                return true;
+//            }
+//        });
+//    }
 
-
-    }
-
-    // Set up switch group functionality for sorting options
+    //when switch for size is checked then sort list by size column
     private void setupSwitchGroup() {
         switchSortSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -249,7 +318,6 @@ public class ListFragment extends Fragment {
         });
     }
 
-    // Sort the list of parks by size
     private void sortListBySize() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -262,7 +330,6 @@ public class ListFragment extends Fragment {
         }
     }
 
-    // Sort the list of parks by name
     private void sortListByName() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -276,7 +343,6 @@ public class ListFragment extends Fragment {
     }
 
 
-    // Sort the list of parks by distance using the Google Maps Distance Matrix API
     private void sortListByDistance() {
         if (dbCursor != null) {
             dbCursor.close();
@@ -451,9 +517,9 @@ public class ListFragment extends Fragment {
         sortBy.setVisibility(View.VISIBLE);
         searchView1.setQueryHint("Search for a park");
 
+
     }
 
-    // Override onDestroy method to close the database cursor
     @Override
     public void onDestroy() {
         if (dbCursor != null && !dbCursor.isClosed()) {

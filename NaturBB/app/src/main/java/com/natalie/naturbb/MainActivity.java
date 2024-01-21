@@ -2,24 +2,35 @@ package com.natalie.naturbb;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity implements ListFragmentListener {
     private Location userLocation;
+    private SQLiteDatabase database;
+    private DatabaseHelper dbHelper;
+
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private MyViewPageAdapter myViewPageAdapter;
@@ -85,6 +96,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        SearchViewModel searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+        SearchView searchView = findViewById(R.id.searchbar);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Update the search query in the ViewModel
+                searchViewModel.setSearchQuery(newText);
+                return true;
+            }
+        });
+
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            // Set the MainActivity as the ListFragmentListener for the MapFragment
+            mapFragment.setListFragmentListener(this);
+        }
+
         // Check and request location permissions
         checkLocationPermissions();
 
@@ -140,4 +176,51 @@ public class MainActivity extends AppCompatActivity {
     public Location getUserLocation() {
         return userLocation;
     }
+
+    public SQLiteDatabase getDataBase() {
+
+        // Initialize DatabaseHelper and SQLiteDatabase in onCreateView
+        try {
+            dbHelper.createDataBase();
+            //creating the database and prevent crash with try&catch
+        } catch (IOException ioe) {
+        }
+
+        if (dbHelper == null) {
+            dbHelper = new DatabaseHelper(this);
+            database = dbHelper.getDataBase();
+        }
+        return database;
+    }
+
+    @Override
+    public void setListFragmentListener(ListFragmentListener listener) {
+
+    }
+
+    @Override
+    public void handleSearch(String query) {
+        // Implement the search handling in MainActivity
+        SearchView searchView = findViewById(R.id.searchbar);
+        query = searchView.getQuery().toString();
+
+        // Call handleSearch in ListFragment
+        ListFragment listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.list);
+        if (listFragment != null) {
+            listFragment.handleSearch(query);
+        }
+
+        // Call handleSearch in MapFragment
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.handleSearch(query);
+        }
+    }
+
+
+    @Override
+    public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
+        return null;
+    }
 }
+
