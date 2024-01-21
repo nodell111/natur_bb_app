@@ -82,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         super.onCreate(savedInstanceState);
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
 
+
         ListFragment listFragment = (ListFragment)  getParentFragmentManager().findFragmentById(R.id.list);
         if (listFragment != null) {
             listFragment.setListFragmentListener(this); // 'this' refers to the MapFragment itself

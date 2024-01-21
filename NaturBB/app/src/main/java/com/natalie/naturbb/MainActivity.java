@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ListFragmentListe
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
 
+    private SearchView searchView;
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private MyViewPageAdapter myViewPageAdapter;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ListFragmentListe
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Find views in the layout
+        searchView = findViewById(R.id.searchbar);
         tabLayout = findViewById(R.id.tabListMap);
         viewPager2 = findViewById(R.id.view_pager);
         myViewPageAdapter = new MyViewPageAdapter(this);
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements ListFragmentListe
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
+                searchView.clearFocus();
             }
 
             @Override
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ListFragmentListe
 
         SearchViewModel searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-        SearchView searchView = findViewById(R.id.searchbar);
+        searchView = findViewById(R.id.searchbar);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
