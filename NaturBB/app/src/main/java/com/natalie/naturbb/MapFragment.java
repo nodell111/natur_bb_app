@@ -232,8 +232,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
                     feature.setPolygonStyle(polygonStyle);
                 }
             }
-            LatLngBounds bounds = builder.build();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -253,6 +251,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
             dbCursor.moveToNext();
 
         }
+        LatLngBounds bounds = builder.build();
+        final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 150);
+        mMap.animateCamera(cu);
         clusterManager.cluster();
         mMap.setOnCameraIdleListener(() -> {
             clusterManager.onCameraIdle();
@@ -336,6 +337,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
 
             LatLngBounds.Builder builder = LatLngBounds.builder();
             GeoJsonLayer layer = null;
+            // add corresponding polygons
             try {
                 layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
                 GeoJsonPolygonStyle polyStyle = layer.getDefaultPolygonStyle();
@@ -382,8 +384,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
                 dbCursor.moveToNext();
 
             }
-//            float zoomLevel = mMap.getCameraPosition().zoom;
-            Log.e("builder", String.valueOf(resultNumber));
             if (resultNumber > 0) {
                 final CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(builder.build().getCenter(), 7);
                 mMap.animateCamera(cu);
@@ -427,8 +427,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
     public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
         return null;
     }
-
-
+    
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         public View getInfoWindow(@NonNull Marker marker) {
             // Getting view from the layout file info_window_layout
