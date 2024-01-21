@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -67,6 +68,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         this.listFragmentListener = listener;
 
     }
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -83,7 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
 
 
-        ListFragment listFragment = (ListFragment)  getParentFragmentManager().findFragmentById(R.id.list);
+        ListFragment listFragment = (ListFragment) getParentFragmentManager().findFragmentById(R.id.list);
         if (listFragment != null) {
             listFragment.setListFragmentListener(this); // 'this' refers to the MapFragment itself
         }
@@ -129,7 +131,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         } else {
             // If the map is not ready, store the query and handle it later in onMapReady
             pendingSearchQuery = query;
-        }    }
+        }
+    }
 
 
     @SuppressLint({"MissingPermission", "PotentialBehaviorOverride"})
@@ -215,7 +218,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
             for (GeoJsonFeature feature : layer.getFeatures()) {
                 if (feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
                     for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
-                        List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
+                        List<? extends List<LatLng>> polygonList = polygon.getCoordinates();
                         for (List<LatLng> list : polygonList) {
                             for (LatLng latLng : list) {
                                 builder.include(latLng);
@@ -279,6 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         mMap.setOnInfoWindowClickListener(clusterManager);
 
     }
+
     private void showListBottomSheetFragment(String parkName) {
 
         ListBottomSheetFragment bottomSheetFragment = new ListBottomSheetFragment();
@@ -334,33 +338,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
             GeoJsonLayer layer = null;
             try {
                 layer = new GeoJsonLayer(mMap, R.raw.naturbb_parkboundary, getActivity());
+                GeoJsonPolygonStyle polyStyle = layer.getDefaultPolygonStyle();
+                polyStyle.setVisible(false);
                 for (GeoJsonFeature feature : layer.getFeatures()) {
-                    if (feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
-                        for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
-                            List<? extends List<LatLng>> polygonList = ((GeoJsonPolygon) polygon).getCoordinates();
-                            for (List<LatLng> list : polygonList) {
-                                for (LatLng latLng : list) {
-                                    builder.include(latLng);
+                    for (int i = 0; i < dbCursor.getCount(); i++) {
+                        String parkName = dbCursor.getString(0);
+                        if (feature.getProperty("name").matches(parkName) && feature.hasGeometry() && feature.getGeometry().getGeometryType().equals("MultiPolygon")) {
+                            for (GeoJsonPolygon polygon : ((GeoJsonMultiPolygon) feature.getGeometry()).getPolygons()) {
+                                List<? extends List<LatLng>> polygonList = polygon.getCoordinates();
+                                for (List<LatLng> list : polygonList) {
+                                    for (LatLng latLng : list) {
+                                        builder.include(latLng);
+                                    }
                                 }
                             }
+
+                            GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
+                            polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
+                            polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
+                            polygonStyle.setStrokeWidth(9);
+                            feature.setPolygonStyle(polygonStyle);
                         }
-                        GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-                        polygonStyle.setFillColor(Color.argb(60, 88, 129, 89));
-                        polygonStyle.setStrokeColor(Color.argb(80, 54, 100, 14));
-                        polygonStyle.setStrokeWidth(9);
-                        feature.setPolygonStyle(polygonStyle);
+                        dbCursor.moveToNext();
                     }
+                    dbCursor.moveToFirst();
                 }
-                LatLngBounds bounds = builder.build();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
-            GeoJsonLayer finalLayer = layer;
-
-
             ClusterManager clusterManager = new ClusterManager<Park>(getContext(), mMap);
+            dbCursor.moveToFirst();
+            int resultNumber = dbCursor.getCount();
             for (int i = 0; i < dbCursor.getCount(); i++) {
 
                 LatLng park_pos = new LatLng(dbCursor.getDouble(4), dbCursor.getDouble(5));
@@ -373,7 +382,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
                 dbCursor.moveToNext();
 
             }
+//            float zoomLevel = mMap.getCameraPosition().zoom;
+            Log.e("builder", String.valueOf(resultNumber));
+            if (resultNumber > 0) {
+                final CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(builder.build().getCenter(), 7);
+                mMap.animateCamera(cu);
+            }
             clusterManager.cluster();
+
+            GeoJsonLayer finalLayer = layer;
             mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                 @Override
                 public void onCameraIdle() {
@@ -421,8 +438,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
             String parkName = "Not Found";
             String snippet = "";
             if (clickedClusterItem != null) {
-                parkName = clickedClusterItem.getTitle();
-                snippet = clickedClusterItem.getSnippet();
+                parkName = clickedClusterItem.getTitle().trim();
+                snippet = clickedClusterItem.getSnippet().trim();
             }
             tvName.setText(parkName);
             tvSnippet.setText(snippet);

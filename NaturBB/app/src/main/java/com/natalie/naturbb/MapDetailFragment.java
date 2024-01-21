@@ -203,8 +203,8 @@ public class MapDetailFragment extends Fragment implements OnMapReadyCallback {
             String parkName = "Not Found";
             String snippet = "";
             if (clickedClusterItem != null) {
-                parkName = clickedClusterItem.getTitle();
-                snippet = clickedClusterItem.getSnippet();
+                parkName = clickedClusterItem.getTitle().trim();
+                snippet = clickedClusterItem.getSnippet().trim();
             }
             tvName.setText(parkName);
             tvSnippet.setText(snippet);
