@@ -471,25 +471,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
         Log.d("Toggle", "Toggling radio group off");
 
         RadioGroup radioGroup = getActivity().findViewById(R.id.radioGroup);
-        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
+//        SearchView searchView1 = getActivity().findViewById(R.id.searchbar);
         TextView sortBy = getActivity().findViewById(R.id.sortBy);
 
-        // Iterate through each child in the RadioGroup
-        for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            View child = radioGroup.getChildAt(i);
-
-            // Check if the child is a Switch
-            if (child instanceof Switch) {
-                Switch switchView = (Switch) child;
-                // Set the checked state of the Switch to false
-                switchView.setChecked(false);
-                // Disable switches
-                switchView.setEnabled(false);
-            }
-        }
+//        // Iterate through each child in the RadioGroup
+//        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+//            View child = radioGroup.getChildAt(i);
+//
+//            // Check if the child is a Switch
+//            if (child instanceof Switch) {
+//                Switch switchView = (Switch) child;
+//                // Set the checked state of the Switch to false
+//                switchView.setChecked(false);
+//                // Disable switches
+//                switchView.setEnabled(false);
+//            }
+//        }
 
         // Disable the entire RadioGroup to prevent user interaction
-        radioGroup.setEnabled(false);
+//        radioGroup.setEnabled(false);
         radioGroup.setVisibility(View.GONE);
         sortBy.setVisibility(View.GONE);
     }

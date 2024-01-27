@@ -58,8 +58,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
     private Switch switchSortDistance;
     private SearchViewModel searchViewModel;
     private ListFragmentListener listFragmentListener;
-    private boolean updated;
-
 
     @Override
     public void onResume() {
@@ -98,7 +96,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         database = dbHelper.getDataBase();
         // Query the database for park information and populate the ListView
         dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region asc;", null);
-        updated = false;
 
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         //create HTML list items with adapter
@@ -126,7 +123,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         switchSortSize = getActivity().findViewById(R.id.sortSize);
         switchSortName = getActivity().findViewById(R.id.sortName);
         switchSortDistance = getActivity().findViewById(R.id.sortDistance);
-
 
         setupSwitchGroup("");
         return view;
@@ -171,7 +167,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         if (list_view != null) {
             list_view.setAdapter(adapter);
         }
-        updated = true;
         setupSwitchGroup(query);
     }
 
@@ -213,7 +208,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 return view;
             }
         };
-
 
         return adapter;
     }
@@ -299,7 +293,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 if (isChecked) {
                     switchSortName.setChecked(false);
                     switchSortDistance.setChecked(false);
-                    sortListBySize(updated, query);
+                    sortListBySize(query);
                     switchSortSize.setEnabled(false);
                     switchSortName.setEnabled(true);
                     switchSortDistance.setEnabled(true);
@@ -313,7 +307,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 if (isChecked) {
                     switchSortSize.setChecked(false);
                     switchSortDistance.setChecked(false);
-                    sortListByName(updated, query);
+                    sortListByName(query);
                     switchSortName.setEnabled(false);
                     switchSortSize.setEnabled(true);
                     switchSortDistance.setEnabled(true);
@@ -327,7 +321,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 if (isChecked) {
                     switchSortSize.setChecked(false);
                     switchSortName.setChecked(false);
-                    sortListByDistance(updated, query);
+                    sortListByDistance(query);
                     switchSortDistance.setEnabled(false);
                     switchSortSize.setEnabled(true);
                     switchSortName.setEnabled(true);
@@ -336,52 +330,45 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         });
     }
 
-    private void sortListBySize(boolean updated, String query) {
+    private void sortListBySize(String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        if(updated) {
-            dbCursor = database.rawQuery(
-                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY area_km2 ASC",
-                    new String[]{"%" + query + "%"});
-        } else {
-            dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY area_km2 ASC;", null);
-        }
+
+        dbCursor = database.rawQuery(
+                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY area_km2 ASC",
+                new String[]{"%" + query + "%"});
+
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         if (list_view != null) {
             list_view.setAdapter(adapter);
         }
     }
 
-    private void sortListByName(boolean updated, String query) {
+    private void sortListByName(String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        if(updated) {
-            dbCursor = database.rawQuery(
-                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
-                    new String[]{"%" + query + "%"});
-        } else {
-            dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region ASC;", null);
-        }
+
+        dbCursor = database.rawQuery(
+                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                new String[]{"%" + query + "%"});
+
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         if (list_view != null) {
             list_view.setAdapter(adapter);
         }
     }
 
-
-    private void sortListByDistance(boolean updated, String query) {
+    private void sortListByDistance(String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        if(updated) {
-            dbCursor = database.rawQuery(
-                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
-                    new String[]{"%" + query + "%"});
-        } else {
-            dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
-        }
+
+        dbCursor = database.rawQuery(
+                "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                new String[]{"%" + query + "%"});
+
         // Retrieve user location from MainActivity
         Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
 
@@ -474,7 +461,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                             orderByClause
                     );
 
-
                     // Create an adapter with the new dbCursor
                     ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
 
@@ -550,7 +536,6 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         sortBy.setVisibility(View.VISIBLE);
         searchView1.setQueryHint("Search for a park");
 
-
     }
 
     @Override
@@ -560,6 +545,5 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         }
         super.onDestroy();
     }
-
 
 }
