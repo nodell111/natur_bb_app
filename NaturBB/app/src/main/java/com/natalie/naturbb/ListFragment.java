@@ -57,6 +57,8 @@ public class ListFragment extends Fragment implements ListFragmentListener {
     private Switch switchSortName;
     private Switch switchSortDistance;
     private SearchViewModel searchViewModel;
+    private ListFragmentListener listFragmentListener;
+    private boolean updated;
 
 
     @Override
@@ -70,6 +72,11 @@ public class ListFragment extends Fragment implements ListFragmentListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
+
+        ListFragment listFragment = (ListFragment) getParentFragmentManager().findFragmentById(R.id.list);
+        if (listFragment != null) {
+            listFragment.setListFragmentListener(this); // 'this' refers to the MapFragment itself
+        }
     }
 
     @Override
@@ -91,7 +98,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         database = dbHelper.getDataBase();
         // Query the database for park information and populate the ListView
         dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region asc;", null);
-
+        updated = false;
 
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         //create HTML list items with adapter
@@ -121,7 +128,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         switchSortDistance = getActivity().findViewById(R.id.sortDistance);
 
 
-        setupSwitchGroup();
+        setupSwitchGroup("");
         return view;
     }
 
@@ -146,7 +153,7 @@ public class ListFragment extends Fragment implements ListFragmentListener {
 
     @Override
     public void setListFragmentListener(ListFragmentListener listener) {
-
+        this.listFragmentListener = listener;
     }
 
     @Override
@@ -164,6 +171,8 @@ public class ListFragment extends Fragment implements ListFragmentListener {
         if (list_view != null) {
             list_view.setAdapter(adapter);
         }
+        updated = true;
+        setupSwitchGroup(query);
     }
 
     public ArrayAdapter<CharSequence> createAdapterHtml(Cursor cursor) {
@@ -283,14 +292,17 @@ public class ListFragment extends Fragment implements ListFragmentListener {
 //    }
 
     //when switch for size is checked then sort list by size column
-    private void setupSwitchGroup() {
+    private void setupSwitchGroup(String query) {
         switchSortSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     switchSortName.setChecked(false);
                     switchSortDistance.setChecked(false);
-                    sortListBySize();
+                    sortListBySize(updated, query);
+                    switchSortSize.setEnabled(false);
+                    switchSortName.setEnabled(true);
+                    switchSortDistance.setEnabled(true);
                 }
             }
         });
@@ -301,7 +313,10 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 if (isChecked) {
                     switchSortSize.setChecked(false);
                     switchSortDistance.setChecked(false);
-                    sortListByName();
+                    sortListByName(updated, query);
+                    switchSortName.setEnabled(false);
+                    switchSortSize.setEnabled(true);
+                    switchSortDistance.setEnabled(true);
                 }
             }
         });
@@ -312,30 +327,43 @@ public class ListFragment extends Fragment implements ListFragmentListener {
                 if (isChecked) {
                     switchSortSize.setChecked(false);
                     switchSortName.setChecked(false);
-                    sortListByDistance();
+                    sortListByDistance(updated, query);
+                    switchSortDistance.setEnabled(false);
+                    switchSortSize.setEnabled(true);
+                    switchSortName.setEnabled(true);
                 }
             }
         });
     }
 
-    private void sortListBySize() {
+    private void sortListBySize(boolean updated, String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY area_km2 ASC;", null);
-
+        if(updated) {
+            dbCursor = database.rawQuery(
+                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY area_km2 ASC",
+                    new String[]{"%" + query + "%"});
+        } else {
+            dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY area_km2 ASC;", null);
+        }
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         if (list_view != null) {
             list_view.setAdapter(adapter);
         }
     }
 
-    private void sortListByName() {
+    private void sortListByName(boolean updated, String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region ASC;", null);
-
+        if(updated) {
+            dbCursor = database.rawQuery(
+                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                    new String[]{"%" + query + "%"});
+        } else {
+            dbCursor = database.rawQuery("SELECT * FROM natur_table_park ORDER BY region ASC;", null);
+        }
         ArrayAdapter<CharSequence> adapter = createAdapterHtml(dbCursor);
         if (list_view != null) {
             list_view.setAdapter(adapter);
@@ -343,12 +371,17 @@ public class ListFragment extends Fragment implements ListFragmentListener {
     }
 
 
-    private void sortListByDistance() {
+    private void sortListByDistance(boolean updated, String query) {
         if (dbCursor != null) {
             dbCursor.close();
         }
-        dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
-
+        if(updated) {
+            dbCursor = database.rawQuery(
+                    "SELECT * FROM natur_table_park WHERE region LIKE ? ORDER BY region ASC",
+                    new String[]{"%" + query + "%"});
+        } else {
+            dbCursor = database.rawQuery("SELECT * FROM natur_table_park;", null);
+        }
         // Retrieve user location from MainActivity
         Location userLocation = ((MainActivity) requireActivity()).getUserLocation();
 
