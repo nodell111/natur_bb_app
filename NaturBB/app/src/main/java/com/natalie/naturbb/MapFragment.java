@@ -81,7 +81,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, ListFra
     @Override
     public void onResume() {
         super.onResume();
-        toggleRadioGroupOff();
+//        toggleRadioGroupOff();
     }
 
     // Called when the fragment is created; initialize ViewModel and set ListFragmentListener
