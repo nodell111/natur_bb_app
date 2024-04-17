@@ -10,10 +10,10 @@ Highlights:
     <li>Geolocation of user</li>
     <li>Interactive maps with parks and POI's</li>
     <li>Nice UI design</li>
-
-
 </ul>
 
+![NaturBrandenburgPreview](https://github.com/nodell111/natur_bb_app/assets/96927292/54fa7009-be54-4134-b2b9-31354b8e1a39)
+<br>
 
 # Future Work
 Future work would include functionality for park search in the map, the user to select their favorite parks and view them quickly on the favorites page, and map filters for the type of points of interest in the park map.
